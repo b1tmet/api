@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Documentación de la API · API Documentation — B1TMET</title>
+    <meta name="description" content="Documentación de la API de pronóstico B1TMET / B1TMET Forecast API documentation" />
+    <!-- Tarjeta al compartir el enlace (Open Graph / X); en inglés para todos los idiomas -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="B1TMET" />
+    <meta property="og:title" content="B1TMET Forecast API — Documentation" />
+    <meta property="og:description" content="Endpoints, parameters, domain selection, errors and limits of the B1TMET WRF forecast API, with examples in curl, JavaScript and Python." />
+    <meta property="og:url" content="https://b1tmet.github.io/api/docs.html" />
+    <meta property="og:image" content="https://b1tmet.github.io/api/assets/og-api.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="B1TMET WRF Forecast API — Caribbean &amp; Central America, up to 3 km" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#17062b" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="preload" href="assets/fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="assets/marca.css" />
+    <script>
+      (function () {
+        var d = document.documentElement;
+        d.className += " js";
+        var hr = new Date().getHours();
+        d.setAttribute("data-tod", hr >= 5 && hr < 8 ? "dawn" : hr >= 8 && hr < 17 ? "day" : hr >= 17 && hr < 20 ? "dusk" : "night");
+        try { var th = localStorage.getItem("b1t-theme"); if (th === "dark" || th === "light") d.setAttribute("data-theme", th); } catch (e) {}
+
+        var S = ["es", "en"], l = null;
+        try { l = new URLSearchParams(location.search).get("lang"); } catch (e) {}
+        if (S.indexOf(l) >= 0) { try { localStorage.setItem("b1t-lang", l); } catch (e) {} }
+        else { try { l = localStorage.getItem("b1t-lang"); } catch (e) {} }
+        // pt/fr/it/nl elegidos en otra página: la documentación solo está en ES/EN
+        if (l && S.indexOf(l) < 0) l = "en";        
+        if (S.indexOf(l) < 0) {
+          l = "en";
+          var list = navigator.languages || [navigator.language || "en"];
+          for (var i = 0; i < list.length; i++) {
+            var c = String(list[i] || "").slice(0, 2).toLowerCase();
+            if (S.indexOf(c) >= 0) { l = c; break; }
+          }
+        }
+        document.documentElement.setAttribute("data-lang", l);
+        document.documentElement.lang = l;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="brand" href="index.html"><img src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" /><small>API</small></a>
+      <nav class="top-nav" aria-label="API">
+        <a href="index.html"><span lang="es">Inicio</span><span lang="en">Overview</span><span lang="pt">Início</span><span lang="fr">Aperçu</span><span lang="it">Panoramica</span><span lang="nl">Overzicht</span></a>
+        <a href="docs.html" aria-current="page"><span lang="es">Documentación</span><span lang="en">Documentation</span><span lang="pt">Documentação</span><span lang="fr">Documentation</span><span lang="it">Documentazione</span><span lang="nl">Documentatie</span></a>
+        <a href="precios.html"><span lang="es">Precios</span><span lang="en">Pricing</span><span lang="pt">Preços</span><span lang="fr">Tarifs</span><span lang="it">Prezzi</span><span lang="nl">Prijzen</span></a>
+        <a href="verificacion.html"><span lang="es">Verificación</span><span lang="en">Verification</span><span lang="pt">Verificação</span><span lang="fr">Vérification</span><span lang="it">Verifica</span><span lang="nl">Verificatie</span></a>
+      </nav>
+      <button class="theme" type="button" aria-label="Tema">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+      </button>
+      <label class="langsel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z"/></svg>
+        <select id="langsel" aria-label="Idioma / Language">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="hero hero-s">
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gPlane" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#385BD6" stop-opacity=".95" />
+              <stop offset="1" stop-color="#385BD6" stop-opacity=".55" />
+            </linearGradient>
+          </defs>
+          <g class="rings r2"><circle cx="110" cy="40" r="60" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="122" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="184" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="246" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="308" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="370" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="432" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="494" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="556" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="618" fill="#385BD6" fill-opacity=".06" /></g>
+          <polygon class="plane" points="560,860 1500,120 1500,860" fill="url(#gPlane)" />
+          <g class="rings r1"><circle cx="1270" cy="700" r="70" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="140" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="210" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="280" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="350" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="420" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="490" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="560" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="630" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="700" fill="#A2B2F4" fill-opacity=".07" /></g>
+        </svg>
+      </div>
+      <svg class="ribbon" viewBox="0 0 660 320" aria-hidden="true">
+        <defs>
+          <linearGradient id="gRib" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="640" y2="0">
+            <stop offset="0" stop-color="#385BD6" />
+            <stop offset=".55" stop-color="#385BD6" stop-opacity=".75" />
+            <stop offset="1" stop-color="#17062B" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g>
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".22" transform="translate(30 18)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".4" transform="translate(20 12)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".65" transform="translate(10 6)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" />
+        </g>
+      </svg>
+      <canvas class="wind" aria-hidden="true"></canvas>
+      <div class="hero-in">
+        <p class="eyebrow">B1TMET API</p>
+        <h1 lang="es">Documentación de la API</h1>
+        <h1 lang="en">API documentation</h1>
+        <p class="sub" lang="es">Versión v1 · Última actualización: 1 de noviembre de 2026</p>
+        <p class="sub" lang="en">Version v1 · Last updated: November 1, 2026</p>
+      </div>
+      <div class="edge back" aria-hidden="true"></div>
+      <div class="edge" aria-hidden="true"></div>
+    </section>
+
+    <main class="app app-docs">
+      <!-- ======================= ES ======================= -->
+      <article class="card" lang="es">
+        <div class="docs">
+          <nav class="toc" aria-label="Índice">
+            <strong>Contenido</strong>
+            <ol>
+              <li><a href="#es-intro">Introducción</a></li>
+              <li><a href="#es-quickstart">Inicio rápido</a></li>
+              <li><a href="#es-auth">Autenticación</a></li>
+              <li><a href="#es-endpoints">Endpoints</a>
+                <ol>
+                  <li><a href="#es-status">status</a></li>
+                  <li><a href="#es-domains">domains</a></li>
+                  <li><a href="#es-runs">runs</a></li>
+                  <li><a href="#es-point">forecast/point</a></li>
+                  <li><a href="#es-usage">usage</a></li>
+                </ol>
+              </li>
+              <li><a href="#es-variables">Variables y unidades</a></li>
+              <li><a href="#es-domain-sel">Selección de dominio</a></li>
+              <li><a href="#es-errors">Errores</a></li>
+              <li><a href="#es-limits">Límites y cuotas</a></li>
+              <li><a href="#es-best">Buenas prácticas</a></li>
+              <li><a href="#es-versioning">Versiones y cambios</a></li>
+            </ol>
+          </nav>
+
+          <div class="doc">
+            <h2 id="es-intro">1. Introducción</h2>
+            <p>La API de pronóstico de B1TMET entrega pronósticos numéricos del modelo WRF de alta resolución para el Caribe y Centroamérica, en JSON. Se usa con cualquier lenguaje, desde un servidor o desde el navegador.</p>
+            <ul>
+              <li><strong>URL base:</strong> <code>https://thredds.b1tmet.com/v1</code></li>
+              <li><strong>Formato:</strong> JSON en UTF-8. Solo peticiones <code>GET</code>.</li>
+              <li><strong>Tiempos:</strong> ISO 8601 en UTC (<code>2026-10-31T03:00:00Z</code>).</li>
+              <li><strong>Valores ausentes:</strong> <code>null</code>, nunca 0.</li>
+              <li><strong>Pronóstico:</strong> pasos cada 3 h, hasta 72 h. El modelo se ejecuta 4 veces al día (00, 06, 12 y 18 UTC).</li>
+            </ul>
+            <p>Planes y precios: <a href="precios.html">Precios de la API</a>. Condiciones de uso: <a href="legal/terminos.html">Términos de la API</a>.</p>
+
+            <h2 id="es-quickstart">2. Inicio rápido</h2>
+            <ol>
+              <li>Consigue una clave. Plan Free: solicítala con tu correo en la <a href="alta.html">página de alta</a>. Starter o Pro: contrata en <a href="precios.html">precios</a> y la verás en pantalla al terminar el pago. La clave tiene el formato <code>b1t_live_…</code> y <strong>solo se muestra una vez</strong>: guárdala al verla.</li>
+              <li>Haz tu primera petición: pronóstico de 24 horas para La Habana.</li>
+            </ol>
+            <div class="tabs">
+              <div class="tab-btns"><button type="button" data-tab="curl">curl</button><button type="button" data-tab="js">JavaScript</button><button type="button" data-tab="py">Python</button></div>
+<pre class="code" data-panel="curl"><code>curl "https://thredds.b1tmet.com/v1/forecast/point?lat=23.13&amp;lon=-82.38&amp;hours=24" \
+  -H "Authorization: Bearer b1t_live_TU_CLAVE"</code></pre>
+<pre class="code" data-panel="js"><code>const res = await fetch(
+  "https://thredds.b1tmet.com/v1/forecast/point?lat=23.13&amp;lon=-82.38&amp;hours=24",
+  { headers: { Authorization: "Bearer b1t_live_TU_CLAVE" } }
+);
+if (!res.ok) {
+  const { error } = await res.json();
+  throw new Error(`${res.status} ${error.code}`);
+}
+const forecast = await res.json();
+console.log(forecast.data[0].temperature_2m);</code></pre>
+<pre class="code" data-panel="py"><code>import requests
+
+r = requests.get(
+    "https://thredds.b1tmet.com/v1/forecast/point",
+    params={"lat": 23.13, "lon": -82.38, "hours": 24},
+    headers={"Authorization": "Bearer b1t_live_TU_CLAVE"},
+    timeout=60,
+)
+r.raise_for_status()
+forecast = r.json()
+print(forecast["data"][0]["temperature_2m"])</code></pre>
+            </div>
+            <p class="muted">Una petición que no está en caché tarda unos segundos (el pronóstico se calcula en ese momento). Las siguientes para el mismo punto se responden en milisegundos. Usa un timeout de 60 s.</p>
+
+            <h2 id="es-auth">3. Autenticación</h2>
+            <p>Envía la clave en la cabecera <code>Authorization</code> (recomendado) o como parámetro <code>apikey</code>:</p>
+<pre class="code"><code>Authorization: Bearer b1t_live_TU_CLAVE
+https://thredds.b1tmet.com/v1/usage?apikey=b1t_live_TU_CLAVE</code></pre>
+            <ul>
+              <li>Si envías las dos, se usa la cabecera.</li>
+              <li>La API admite peticiones desde cualquier origen (CORS), así que puedes llamarla desde el navegador.</li>
+              <li>Una clave incluida en una web es visible para cualquiera. Si sospechas que se ha filtrado o la has perdido, rótala en <a href="claves.html">Gestionar claves</a>: te enviamos un enlace a tu correo y la nueva se muestra una sola vez.</li>
+              <li>Las claves del plan Free caducan a los 30 días. Renuévala en la <a href="alta.html">página de alta</a> con el mismo correo durante sus 3 últimos días de validez o después de que caduque; al emitir la nueva, la anterior se revoca.</li>
+              <li>Planes de pago: crea claves adicionales (hasta 2 en Starter y 5 en Pro) o revócalas en <a href="claves.html">Gestionar claves</a>. Cambia de plan, actualiza la tarjeta o cancela desde el portal de cliente de Stripe (enlace en el correo de bienvenida).</li>
+            </ul>
+
+            <h2 id="es-endpoints">4. Endpoints</h2>
+            <div class="tbl"><table><tr><th>Endpoint</th><th>Clave</th><th>Para qué</th></tr><tr><td><code>GET /v1/status</code></td><td>No</td><td>Estado del servicio</td></tr><tr><td><code>GET /v1/domains</code></td><td>Sí</td><td>Dominios y grids de tu plan</td></tr><tr><td><code>GET /v1/domains/{domain}/runs</code></td><td>Sí</td><td>Corrida vigente de un dominio</td></tr><tr><td><code>GET /v1/forecast/point</code></td><td>Sí</td><td>Pronóstico en un punto</td></tr><tr><td><code>GET /v1/usage</code></td><td>Sí</td><td>Tu plan y tu consumo</td></tr></table></div>
+
+            <h3 id="es-status"><span class="method">GET</span>/v1/status</h3>
+            <p>Estado del servicio. No necesita clave ni cuenta en la cuota. <code>status</code> vale <code>ok</code> o <code>degraded</code>.</p>
+<pre class="code"><code>{ "status": "ok", "api_version": "1", "time": "2026-10-31T19:00:00Z" }</code></pre>
+
+            <h3 id="es-domains"><span class="method">GET</span>/v1/domains</h3>
+            <p>Dominios y grids incluidos en tu plan, con su resolución y sus límites geográficos, y la lista de variables.</p>
+<pre class="code"><code>{
+  "api_version": "1",
+  "domains": [
+    { "domain": "cuba",
+      "grids": [
+        { "grid": "d01", "resolution_km": 27,
+          "bounds": { "south": 13.65, "west": -99.28, "north": 32.04, "east": -62.83 } },
+        { "grid": "d02", "resolution_km": 9,
+          "bounds": { "south": 17.64, "west": -88.27, "north": 26.6, "east": -70.93 } }
+      ] }
+  ],
+  "variables": ["temperature_2m", "relative_humidity_2m", "pressure_surface", "pressure_msl",
+                "wind_speed_10m", "wind_direction_10m", "precipitation_3h", "apparent_temperature"]
+}</code></pre>
+            <div class="tbl"><table><tr><th>Dominio</th><th>d01</th><th>d02</th><th>d03</th></tr><tr><td><code>caribe</code></td><td>9 km</td><td>—</td><td>—</td></tr><tr><td><code>mexico</code></td><td>25 km</td><td>5 km</td><td>—</td></tr><tr><td><code>panama</code></td><td>27 km</td><td>9 km</td><td>3 km</td></tr><tr><td><code>centro_america</code></td><td>27 km</td><td>9 km</td><td>—</td></tr><tr><td><code>cuba</code></td><td>27 km</td><td>9 km</td><td>—</td></tr><tr><td><code>dominica</code></td><td>27 km</td><td>9 km</td><td>—</td></tr><tr><td><code>dominicana</code></td><td>27 km</td><td>9 km</td><td>—</td></tr></table></div>
+
+            <h3 id="es-runs"><span class="method">GET</span>/v1/domains/{domain}/runs</h3>
+            <p>Corrida vigente de un dominio: su hora de inicialización y el rango de tiempos disponibles.</p>
+            <div class="tbl"><table><tr><th>Parámetro</th><th>Defecto</th><th>Descripción</th></tr><tr><td><code>grid</code></td><td>el más detallado de tu plan</td><td><code>d01</code>, <code>d02</code> o <code>d03</code></td></tr></table></div>
+<pre class="code"><code>{
+  "api_version": "1", "domain": "cuba", "grid": "d02",
+  "run_init": "2026-10-31T00:00:00Z",
+  "first_time": "2026-10-31T00:00:00Z",
+  "last_time": "2026-11-03T00:00:00Z",
+  "time_step_hours": 3
+}</code></pre>
+
+            <h3 id="es-point"><span class="method">GET</span>/v1/forecast/point</h3>
+            <p>Pronóstico en un punto, desde el paso más reciente ya alcanzado (tiempo ≤ ahora) y cada 3 h.</p>
+            <div class="tbl"><table><tr><th>Parámetro</th><th>Defecto</th><th>Descripción</th></tr><tr><td><code>lat</code>, <code>lon</code></td><td>obligatorios</td><td>Grados decimales WGS84</td></tr><tr><td><code>domain</code></td><td><code>auto</code></td><td><code>auto</code> o un dominio de la lista (ver <a href="#es-domain-sel">selección de dominio</a>)</td></tr><tr><td><code>grid</code></td><td>el más detallado disponible</td><td><code>d01</code>, <code>d02</code> o <code>d03</code></td></tr><tr><td><code>hours</code></td><td>el máximo de tu plan</td><td>De 3 a 72. Se devuelven <code>floor(hours/3) + 1</code> pasos</td></tr><tr><td><code>variables</code></td><td>todas</td><td>Lista separada por comas (ver <a href="#es-variables">variables</a>)</td></tr><tr><td><code>units</code></td><td><code>metric</code></td><td><code>metric</code> o <code>imperial</code></td></tr></table></div>
+<pre class="code"><code>{
+  "api_version": "1",
+  "request_id": "req_6PsbdRoNGWuwij05",
+  "location":   { "lat": 23.13, "lon": -82.38 },
+  "grid_point": { "lat": 23.0988, "lon": -82.3362, "distance_km": 5.7, "elevation_m": 36.9 },
+  "model": { "name": "WRF", "domain": "cuba", "grid": "d02", "resolution_km": 9,
+             "run_init": "2026-10-31T00:00:00Z", "time_step_hours": 3 },
+  "units": { "temperature_2m": "degC", "relative_humidity_2m": "%",
+             "pressure_surface": "hPa", "pressure_msl": "hPa",
+             "wind_speed_10m": "m/s", "wind_direction_10m": "deg",
+             "precipitation_3h": "mm", "apparent_temperature": "degC" },
+  "data": [
+    { "time": "2026-10-31T03:00:00Z", "run_init": "2026-10-31T00:00:00Z",
+      "temperature_2m": 24.6, "relative_humidity_2m": 91.4,
+      "pressure_surface": 1010.4, "pressure_msl": 1014.7,
+      "wind_speed_10m": 0.8, "wind_direction_10m": 120,
+      "precipitation_3h": 0, "apparent_temperature": 24.8 }
+  ]
+}</code></pre>
+            <ul>
+              <li><code>grid_point</code>: punto de la malla del modelo usado, su distancia a tu punto y su elevación.</li>
+              <li><code>model</code>: dominio, grid y resolución usados, y la hora de inicialización de la corrida.</li>
+              <li><code>units</code> y cada elemento de <code>data</code> incluyen solo las variables pedidas.</li>
+            </ul>
+
+            <h3 id="es-usage"><span class="method">GET</span>/v1/usage</h3>
+            <p>Tu plan, sus límites y tu consumo actual. No cuenta en la cuota. <code>domains: null</code> significa todos los dominios.</p>
+<pre class="code"><code>{
+  "api_version": "1",
+  "plan": "starter",
+  "limits": { "per_minute": 30, "per_day": 5000, "max_hours": 72,
+              "grids": ["d01", "d02", "d03"], "domains": null },
+  "used":   { "minute": 4, "day": 1210 },
+  "resets": { "minute": "2026-10-31T19:01:00Z", "day": "2026-11-01T00:00:00Z" }
+}</code></pre>
+
+            <h2 id="es-variables">5. Variables y unidades</h2>
+            <div class="tbl"><table><tr><th>Variable</th><th>Descripción</th><th><code>metric</code></th><th><code>imperial</code></th></tr><tr><td><code>temperature_2m</code></td><td>Temperatura a 2 m</td><td>°C</td><td>°F</td></tr><tr><td><code>relative_humidity_2m</code></td><td>Humedad relativa a 2 m</td><td>%</td><td>%</td></tr><tr><td><code>pressure_surface</code></td><td>Presión en superficie</td><td>hPa</td><td>hPa</td></tr><tr><td><code>pressure_msl</code></td><td>Presión a nivel del mar</td><td>hPa</td><td>hPa</td></tr><tr><td><code>wind_speed_10m</code></td><td>Velocidad del viento a 10 m</td><td>m/s</td><td>mph</td></tr><tr><td><code>wind_direction_10m</code></td><td>Dirección de donde sopla el viento</td><td>grados</td><td>grados</td></tr><tr><td><code>precipitation_3h</code></td><td>Precipitación en las 3 h que terminan en <code>time</code></td><td>mm</td><td>in</td></tr><tr><td><code>apparent_temperature</code></td><td>Sensación térmica</td><td>°C</td><td>°F</td></tr></table></div>
+            <ul>
+              <li><code>precipitation_3h</code> vale <code>null</code> en el paso de inicialización de la corrida, porque no hay intervalo previo.</li>
+              <li>Si el modelo no da el viento en un paso, velocidad y dirección valen <code>null</code>.</li>
+            </ul>
+
+            <h2 id="es-domain-sel">6. Selección de dominio</h2>
+            <p>Con <code>domain=auto</code>, la API usa el grid más detallado de tu plan que cubre el punto y, entre dominios equivalentes, el más centrado respecto al punto. Si el preferido no tiene datos en ese momento, usa el siguiente.</p>
+            <p>La respuesta indica siempre en <code>model</code> el dominio y el grid usados. Si necesitas resultados reproducibles, fija <code>domain</code> y <code>grid</code>.</p>
+
+            <h2 id="es-errors">7. Errores</h2>
+            <p>Todos los errores tienen el mismo formato. Usa <code>code</code> en tu lógica; <code>message</code> es solo orientativo.</p>
+<pre class="code"><code>{ "error": { "code": "daily_quota_exceeded", "message": "Daily quota exceeded.", "request_id": "req_…" } }</code></pre>
+            <div class="tbl"><table><tr><th>HTTP</th><th><code>code</code></th><th>Qué hacer</th></tr><tr><td>400</td><td><code>invalid_parameter</code></td><td>Corrige el parámetro indicado en <code>param</code></td></tr><tr><td>401</td><td><code>missing_api_key</code>, <code>invalid_api_key</code></td><td>Revisa la clave</td></tr><tr><td>403</td><td><code>key_revoked</code>, <code>key_expired</code></td><td>Free: renueva la clave en la <a href="alta.html">página de alta</a>. Planes de pago: revisa tu suscripción en el portal de cliente o escríbenos</td></tr><tr><td>403</td><td><code>domain_not_allowed</code>, <code>horizon_not_allowed</code></td><td>Dominio, grid u horizonte fuera de tu plan</td></tr><tr><td>404</td><td><code>unknown_domain</code>, <code>not_found</code></td><td>Revisa el dominio o la ruta</td></tr><tr><td>422</td><td><code>coordinates_outside_domain</code></td><td>El punto está fuera del dominio; <code>domain_bounds</code> indica sus límites</td></tr><tr><td>422</td><td><code>coordinates_outside_coverage</code></td><td>Ningún dominio de tu plan cubre el punto</td></tr><tr><td>429</td><td><code>rate_limited</code>, <code>daily_quota_exceeded</code></td><td>Espera los segundos de <code>Retry-After</code></td></tr><tr><td>503</td><td><code>server_busy</code>, <code>no_data_available</code></td><td>Reintenta tras <code>Retry-After</code></td></tr><tr><td>504</td><td><code>upstream_timeout</code></td><td>Reintenta más tarde</td></tr><tr><td>500</td><td><code>internal_error</code></td><td>Reintenta; si persiste, escríbenos con el <code>request_id</code></td></tr></table></div>
+
+            <h2 id="es-limits">8. Límites y cuotas</h2>
+            <p>Cada plan tiene un límite de peticiones por minuto y por día, un horizonte máximo y unos grids. Los valores están en <a href="precios.html">Precios de la API</a>. La cuota es por cliente y la comparten todas sus claves.</p>
+            <div class="tbl"><table><tr><th>Respuesta</th><th>¿Cuenta?</th></tr><tr><td>200, incluidas las servidas desde caché</td><td>Sí</td></tr><tr><td>422 (coordenadas fuera del dominio o de cobertura)</td><td>Sí</td></tr><tr><td>Errores de la petición (400, 401, 403, 404) y límites superados (429)</td><td>No</td></tr><tr><td>Errores del servidor (500, 503, 504)</td><td>No</td></tr><tr><td><code>/v1/status</code> y <code>/v1/usage</code></td><td>No</td></tr><tr><td><code>/v1/domains</code> y <code>/runs</code></td><td>Solo en la cuota diaria</td></tr></table></div>
+            <p>La cuota diaria se reinicia a las 00:00 UTC; la de por minuto, al empezar cada minuto. Cabeceras en cada respuesta:</p>
+            <div class="tbl"><table><tr><th>Cabecera</th><th>Significado</th></tr><tr><td><code>X-Request-Id</code></td><td>Identificador de la petición</td></tr><tr><td><code>X-RateLimit-Limit</code></td><td>Límite por minuto de tu plan</td></tr><tr><td><code>X-RateLimit-Remaining</code></td><td>Peticiones restantes en el minuto</td></tr><tr><td><code>X-RateLimit-Reset</code></td><td>Segundos hasta el siguiente minuto</td></tr><tr><td><code>X-Daily-Quota-Remaining</code></td><td>Peticiones restantes hoy (UTC)</td></tr><tr><td><code>Retry-After</code></td><td>Segundos de espera (429 y 503)</td></tr><tr><td><code>X-Cache</code></td><td><code>HIT</code> o <code>MISS</code></td></tr><tr><td><code>Cache-Control</code></td><td>Tiempo durante el que la respuesta sigue vigente</td></tr></table></div>
+
+            <h2 id="es-best">9. Buenas prácticas</h2>
+            <ul>
+              <li><strong>Cachea en tu lado</strong> hasta lo que indica <code>Cache-Control</code>. El pronóstico de un punto no cambia hasta la siguiente actualización.</li>
+              <li><strong>Usa siempre las mismas coordenadas</strong> para el mismo lugar (por ejemplo, con 4 decimales fijos): así tus peticiones se sirven desde caché y responden más rápido.</li>
+              <li><strong>Respeta <code>Retry-After</code></strong> en los 429 y 503, y reintenta con espera creciente.</li>
+              <li><strong>Timeout de 60 s</strong> en el cliente: una petición sin caché tarda unos segundos.</li>
+              <li><strong>Ignora los campos que no conozcas:</strong> dentro de v1 pueden añadirse campos nuevos.</li>
+              <li><strong>Protege tu clave:</strong> en producción, llama a la API desde tu servidor siempre que puedas.</li>
+              <li><strong>Atribución:</strong> en los planes Free y Starter, muestra «Pronóstico: B1TMET» junto a los datos publicados (ver <a href="legal/terminos.html">Términos de la API</a>).</li>
+            </ul>
+
+            <h2 id="es-versioning">10. Versiones y cambios</h2>
+            <p>La versión <code>v1</code> es estable: solo recibe cambios compatibles (campos, variables, parámetros opcionales o endpoints nuevos). Los cambios incompatibles se publicarán en <code>/v2</code>, y <code>/v1</code> se mantendrá al menos 12 meses desde el anuncio, con las cabeceras <code>Deprecation</code> y <code>Sunset</code>.</p>
+            <div class="tbl"><table><tr><th>Fecha</th><th>Cambio</th></tr><tr><td>2026-10-31</td><td>Publicación de la versión v1.</td></tr></table></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ======================= EN ======================= -->
+      <article class="card" lang="en">
+        <div class="docs">
+          <nav class="toc" aria-label="Contents">
+            <strong>Contents</strong>
+            <ol>
+              <li><a href="#en-intro">Introduction</a></li>
+              <li><a href="#en-quickstart">Quick start</a></li>
+              <li><a href="#en-auth">Authentication</a></li>
+              <li><a href="#en-endpoints">Endpoints</a>
+                <ol>
+                  <li><a href="#en-status">status</a></li>
+                  <li><a href="#en-domains">domains</a></li>
+                  <li><a href="#en-runs">runs</a></li>
+                  <li><a href="#en-point">forecast/point</a></li>
+                  <li><a href="#en-usage">usage</a></li>
+                </ol>
+              </li>
+              <li><a href="#en-variables">Variables and units</a></li>
+              <li><a href="#en-domain-sel">Domain selection</a></li>
+              <li><a href="#en-errors">Errors</a></li>
+              <li><a href="#en-limits">Limits and quotas</a></li>
+              <li><a href="#en-best">Best practices</a></li>
+              <li><a href="#en-versioning">Versions and changes</a></li>
+            </ol>
+          </nav>
+
+          <div class="doc">
+            <h2 id="en-intro">1. Introduction</h2>
+            <p>The B1TMET forecast API delivers high-resolution WRF numerical forecasts for the Caribbean and Central America, in JSON. Use it from any language, from a server or from the browser.</p>
+            <ul>
+              <li><strong>Base URL:</strong> <code>https://thredds.b1tmet.com/v1</code></li>
+              <li><strong>Format:</strong> UTF-8 JSON. <code>GET</code> requests only.</li>
+              <li><strong>Times:</strong> ISO 8601 in UTC (<code>2026-10-31T03:00:00Z</code>).</li>
+              <li><strong>Missing values:</strong> <code>null</code>, never 0.</li>
+              <li><strong>Forecast:</strong> 3-hour steps, up to 72 h. The model runs 4 times a day (00, 06, 12 and 18 UTC).</li>
+            </ul>
+            <p>Plans and pricing: <a href="precios.html">API Pricing</a>. Terms of use: <a href="legal/terminos.html">API Terms</a>.</p>
+
+            <h2 id="en-quickstart">2. Quick start</h2>
+            <ol>
+              <li>Get a key. Free plan: request it with your email on the <a href="alta.html">sign-up page</a>. Starter or Pro: subscribe on the <a href="precios.html">pricing</a> page and the key is shown on screen when payment completes. Keys have the format <code>b1t_live_…</code> and are <strong>shown only once</strong>: save yours when you see it.</li>
+              <li>Make your first request: a 24-hour forecast for Havana.</li>
+            </ol>
+            <div class="tabs">
+              <div class="tab-btns"><button type="button" data-tab="curl">curl</button><button type="button" data-tab="js">JavaScript</button><button type="button" data-tab="py">Python</button></div>
+<pre class="code" data-panel="curl"><code>curl "https://thredds.b1tmet.com/v1/forecast/point?lat=23.13&amp;lon=-82.38&amp;hours=24" \
+  -H "Authorization: Bearer b1t_live_YOUR_KEY"</code></pre>
+<pre class="code" data-panel="js"><code>const res = await fetch(
+  "https://thredds.b1tmet.com/v1/forecast/point?lat=23.13&amp;lon=-82.38&amp;hours=24",
+  { headers: { Authorization: "Bearer b1t_live_YOUR_KEY" } }
+);
+if (!res.ok) {
+  const { error } = await res.json();
+  throw new Error(`${res.status} ${error.code}`);
+}
+const forecast = await res.json();
+console.log(forecast.data[0].temperature_2m);</code></pre>
+<pre class="code" data-panel="py"><code>import requests
+
+r = requests.get(
+    "https://thredds.b1tmet.com/v1/forecast/point",
+    params={"lat": 23.13, "lon": -82.38, "hours": 24},
+    headers={"Authorization": "Bearer b1t_live_YOUR_KEY"},
+    timeout=60,
+)
+r.raise_for_status()
+forecast = r.json()
+print(forecast["data"][0]["temperature_2m"])</code></pre>
+            </div>
+            <p class="muted">A request that is not cached takes a few seconds (the forecast is computed on the fly). Later requests for the same point are answered in milliseconds. Use a 60-second timeout.</p>
+
+            <h2 id="en-auth">3. Authentication</h2>
+            <p>Send the key in the <code>Authorization</code> header (recommended) or as the <code>apikey</code> parameter:</p>
+<pre class="code"><code>Authorization: Bearer b1t_live_YOUR_KEY
+https://thredds.b1tmet.com/v1/usage?apikey=b1t_live_YOUR_KEY</code></pre>
+            <ul>
+              <li>If you send both, the header is used.</li>
+              <li>The API accepts requests from any origin (CORS), so you can call it from the browser.</li>
+              <li>A key embedded in a website is visible to anyone. If you think it has leaked or you have lost it, rotate it in <a href="claves.html">Manage keys</a>: we email you a link and the new key is shown only once.</li>
+              <li>Free plan keys expire after 30 days. Renew yours on the <a href="alta.html">sign-up page</a> with the same email during its last 3 days of validity or after it expires; the previous key is revoked when the new one is issued.</li>
+              <li>Paid plans: create additional keys (up to 2 on Starter and 5 on Pro) or revoke them in <a href="claves.html">Manage keys</a>. Change plan, update your card or cancel from the Stripe customer portal (link in the welcome email).</li>
+            </ul>
+
+            <h2 id="en-endpoints">4. Endpoints</h2>
+            <div class="tbl"><table><tr><th>Endpoint</th><th>Key</th><th>Purpose</th></tr><tr><td><code>GET /v1/status</code></td><td>No</td><td>Service status</td></tr><tr><td><code>GET /v1/domains</code></td><td>Yes</td><td>Domains and grids in your plan</td></tr><tr><td><code>GET /v1/domains/{domain}/runs</code></td><td>Yes</td><td>Current run of a domain</td></tr><tr><td><code>GET /v1/forecast/point</code></td><td>Yes</td><td>Forecast for a point</td></tr><tr><td><code>GET /v1/usage</code></td><td>Yes</td><td>Your plan and usage</td></tr></table></div>
+
+            <h3 id="en-status"><span class="method">GET</span>/v1/status</h3>
+            <p>Service status. No key needed and not counted against your quota. <code>status</code> is <code>ok</code> or <code>degraded</code>.</p>
+<pre class="code"><code>{ "status": "ok", "api_version": "1", "time": "2026-10-31T19:00:00Z" }</code></pre>
+
+            <h3 id="en-domains"><span class="method">GET</span>/v1/domains</h3>
+            <p>Domains and grids included in your plan, with their resolution and geographic bounds, and the list of variables.</p>
+<pre class="code"><code>{
+  "api_version": "1",
+  "domains": [
+    { "domain": "cuba",
+      "grids": [
+        { "grid": "d01", "resolution_km": 27,
+          "bounds": { "south": 13.65, "west": -99.28, "north": 32.04, "east": -62.83 } },
+        { "grid": "d02", "resolution_km": 9,
+          "bounds": { "south": 17.64, "west": -88.27, "north": 26.6, "east": -70.93 } }
+      ] }
+  ],
+  "variables": ["temperature_2m", "relative_humidity_2m", "pressure_surface", "pressure_msl",
+                "wind_speed_10m", "wind_direction_10m", "precipitation_3h", "apparent_temperature"]
+}</code></pre>
+            <div class="tbl"><table><tr><th>Domain</th><th>d01</th><th>d02</th><th>d03</th></tr><tr><td><code>caribe</code></td><td>9 km</td><td>—</td><td>—</td></tr><tr><td><code>mexico</code></td><td>25 km</td><td>5 km</td><td>—</td></tr><tr><td><code>panama</code></td><td>27 km</td><td>9 km</td><td>3 km</td></tr><tr><td><code>centro_america</code></td><td>27 km</td><td>9 km</td><td>—</td></tr><tr><td><code>cuba</code></td><td>27 km</td><td>9 km</td><td>—</td></tr><tr><td><code>dominica</code></td><td>27 km</td><td>9 km</td><td>—</td></tr><tr><td><code>dominicana</code></td><td>27 km</td><td>9 km</td><td>—</td></tr></table></div>
+
+            <h3 id="en-runs"><span class="method">GET</span>/v1/domains/{domain}/runs</h3>
+            <p>Current run of a domain: its initialization time and the range of available times.</p>
+            <div class="tbl"><table><tr><th>Parameter</th><th>Default</th><th>Description</th></tr><tr><td><code>grid</code></td><td>the most detailed in your plan</td><td><code>d01</code>, <code>d02</code> or <code>d03</code></td></tr></table></div>
+<pre class="code"><code>{
+  "api_version": "1", "domain": "cuba", "grid": "d02",
+  "run_init": "2026-10-31T00:00:00Z",
+  "first_time": "2026-10-31T00:00:00Z",
+  "last_time": "2026-11-03T00:00:00Z",
+  "time_step_hours": 3
+}</code></pre>
+
+            <h3 id="en-point"><span class="method">GET</span>/v1/forecast/point</h3>
+            <p>Forecast for a point, starting at the most recent step already reached (time ≤ now) and every 3 h after that.</p>
+            <div class="tbl"><table><tr><th>Parameter</th><th>Default</th><th>Description</th></tr><tr><td><code>lat</code>, <code>lon</code></td><td>required</td><td>WGS84 decimal degrees</td></tr><tr><td><code>domain</code></td><td><code>auto</code></td><td><code>auto</code> or a domain from the list (see <a href="#en-domain-sel">domain selection</a>)</td></tr><tr><td><code>grid</code></td><td>the most detailed available</td><td><code>d01</code>, <code>d02</code> or <code>d03</code></td></tr><tr><td><code>hours</code></td><td>your plan's maximum</td><td>From 3 to 72. Returns <code>floor(hours/3) + 1</code> steps</td></tr><tr><td><code>variables</code></td><td>all</td><td>Comma-separated list (see <a href="#en-variables">variables</a>)</td></tr><tr><td><code>units</code></td><td><code>metric</code></td><td><code>metric</code> or <code>imperial</code></td></tr></table></div>
+<pre class="code"><code>{
+  "api_version": "1",
+  "request_id": "req_6PsbdRoNGWuwij05",
+  "location":   { "lat": 23.13, "lon": -82.38 },
+  "grid_point": { "lat": 23.0988, "lon": -82.3362, "distance_km": 5.7, "elevation_m": 36.9 },
+  "model": { "name": "WRF", "domain": "cuba", "grid": "d02", "resolution_km": 9,
+             "run_init": "2026-10-31T00:00:00Z", "time_step_hours": 3 },
+  "units": { "temperature_2m": "degC", "relative_humidity_2m": "%",
+             "pressure_surface": "hPa", "pressure_msl": "hPa",
+             "wind_speed_10m": "m/s", "wind_direction_10m": "deg",
+             "precipitation_3h": "mm", "apparent_temperature": "degC" },
+  "data": [
+    { "time": "2026-10-31T03:00:00Z", "run_init": "2026-10-31T00:00:00Z",
+      "temperature_2m": 24.6, "relative_humidity_2m": 91.4,
+      "pressure_surface": 1010.4, "pressure_msl": 1014.7,
+      "wind_speed_10m": 0.8, "wind_direction_10m": 120,
+      "precipitation_3h": 0, "apparent_temperature": 24.8 }
+  ]
+}</code></pre>
+            <ul>
+              <li><code>grid_point</code>: the model grid point used, its distance to your point and its elevation.</li>
+              <li><code>model</code>: domain, grid and resolution used, and the run's initialization time.</li>
+              <li><code>units</code> and each item in <code>data</code> include only the requested variables.</li>
+            </ul>
+
+            <h3 id="en-usage"><span class="method">GET</span>/v1/usage</h3>
+            <p>Your plan, its limits and your current usage. Not counted against your quota. <code>domains: null</code> means all domains.</p>
+<pre class="code"><code>{
+  "api_version": "1",
+  "plan": "starter",
+  "limits": { "per_minute": 30, "per_day": 5000, "max_hours": 72,
+              "grids": ["d01", "d02", "d03"], "domains": null },
+  "used":   { "minute": 4, "day": 1210 },
+  "resets": { "minute": "2026-10-31T19:01:00Z", "day": "2026-11-01T00:00:00Z" }
+}</code></pre>
+
+            <h2 id="en-variables">5. Variables and units</h2>
+            <div class="tbl"><table><tr><th>Variable</th><th>Description</th><th><code>metric</code></th><th><code>imperial</code></th></tr><tr><td><code>temperature_2m</code></td><td>Temperature at 2 m</td><td>°C</td><td>°F</td></tr><tr><td><code>relative_humidity_2m</code></td><td>Relative humidity at 2 m</td><td>%</td><td>%</td></tr><tr><td><code>pressure_surface</code></td><td>Surface pressure</td><td>hPa</td><td>hPa</td></tr><tr><td><code>pressure_msl</code></td><td>Mean sea level pressure</td><td>hPa</td><td>hPa</td></tr><tr><td><code>wind_speed_10m</code></td><td>Wind speed at 10 m</td><td>m/s</td><td>mph</td></tr><tr><td><code>wind_direction_10m</code></td><td>Direction the wind blows from</td><td>degrees</td><td>degrees</td></tr><tr><td><code>precipitation_3h</code></td><td>Precipitation in the 3 h ending at <code>time</code></td><td>mm</td><td>in</td></tr><tr><td><code>apparent_temperature</code></td><td>Apparent ("feels like") temperature</td><td>°C</td><td>°F</td></tr></table></div>
+            <ul>
+              <li><code>precipitation_3h</code> is <code>null</code> at the run's initialization step, because there is no previous interval.</li>
+              <li>If the model has no wind for a step, speed and direction are <code>null</code>.</li>
+            </ul>
+
+            <h2 id="en-domain-sel">6. Domain selection</h2>
+            <p>With <code>domain=auto</code>, the API uses the most detailed grid in your plan that covers the point and, among equivalent domains, the one best centered on the point. If the preferred one has no data at that moment, it uses the next one.</p>
+            <p>The response always shows the domain and grid used in <code>model</code>. If you need reproducible results, set <code>domain</code> and <code>grid</code>.</p>
+
+            <h2 id="en-errors">7. Errors</h2>
+            <p>All errors share the same format. Use <code>code</code> in your logic; <code>message</code> is for guidance only.</p>
+<pre class="code"><code>{ "error": { "code": "daily_quota_exceeded", "message": "Daily quota exceeded.", "request_id": "req_…" } }</code></pre>
+            <div class="tbl"><table><tr><th>HTTP</th><th><code>code</code></th><th>What to do</th></tr><tr><td>400</td><td><code>invalid_parameter</code></td><td>Fix the parameter named in <code>param</code></td></tr><tr><td>401</td><td><code>missing_api_key</code>, <code>invalid_api_key</code></td><td>Check your key</td></tr><tr><td>403</td><td><code>key_revoked</code>, <code>key_expired</code></td><td>Free: renew the key on the <a href="alta.html">sign-up page</a>. Paid plans: check your subscription in the customer portal or contact us</td></tr><tr><td>403</td><td><code>domain_not_allowed</code>, <code>horizon_not_allowed</code></td><td>Domain, grid or horizon not included in your plan</td></tr><tr><td>404</td><td><code>unknown_domain</code>, <code>not_found</code></td><td>Check the domain or the path</td></tr><tr><td>422</td><td><code>coordinates_outside_domain</code></td><td>The point is outside the domain; <code>domain_bounds</code> gives its bounds</td></tr><tr><td>422</td><td><code>coordinates_outside_coverage</code></td><td>No domain in your plan covers the point</td></tr><tr><td>429</td><td><code>rate_limited</code>, <code>daily_quota_exceeded</code></td><td>Wait the seconds given in <code>Retry-After</code></td></tr><tr><td>503</td><td><code>server_busy</code>, <code>no_data_available</code></td><td>Retry after <code>Retry-After</code></td></tr><tr><td>504</td><td><code>upstream_timeout</code></td><td>Retry later</td></tr><tr><td>500</td><td><code>internal_error</code></td><td>Retry; if it persists, contact us with the <code>request_id</code></td></tr></table></div>
+
+            <h2 id="en-limits">8. Limits and quotas</h2>
+            <p>Each plan has a per-minute and a daily request limit, a maximum horizon and a set of grids. The values are on the <a href="precios.html">API Pricing</a> page. Quotas are per customer and shared by all of the customer's keys.</p>
+            <div class="tbl"><table><tr><th>Response</th><th>Counted?</th></tr><tr><td>200, including cached responses</td><td>Yes</td></tr><tr><td>422 (coordinates outside the domain or coverage)</td><td>Yes</td></tr><tr><td>Request errors (400, 401, 403, 404) and exceeded limits (429)</td><td>No</td></tr><tr><td>Server errors (500, 503, 504)</td><td>No</td></tr><tr><td><code>/v1/status</code> and <code>/v1/usage</code></td><td>No</td></tr><tr><td><code>/v1/domains</code> and <code>/runs</code></td><td>Daily quota only</td></tr></table></div>
+            <p>The daily quota resets at 00:00 UTC; the per-minute limit at the start of each minute. Headers on every response:</p>
+            <div class="tbl"><table><tr><th>Header</th><th>Meaning</th></tr><tr><td><code>X-Request-Id</code></td><td>Request identifier</td></tr><tr><td><code>X-RateLimit-Limit</code></td><td>Your plan's per-minute limit</td></tr><tr><td><code>X-RateLimit-Remaining</code></td><td>Requests left this minute</td></tr><tr><td><code>X-RateLimit-Reset</code></td><td>Seconds until the next minute</td></tr><tr><td><code>X-Daily-Quota-Remaining</code></td><td>Requests left today (UTC)</td></tr><tr><td><code>Retry-After</code></td><td>Seconds to wait (429 and 503)</td></tr><tr><td><code>X-Cache</code></td><td><code>HIT</code> or <code>MISS</code></td></tr><tr><td><code>Cache-Control</code></td><td>How long the response stays valid</td></tr></table></div>
+
+            <h2 id="en-best">9. Best practices</h2>
+            <ul>
+              <li><strong>Cache on your side</strong> for as long as <code>Cache-Control</code> allows. A point's forecast does not change until the next update.</li>
+              <li><strong>Always use the same coordinates</strong> for the same place (for example, with 4 fixed decimals): your requests will then be served from cache and answered faster.</li>
+              <li><strong>Respect <code>Retry-After</code></strong> on 429 and 503, and retry with increasing waits.</li>
+              <li><strong>Use a 60-second timeout</strong> in your client: an uncached request takes a few seconds.</li>
+              <li><strong>Ignore fields you don't know:</strong> new fields may be added within v1.</li>
+              <li><strong>Protect your key:</strong> in production, call the API from your server whenever possible.</li>
+              <li><strong>Attribution:</strong> on the Free and Starter plans, show "Forecast: B1TMET" next to published data (see the <a href="legal/terminos.html">API Terms</a>).</li>
+            </ul>
+
+            <h2 id="en-versioning">10. Versions and changes</h2>
+            <p>Version <code>v1</code> is stable: it only receives compatible changes (new fields, variables, optional parameters or endpoints). Incompatible changes will be released as <code>/v2</code>, and <code>/v1</code> will be kept for at least 12 months from the announcement, with the <code>Deprecation</code> and <code>Sunset</code> headers.</p>
+            <div class="tbl"><table><tr><th>Date</th><th>Change</th></tr><tr><td>2026-10-31</td><td>Version v1 released.</td></tr></table></div>
+          </div>
+        </div>
+      </article>
+    </main>
+
+    <footer class="foot">
+      <div class="foot-glow" aria-hidden="true"></div>
+      <div class="foot-in">
+        <img class="foot-logo" src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" />
+        <ul class="foot-links" lang="es">
+          <li><a href="legal/privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Precios API</a></li>
+          <li><a href="docs.html" aria-current="page">Documentación API</a></li>
+          <li><a href="legal/terminos.html">Términos de la API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contacto</a></li>
+          <li><a href="https://b1tmet.com">Acerca de</a></li>
+        </ul>
+        <ul class="foot-links" lang="en">
+          <li><a href="legal/privacidad.html">Privacy Policy</a></li>
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">API Pricing</a></li>
+          <li><a href="docs.html" aria-current="page">API Docs</a></li>
+          <li><a href="legal/terminos.html">API Terms</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">About</a></li>
+        </ul>
+        <p class="foot-legal" lang="es">Los pronósticos de B1TMET son orientativos y no sustituyen los avisos oficiales de los servicios meteorológicos nacionales.</p>
+        <p class="foot-legal" lang="en">B1TMET forecasts are for guidance only and do not replace official warnings from national weather services.</p>
+        <div class="foot-copy"><span>© 2026 B1TMET Technologies</span><span class="wm">Bitmet</span></div>
+      </div>
+    </footer>
+
+
+    <script src="assets/lang.js"></script>
+    <script src="assets/marca.js"></script>
+    <script>
+      // Pestañas de código: la elección se aplica a todos los bloques y se recuerda
+      (function () {
+        var KEY = "b1t-code", def = "curl";
+        try { def = localStorage.getItem(KEY) || def; } catch (e) {}
+        function show(tab) {
+          document.querySelectorAll(".tabs").forEach(function (box) {
+            box.querySelectorAll("[data-tab]").forEach(function (b) {
+              b.classList.toggle("active", b.getAttribute("data-tab") === tab);
+            });
+            box.querySelectorAll("[data-panel]").forEach(function (p) {
+              p.classList.toggle("active", p.getAttribute("data-panel") === tab);
+            });
+          });
+        }
+        document.querySelectorAll(".tabs [data-tab]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            var t = b.getAttribute("data-tab");
+            show(t);
+            try { localStorage.setItem(KEY, t); } catch (e) {}
+          });
+        });
+        show(def);
+      })();
+    </script>
+  </body>
+</html>

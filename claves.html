@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gestionar claves de la API · Manage API keys — B1TMET</title>
+    <meta name="theme-color" content="#17062b" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="preload" href="assets/fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="assets/marca.css" />
+    <script>
+      (function () {
+        var d = document.documentElement;
+        d.className += " js";
+        var hr = new Date().getHours();
+        d.setAttribute("data-tod", hr >= 5 && hr < 8 ? "dawn" : hr >= 8 && hr < 17 ? "day" : hr >= 17 && hr < 20 ? "dusk" : "night");
+        try { var th = localStorage.getItem("b1t-theme"); if (th === "dark" || th === "light") d.setAttribute("data-theme", th); } catch (e) {}
+
+        var S = ["es", "en", "pt", "fr", "it", "nl"], l = null;
+        try { l = new URLSearchParams(location.search).get("lang"); } catch (e) {}
+        if (S.indexOf(l) >= 0) { try { localStorage.setItem("b1t-lang", l); } catch (e) {} }
+        else { try { l = localStorage.getItem("b1t-lang"); } catch (e) {} }
+        if (S.indexOf(l) < 0) {
+          l = "en";
+          var list = navigator.languages || [navigator.language || "en"];
+          for (var i = 0; i < list.length; i++) {
+            var c = String(list[i] || "").slice(0, 2).toLowerCase();
+            if (S.indexOf(c) >= 0) { l = c; break; }
+          }
+        }
+        document.documentElement.setAttribute("data-lang", l);
+        document.documentElement.lang = l;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="brand" href="index.html"><img src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" /><small>API</small></a>
+      <nav class="top-nav" aria-label="API">
+        <a href="index.html"><span lang="es">Inicio</span><span lang="en">Overview</span><span lang="pt">Início</span><span lang="fr">Aperçu</span><span lang="it">Panoramica</span><span lang="nl">Overzicht</span></a>
+        <a href="docs.html"><span lang="es">Documentación</span><span lang="en">Documentation</span><span lang="pt">Documentação</span><span lang="fr">Documentation</span><span lang="it">Documentazione</span><span lang="nl">Documentatie</span></a>
+        <a href="precios.html"><span lang="es">Precios</span><span lang="en">Pricing</span><span lang="pt">Preços</span><span lang="fr">Tarifs</span><span lang="it">Prezzi</span><span lang="nl">Prijzen</span></a>
+        <a href="verificacion.html"><span lang="es">Verificación</span><span lang="en">Verification</span><span lang="pt">Verificação</span><span lang="fr">Vérification</span><span lang="it">Verifica</span><span lang="nl">Verificatie</span></a>
+      </nav>
+      <button class="theme" type="button" aria-label="Tema">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+      </button>
+      <label class="langsel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z"/></svg>
+        <select id="langsel" aria-label="Idioma / Language">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="nl">Nederlands</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="hero hero-s">
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gPlane" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#385BD6" stop-opacity=".95" />
+              <stop offset="1" stop-color="#385BD6" stop-opacity=".55" />
+            </linearGradient>
+          </defs>
+          <g class="rings r2"><circle cx="110" cy="40" r="60" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="122" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="184" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="246" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="308" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="370" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="432" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="494" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="556" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="618" fill="#385BD6" fill-opacity=".06" /></g>
+          <polygon class="plane" points="560,860 1500,120 1500,860" fill="url(#gPlane)" />
+          <g class="rings r1"><circle cx="1270" cy="700" r="70" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="140" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="210" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="280" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="350" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="420" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="490" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="560" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="630" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="700" fill="#A2B2F4" fill-opacity=".07" /></g>
+        </svg>
+      </div>
+      <svg class="ribbon" viewBox="0 0 660 320" aria-hidden="true">
+        <defs>
+          <linearGradient id="gRib" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="640" y2="0">
+            <stop offset="0" stop-color="#385BD6" />
+            <stop offset=".55" stop-color="#385BD6" stop-opacity=".75" />
+            <stop offset="1" stop-color="#17062B" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g>
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".22" transform="translate(30 18)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".4" transform="translate(20 12)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".65" transform="translate(10 6)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" />
+        </g>
+      </svg>
+      <canvas class="wind" aria-hidden="true"></canvas>
+      <div class="hero-in">
+        <p class="eyebrow">B1TMET API</p>
+        <h1 lang="es">Gestionar claves</h1>
+        <h1 lang="en">Manage keys</h1>
+        <h1 lang="pt">Gerenciar chaves</h1>
+        <h1 lang="fr">Gérer les clés</h1>
+        <h1 lang="it">Gestisci le chiavi</h1>
+        <h1 lang="nl">Sleutels beheren</h1>
+        <p class="sub" lang="es">API de pronóstico B1TMET</p>
+        <p class="sub" lang="en">B1TMET Forecast API</p>
+        <p class="sub" lang="pt">API de previsão B1TMET</p>
+        <p class="sub" lang="fr">API de prévision B1TMET</p>
+        <p class="sub" lang="it">API di previsione B1TMET</p>
+        <p class="sub" lang="nl">B1TMET-weersvoorspellings-API</p>
+      </div>
+      <div class="edge back" aria-hidden="true"></div>
+      <div class="edge" aria-hidden="true"></div>
+    </section>
+
+    <main class="app app-keys">
+      <article class="card">
+        <!-- Contenido dinámico: los textos salen del diccionario del script -->
+        <div id="app" aria-live="polite"></div>
+      </article>
+    </main>
+
+    <footer class="foot">
+      <div class="foot-glow" aria-hidden="true"></div>
+      <div class="foot-in">
+        <img class="foot-logo" src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" />
+        <ul class="foot-links" lang="es">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Precios API</a></li>
+          <li><a href="legal/terminos.html">Términos de la API</a></li>
+          <li><a href="legal/privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contacto</a></li>
+        </ul>
+        <ul class="foot-links" lang="en">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">API Pricing</a></li>
+          <li><a href="legal/terminos.html">API Terms</a></li>
+          <li><a href="legal/privacidad.html">Privacy Policy</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+        </ul>
+        <ul class="foot-links" lang="pt">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Preços da API</a></li>
+          <li><a href="legal/terminos.html">Termos da API</a></li>
+          <li><a href="legal/privacidad.html">Aviso de privacidade</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contato</a></li>
+        </ul>
+        <ul class="foot-links" lang="fr">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Tarifs de l'API</a></li>
+          <li><a href="legal/terminos.html">Conditions de l'API</a></li>
+          <li><a href="legal/privacidad.html">Politique de confidentialité</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+        </ul>
+        <ul class="foot-links" lang="it">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Prezzi API</a></li>
+          <li><a href="legal/terminos.html">Termini dell'API</a></li>
+          <li><a href="legal/privacidad.html">Informativa sulla privacy</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contatti</a></li>
+        </ul>
+        <ul class="foot-links" lang="nl">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">API-prijzen</a></li>
+          <li><a href="legal/terminos.html">API-voorwaarden</a></li>
+          <li><a href="legal/privacidad.html">Privacybeleid</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+        </ul>
+        <div class="foot-copy"><span>© 2026 B1TMET Technologies</span><span class="wm">Bitmet</span></div>
+      </div>
+    </footer>
+
+
+    <script src="assets/lang.js"></script>
+    <script src="assets/marca.js"></script>
+    <script>
+      (function () {
+        var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+        var API = LOCAL ? location.origin : "https://thredds.b1tmet.com";
+        var SKEY = "b1t-portal";
+        var LOCALES = { es: "es-ES", en: "en-US", pt: "pt-PT", fr: "fr-FR", it: "it-IT", nl: "nl-NL" };
+        var M = {
+          es: { intro: "Escribe el correo con el que obtuviste tu clave y te enviaremos un enlace para ver y gestionar tus claves: rotar una clave perdida y, en los planes de pago, crear o revocar claves.", email: "Correo electrónico", send: "Enviar enlace",
+                sent: "Si ese correo tiene claves de la API, en unos minutos recibirás un enlace. Revisa también la carpeta de spam. El enlace caduca en 30 minutos.", badEmail: "Escribe un correo válido.", rate: "Demasiadas solicitudes desde tu conexión. Inténtalo más tarde.", sendFailed: "No hemos podido enviar el correo en este momento. Inténtalo de nuevo en unos minutos.", error: "No se pudo contactar con el servidor. Inténtalo de nuevo en unos minutos.",
+                badLink: "El enlace no es válido, ya se usó o ha caducado (30 minutos). Pide uno nuevo.", expired: "La sesión ha caducado. Pide un enlace nuevo.", session: "Sesión de", logout: "Cerrar sesión", loading: "Cargando tus claves…", noClients: "No hay claves asociadas a este correo.",
+                thKey: "Clave", thLabel: "Etiqueta", thState: "Estado", thCreated: "Creada", thExpires: "Caduca", thUsed: "Último uso", never: "—",
+                active: "activa", revoked: "revocada", expiredK: "caducada", suspended: "suspendido",
+                rotate: "Rotar", revoke: "Revocar", create: "Crear clave", labelPh: "Etiqueta (opcional)",
+                cRotate: "¿Rotar esta clave? La actual dejará de funcionar al instante y recibirás una nueva.", cRevoke: "¿Revocar esta clave? Dejará de funcionar al instante.",
+                freeNote: 'Plan Free: si perdiste tu clave, rótala (la nueva conserva la misma caducidad). Para renovarla, usa la <a href="alta.html">página de alta</a> en sus 3 últimos días.',
+                count: function (n, m) { return "Claves activas: " + n + " de " + m + "."; }, suspNote: "Este cliente está suspendido: no se pueden crear ni rotar claves.",
+                newTitle: "Tu clave nueva", newWarn: "<strong>Cópiala y guárdala ahora.</strong> No la guardamos: no se volverá a mostrar.", copy: "Copiar", copied: "✓ Copiada", revoked_ok: "Clave revocada.",
+                max_keys: "Has alcanzado el máximo de claves activas de tu plan.", key_expired: 'La clave ha caducado: renuévala en la <a href="alta.html">página de alta</a>.', key_inactive: "Esa clave ya no está activa.", client_inactive: "Este cliente está suspendido.", too_many_actions: "Demasiadas acciones en esta sesión. Pide un enlace nuevo." },
+          en: { intro: "Enter the email you used to get your key and we'll send you a link to view and manage your keys: rotate a lost key and, on paid plans, create or revoke keys.", email: "Email", send: "Send link",
+                sent: "If that email has API keys, you'll receive a link within a few minutes. Check your spam folder too. The link expires in 30 minutes.", badEmail: "Enter a valid email.", rate: "Too many requests from your connection. Try again later.", sendFailed: "We couldn't send the email right now. Try again in a few minutes.", error: "Could not reach the server. Try again in a few minutes.",
+                badLink: "This link is invalid, already used or expired (30 minutes). Request a new one.", expired: "Your session has expired. Request a new link.", session: "Signed in as", logout: "Sign out", loading: "Loading your keys…", noClients: "There are no keys linked to this email.",
+                thKey: "Key", thLabel: "Label", thState: "Status", thCreated: "Created", thExpires: "Expires", thUsed: "Last used", never: "—",
+                active: "active", revoked: "revoked", expiredK: "expired", suspended: "suspended",
+                rotate: "Rotate", revoke: "Revoke", create: "Create key", labelPh: "Label (optional)",
+                cRotate: "Rotate this key? The current one will stop working immediately and you'll get a new one.", cRevoke: "Revoke this key? It will stop working immediately.",
+                freeNote: 'Free plan: if you lost your key, rotate it (the new one keeps the same expiry). To renew it, use the <a href="alta.html">sign-up page</a> during its last 3 days.',
+                count: function (n, m) { return "Active keys: " + n + " of " + m + "."; }, suspNote: "This customer is suspended: keys cannot be created or rotated.",
+                newTitle: "Your new key", newWarn: "<strong>Copy it and store it now.</strong> We don't keep it: it won't be shown again.", copy: "Copy", copied: "✓ Copied", revoked_ok: "Key revoked.",
+                max_keys: "You've reached your plan's maximum number of active keys.", key_expired: 'The key has expired: renew it on the <a href="alta.html">sign-up page</a>.', key_inactive: "That key is no longer active.", client_inactive: "This customer is suspended.", too_many_actions: "Too many actions in this session. Request a new link." },
+          pt: { intro: "Digite o e-mail com que você obteve sua chave e enviaremos um link para ver e gerenciar suas chaves: rotacionar uma chave perdida e, nos planos pagos, criar ou revogar chaves.", email: "E-mail", send: "Enviar link",
+                sent: "Se esse e-mail tiver chaves da API, em alguns minutos você receberá um link. Verifique também a pasta de spam. O link expira em 30 minutos.", badEmail: "Digite um e-mail válido.", rate: "Solicitações demais a partir da sua conexão. Tente novamente mais tarde.", sendFailed: "Não conseguimos enviar o e-mail agora. Tente novamente em alguns minutos.", error: "Não foi possível contatar o servidor. Tente novamente em alguns minutos.",
+                badLink: "O link é inválido, já foi usado ou expirou (30 minutos). Solicite um novo.", expired: "A sessão expirou. Solicite um novo link.", session: "Sessão de", logout: "Sair", loading: "Carregando suas chaves…", noClients: "Não há chaves associadas a este e-mail.",
+                thKey: "Chave", thLabel: "Etiqueta", thState: "Estado", thCreated: "Criada", thExpires: "Expira", thUsed: "Último uso", never: "—",
+                active: "ativa", revoked: "revogada", expiredK: "expirada", suspended: "suspenso",
+                rotate: "Rotacionar", revoke: "Revogar", create: "Criar chave", labelPh: "Etiqueta (opcional)",
+                cRotate: "Rotacionar esta chave? A atual deixará de funcionar imediatamente e você receberá uma nova.", cRevoke: "Revogar esta chave? Ela deixará de funcionar imediatamente.",
+                freeNote: 'Plano Free: se você perdeu sua chave, rotacione-a (a nova mantém a mesma expiração). Para renová-la, use a <a href="alta.html">página de cadastro</a> nos 3 últimos dias.',
+                count: function (n, m) { return "Chaves ativas: " + n + " de " + m + "."; }, suspNote: "Este cliente está suspenso: não é possível criar nem rotacionar chaves.",
+                newTitle: "Sua nova chave", newWarn: "<strong>Copie-a e guarde-a agora.</strong> Não a guardamos: ela não será exibida novamente.", copy: "Copiar", copied: "✓ Copiada", revoked_ok: "Chave revogada.",
+                max_keys: "Você atingiu o máximo de chaves ativas do seu plano.", key_expired: 'A chave expirou: renove-a na <a href="alta.html">página de cadastro</a>.', key_inactive: "Essa chave não está mais ativa.", client_inactive: "Este cliente está suspenso.", too_many_actions: "Ações demais nesta sessão. Solicite um novo link." },
+          fr: { intro: "Saisissez l'adresse avec laquelle vous avez obtenu votre clé et nous vous enverrons un lien pour afficher et gérer vos clés : remplacer une clé perdue et, avec les offres payantes, créer ou révoquer des clés.", email: "E-mail", send: "Envoyer le lien",
+                sent: "Si cette adresse possède des clés d'API, vous recevrez un lien dans quelques minutes. Vérifiez aussi vos spams. Le lien expire dans 30 minutes.", badEmail: "Saisissez une adresse e-mail valide.", rate: "Trop de demandes depuis votre connexion. Réessayez plus tard.", sendFailed: "Nous n'avons pas pu envoyer l'e-mail pour le moment. Réessayez dans quelques minutes.", error: "Impossible de joindre le serveur. Réessayez dans quelques minutes.",
+                badLink: "Ce lien n'est pas valide, a déjà été utilisé ou a expiré (30 minutes). Demandez-en un nouveau.", expired: "La session a expiré. Demandez un nouveau lien.", session: "Session de", logout: "Se déconnecter", loading: "Chargement de vos clés…", noClients: "Aucune clé n'est associée à cette adresse.",
+                thKey: "Clé", thLabel: "Libellé", thState: "État", thCreated: "Créée", thExpires: "Expire", thUsed: "Dernière utilisation", never: "—",
+                active: "active", revoked: "révoquée", expiredK: "expirée", suspended: "suspendu",
+                rotate: "Remplacer", revoke: "Révoquer", create: "Créer une clé", labelPh: "Libellé (facultatif)",
+                cRotate: "Remplacer cette clé ? L'actuelle cessera de fonctionner immédiatement et vous en recevrez une nouvelle.", cRevoke: "Révoquer cette clé ? Elle cessera de fonctionner immédiatement.",
+                freeNote: 'Offre Free : si vous avez perdu votre clé, remplacez-la (la nouvelle conserve la même date d\'expiration). Pour la renouveler, utilisez la <a href="alta.html">page d\'inscription</a> pendant ses 3 derniers jours.',
+                count: function (n, m) { return "Clés actives : " + n + " sur " + m + "."; }, suspNote: "Ce client est suspendu : impossible de créer ou de remplacer des clés.",
+                newTitle: "Votre nouvelle clé", newWarn: "<strong>Copiez-la et conservez-la maintenant.</strong> Nous ne la conservons pas : elle ne sera plus affichée.", copy: "Copier", copied: "✓ Copiée", revoked_ok: "Clé révoquée.",
+                max_keys: "Vous avez atteint le nombre maximal de clés actives de votre offre.", key_expired: 'La clé a expiré : renouvelez-la sur la <a href="alta.html">page d\'inscription</a>.', key_inactive: "Cette clé n'est plus active.", client_inactive: "Ce client est suspendu.", too_many_actions: "Trop d'actions dans cette session. Demandez un nouveau lien." },
+          it: { intro: "Inserisci l'e-mail con cui hai ottenuto la chiave e ti invieremo un link per vedere e gestire le tue chiavi: ruotare una chiave persa e, nei piani a pagamento, creare o revocare chiavi.", email: "E-mail", send: "Invia link",
+                sent: "Se questo indirizzo ha chiavi API, riceverai un link entro pochi minuti. Controlla anche lo spam. Il link scade tra 30 minuti.", badEmail: "Inserisci un'e-mail valida.", rate: "Troppe richieste dalla tua connessione. Riprova più tardi.", sendFailed: "Non siamo riusciti a inviare l'e-mail in questo momento. Riprova tra qualche minuto.", error: "Impossibile contattare il server. Riprova tra qualche minuto.",
+                badLink: "Il link non è valido, è già stato usato o è scaduto (30 minuti). Richiedine uno nuovo.", expired: "La sessione è scaduta. Richiedi un nuovo link.", session: "Sessione di", logout: "Esci", loading: "Caricamento delle chiavi…", noClients: "Non ci sono chiavi associate a questo indirizzo.",
+                thKey: "Chiave", thLabel: "Etichetta", thState: "Stato", thCreated: "Creata", thExpires: "Scade", thUsed: "Ultimo uso", never: "—",
+                active: "attiva", revoked: "revocata", expiredK: "scaduta", suspended: "sospeso",
+                rotate: "Ruota", revoke: "Revoca", create: "Crea chiave", labelPh: "Etichetta (facoltativa)",
+                cRotate: "Ruotare questa chiave? Quella attuale smetterà subito di funzionare e ne riceverai una nuova.", cRevoke: "Revocare questa chiave? Smetterà subito di funzionare.",
+                freeNote: 'Piano Free: se hai perso la chiave, ruotala (la nuova mantiene la stessa scadenza). Per rinnovarla, usa la <a href="alta.html">pagina di registrazione</a> negli ultimi 3 giorni.',
+                count: function (n, m) { return "Chiavi attive: " + n + " di " + m + "."; }, suspNote: "Questo cliente è sospeso: non è possibile creare né ruotare chiavi.",
+                newTitle: "La tua nuova chiave", newWarn: "<strong>Copiala e conservala subito.</strong> Non la conserviamo: non verrà mostrata di nuovo.", copy: "Copia", copied: "✓ Copiata", revoked_ok: "Chiave revocata.",
+                max_keys: "Hai raggiunto il massimo di chiavi attive del tuo piano.", key_expired: 'La chiave è scaduta: rinnovala nella <a href="alta.html">pagina di registrazione</a>.', key_inactive: "Quella chiave non è più attiva.", client_inactive: "Questo cliente è sospeso.", too_many_actions: "Troppe azioni in questa sessione. Richiedi un nuovo link." },
+          nl: { intro: "Vul het e-mailadres in waarmee je je sleutel hebt gekregen en we sturen je een link om je sleutels te bekijken en te beheren: een verloren sleutel roteren en, bij betaalde abonnementen, sleutels aanmaken of intrekken.", email: "E-mailadres", send: "Link versturen",
+                sent: "Als dit e-mailadres API-sleutels heeft, ontvang je binnen enkele minuten een link. Kijk ook in je spammap. De link verloopt over 30 minuten.", badEmail: "Vul een geldig e-mailadres in.", rate: "Te veel aanvragen vanaf je verbinding. Probeer het later opnieuw.", sendFailed: "We konden de e-mail nu niet versturen. Probeer het over een paar minuten opnieuw.", error: "Kan de server niet bereiken. Probeer het over een paar minuten opnieuw.",
+                badLink: "Deze link is ongeldig, al gebruikt of verlopen (30 minuten). Vraag een nieuwe aan.", expired: "Je sessie is verlopen. Vraag een nieuwe link aan.", session: "Ingelogd als", logout: "Uitloggen", loading: "Je sleutels worden geladen…", noClients: "Er zijn geen sleutels gekoppeld aan dit e-mailadres.",
+                thKey: "Sleutel", thLabel: "Label", thState: "Status", thCreated: "Aangemaakt", thExpires: "Verloopt", thUsed: "Laatst gebruikt", never: "—",
+                active: "actief", revoked: "ingetrokken", expiredK: "verlopen", suspended: "opgeschort",
+                rotate: "Roteren", revoke: "Intrekken", create: "Sleutel aanmaken", labelPh: "Label (optioneel)",
+                cRotate: "Deze sleutel roteren? De huidige werkt meteen niet meer en je krijgt een nieuwe.", cRevoke: "Deze sleutel intrekken? Hij werkt meteen niet meer.",
+                freeNote: 'Free-abonnement: ben je je sleutel kwijt, roteer hem dan (de nieuwe houdt dezelfde vervaldatum). Verlengen doe je via de <a href="alta.html">aanmeldpagina</a> in de laatste 3 dagen.',
+                count: function (n, m) { return "Actieve sleutels: " + n + " van " + m + "."; }, suspNote: "Deze klant is opgeschort: er kunnen geen sleutels worden aangemaakt of geroteerd.",
+                newTitle: "Je nieuwe sleutel", newWarn: "<strong>Kopieer hem en bewaar hem nu.</strong> We bewaren hem niet: hij wordt niet opnieuw getoond.", copy: "Kopiëren", copied: "✓ Gekopieerd", revoked_ok: "Sleutel ingetrokken.",
+                max_keys: "Je hebt het maximum aantal actieve sleutels van je abonnement bereikt.", key_expired: 'De sleutel is verlopen: verleng hem via de <a href="alta.html">aanmeldpagina</a>.', key_inactive: "Die sleutel is niet meer actief.", client_inactive: "Deze klant is opgeschort.", too_many_actions: "Te veel acties in deze sessie. Vraag een nieuwe link aan." }
+        };
+
+        var app = document.getElementById("app");
+        var lang = function () { var l = document.documentElement.getAttribute("data-lang"); return M[l] ? l : "en"; };
+        var t = function () { return M[lang()]; };
+        var esc = function (v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+        var fmt = function (d) { return d ? new Intl.DateTimeFormat(LOCALES[lang()], { dateStyle: "medium", timeZone: "UTC" }).format(new Date(d)) : t().never; };
+        var getS = function () { try { return sessionStorage.getItem(SKEY) || ""; } catch (e) { return ""; } };
+        var setS = function (v) { try { v ? sessionStorage.setItem(SKEY, v) : sessionStorage.removeItem(SKEY); } catch (e) {} };
+
+        // Estado de la vista (se vuelve a pintar al cambiar de idioma)
+        var view = { name: "loading" }, newKey = null, newKeyClient = null, copied = true, flash = null, focusAfter = false;
+
+        function api(method, path, body, auth) {
+          var h = {};
+          if (body) h["Content-Type"] = "application/json";
+          if (auth) h["Authorization"] = "Bearer " + getS();
+          return fetch(API + path, { method: method, headers: h, body: body ? JSON.stringify(body) : undefined, cache: "no-store", credentials: "omit", referrerPolicy: "no-referrer" })
+            .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, j: j }; }); });
+        }
+        function busy(btn, p) {
+          if (btn) { btn.classList.add("busy"); btn.disabled = true; }
+          return p.then(function (v) { if (btn) { btn.classList.remove("busy"); btn.disabled = false; } return v; },
+                        function (e) { if (btn) { btn.classList.remove("busy"); btn.disabled = false; } throw e; });
+        }
+        function msgOf(res) {
+          var m = t(), e = res && res.j && res.j.error;
+          if (e && m[e]) return m[e];
+          if (res && res.status === 429) return m.rate;
+          return m.error;
+        }
+
+        // ---------- Vistas ----------
+        function render() {
+          var m = t();
+          if (view.name === "loading") { app.innerHTML = '<p><span class="spin"></span>' + m.loading + "</p>"; return; }
+          if (view.name === "request") {
+            app.innerHTML = "<p>" + m.intro + "</p>" +
+              '<form class="form" id="f" novalidate><label for="em"><strong>' + m.email + "</strong></label>" +
+              '<div class="row"><input type="email" id="em" maxlength="190" autocomplete="email" style="flex:1 1 260px" /><button class="btn" id="go" type="submit">' + m.send + "</button></div></form>" +
+              '<p class="msg ' + (view.kind || "") + '">' + (view.msg ? m[view.msg] || view.msg : "") + "</p>";
+            document.getElementById("f").addEventListener("submit", requestLink);
+            return;
+          }
+          // Portal
+          var d = view.data, h = '<div class="sess"><span>' + m.session + " <strong>" + esc(d.email) + '</strong></span><button class="btn sec small" id="out" type="button">' + m.logout + "</button></div>";
+          // La clave nueva y los avisos se muestran en la tarjeta del cliente donde se pulsó; si no hay cliente, arriba
+          var known = function (id) { return d.clients.some(function (c) { return c.id === id; }); };
+          var keyHtml = '<div class="newkey" id="nkbox"><h3>' + m.newTitle + '</h3><p class="warn">' + m.newWarn + '</p><div class="keybox"><code id="nk"></code><button class="btn" id="cp" type="button" style="min-width:110px">' + m.copy + "</button></div></div>";
+          var flashHtml = function () { return '<p class="' + flash.kind + '" id="flash">' + flash.text + "</p>"; };
+          if (newKey && !known(newKeyClient)) h += keyHtml;
+          if (flash && !known(flash.client)) h += flashHtml();
+          if (!d.clients.length) h += "<p>" + m.noClients + "</p>";
+          d.clients.forEach(function (c) {
+            var activeN = c.keys.filter(function (k) { return state(k) === "active"; }).length, paid = c.plan !== "free", susp = c.status !== "active";
+            h += '<div class="client"><h3>' + esc(c.plan.charAt(0).toUpperCase() + c.plan.slice(1)) + ' <span class="muted">· #' + c.id + "</span>" + (susp ? '<span class="tag t-suspended">' + m.suspended + "</span>" : "") + "</h3>";
+            h += '<p class="muted">' + (susp ? m.suspNote : (paid ? m.count(activeN, c.max_keys) : m.freeNote)) + "</p>";
+            if (newKey && newKeyClient === c.id) h += keyHtml;
+            if (flash && flash.client === c.id) h += flashHtml();
+            h += '<div class="tbl"><table class="keys"><tr><th>' + m.thKey + "</th><th>" + m.thLabel + "</th><th>" + m.thState + "</th><th>" + m.thCreated + "</th><th>" + m.thExpires + "</th><th>" + m.thUsed + "</th><th></th></tr>";
+            c.keys.forEach(function (k) {
+              var st = state(k), lab = st === "active" ? m.active : st === "expired" ? m.expiredK : m.revoked;
+              // data-label: título de cada dato cuando la tabla se muestra como fichas (pantallas estrechas)
+              h += '<tr><td class="mono" data-label="' + esc(m.thKey) + '">' + esc(k.prefix) + '…</td><td class="lbl" data-label="' + esc(m.thLabel) + '">' + (esc(k.label) || m.never) + '</td><td data-label="' + esc(m.thState) + '"><span class="tag t-' + st + '">' + lab + '</span></td><td data-label="' + esc(m.thCreated) + '">' + fmt(k.created_at) + '</td><td data-label="' + esc(m.thExpires) + '">' + fmt(k.expires_at) + '</td><td data-label="' + esc(m.thUsed) + '">' + fmt(k.last_used_at) + '</td><td class="act">' +
+                   (st === "active" && !susp ? '<button class="btn sec small" data-rot="' + k.id + '" data-cl="' + c.id + '" type="button">' + m.rotate + "</button>" + (paid ? '<button class="btn danger small" data-rev="' + k.id + '" data-cl="' + c.id + '" type="button">' + m.revoke + "</button>" : "") : "") + "</td></tr>";
+            });
+            h += "</table></div>";
+            if (paid && !susp && activeN < c.max_keys) {
+              h += '<div class="row newk"><input id="lb' + c.id + '" maxlength="60" placeholder="' + esc(m.labelPh) + '" /><button class="btn small" data-new="' + c.id + '" type="button">' + m.create + "</button></div>";
+            }
+            h += "</div>";
+          });
+          app.innerHTML = h;
+          if (newKey) { document.getElementById("nk").textContent = newKey; document.getElementById("cp").addEventListener("click", copyKey); }
+          document.getElementById("out").addEventListener("click", logout);
+          app.querySelectorAll("[data-rot]").forEach(function (b) { b.addEventListener("click", function () { if (confirm(t().cRotate)) action(b, "POST", "/billing/portal/keys/" + b.dataset.rot + "/rotate", null, Number(b.dataset.cl)); }); });
+          app.querySelectorAll("[data-rev]").forEach(function (b) { b.addEventListener("click", function () { if (confirm(t().cRevoke)) action(b, "POST", "/billing/portal/keys/" + b.dataset.rev + "/revoke", null, Number(b.dataset.cl)); }); });
+          app.querySelectorAll("[data-new]").forEach(function (b) { b.addEventListener("click", function () { action(b, "POST", "/billing/portal/keys", { client_id: Number(b.dataset.new), label: document.getElementById("lb" + b.dataset.new).value }, Number(b.dataset.new)); }); });
+          if (focusAfter) { focusAfter = false; reveal(); }
+        }
+        // Tras una acción: deja a la vista la clave nueva (o el aviso) sin mover la página si ya se ve entera
+        function reveal() {
+          var box = document.getElementById("nkbox") || document.getElementById("flash");
+          if (!box) return;
+          var r = box.getBoundingClientRect(), top = 90; // alto aproximado de la barra superior fija
+          if (r.top < top || r.bottom > window.innerHeight) {
+            var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            box.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "center" });
+          }
+          var cp = document.getElementById("cp");
+          if (cp && box.id === "nkbox") { try { cp.focus({ preventScroll: true }); } catch (e) { cp.focus(); } }
+        }
+        function state(k) {
+          if (k.status !== "active") return "revoked";
+          if (k.expires_at && new Date(k.expires_at) <= new Date()) return "expired";
+          return "active";
+        }
+
+        // ---------- Acciones ----------
+        function requestLink(ev) {
+          ev.preventDefault();
+          var v = document.getElementById("em").value.trim(), btn = document.getElementById("go");
+          if (!/^[^\s@]{1,64}@[^\s@]+\.[^\s@]{2,}$/.test(v)) { view = { name: "request", kind: "err", msg: "badEmail" }; render(); return; }
+          busy(btn, api("POST", "/billing/portal/request", { email: v, lang: lang() })).then(function (res) {
+            if (res.status === 200) view = { name: "request", kind: "ok", msg: "sent" };
+            else if (res.status === 400) view = { name: "request", kind: "err", msg: "badEmail" };
+            else if (res.status === 429) view = { name: "request", kind: "err", msg: "rate" };
+            else if (res.j && res.j.error === "send_failed") view = { name: "request", kind: "err", msg: "sendFailed" };
+            else view = { name: "request", kind: "err", msg: "error" };
+            render();
+          }).catch(function () { view = { name: "request", kind: "err", msg: "error" }; render(); });
+        }
+        function load() {
+          return api("GET", "/billing/portal/keys", null, true).then(function (res) {
+            if (res.status === 200) { view = { name: "portal", data: res.j }; render(); }
+            else if (res.status === 401) { setS(""); newKey = null; view = { name: "request", kind: "err", msg: "expired" }; render(); }
+            else { flash = { kind: "err", text: msgOf(res) }; if (view.name !== "portal") view = { name: "request", kind: "err", msg: "error" }; render(); }
+          }).catch(function () { view = { name: "request", kind: "err", msg: "error" }; render(); });
+        }
+        function action(btn, method, path, body, clientId) {
+          flash = null;
+          busy(btn, api(method, path, body, true)).then(function (res) {
+            if (res.status === 401) { setS(""); newKey = null; newKeyClient = null; view = { name: "request", kind: "err", msg: "expired" }; render(); return; }
+            if (res.status === 200 && res.j.key) { newKey = res.j.key; newKeyClient = clientId; copied = false; }
+            else if (res.status === 200) flash = { kind: "ok", text: t().revoked_ok, client: clientId };
+            else flash = { kind: "err", text: msgOf(res), client: clientId };
+            focusAfter = true;
+            return load();
+          }).catch(function () { flash = { kind: "err", text: t().error, client: clientId }; focusAfter = true; render(); });
+        }
+        function copyKey() {
+          var b = this;
+          var done = function () { copied = true; b.textContent = t().copied; b.classList.add("copied"); setTimeout(function () { b.textContent = t().copy; b.classList.remove("copied"); }, 2000); };
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(newKey).then(done, sel); else sel();
+          function sel() { var r = document.createRange(); r.selectNodeContents(document.getElementById("nk")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+        }
+        function logout() {
+          api("POST", "/billing/portal/logout", null, true).catch(function () {});
+          setS(""); newKey = null; newKeyClient = null; flash = null; view = { name: "request" }; render();
+        }
+
+        window.addEventListener("beforeunload", function (ev) { if (newKey && !copied) { ev.preventDefault(); ev.returnValue = ""; } });
+        var langsel = document.getElementById("langsel");
+        if (langsel) langsel.addEventListener("change", render);
+
+        // ---------- Inicio: ?login=<token> → sesión; si no, sesión guardada; si no, formulario ----------
+        var qs = new URLSearchParams(location.search), login = qs.get("login");
+        if (login !== null) {
+          try { var u = new URL(location.href); u.searchParams.delete("login"); history.replaceState(null, "", u); } catch (e) {}
+          render();
+          api("POST", "/billing/portal/session", { token: login }).then(function (res) {
+            if (res.status === 200 && res.j.session) { setS(res.j.session); load(); }
+            else { view = { name: "request", kind: "err", msg: res.status === 429 ? "rate" : "badLink" }; render(); }
+          }).catch(function () { view = { name: "request", kind: "err", msg: "error" }; render(); });
+        } else if (getS()) { render(); load(); }
+        else { view = { name: "request" }; render(); }
+      })();
+    </script>
+  </body>
+</html>

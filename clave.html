@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- El session_id / token de la URL no debe salir en el Referer -->
+    <meta name="referrer" content="no-referrer" />
+    <title>Tu clave de API · Your API key — B1TMET</title>
+    <meta name="theme-color" content="#17062b" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="preload" href="assets/fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="assets/marca.css" />
+    <script>
+      (function () {
+        var d = document.documentElement;
+        d.className += " js";
+        var hr = new Date().getHours();
+        d.setAttribute("data-tod", hr >= 5 && hr < 8 ? "dawn" : hr >= 8 && hr < 17 ? "day" : hr >= 17 && hr < 20 ? "dusk" : "night");
+        try { var th = localStorage.getItem("b1t-theme"); if (th === "dark" || th === "light") d.setAttribute("data-theme", th); } catch (e) {}
+
+        var S = ["es", "en", "pt", "fr", "it", "nl"], l = null;
+        try { l = new URLSearchParams(location.search).get("lang"); } catch (e) {}
+        if (S.indexOf(l) >= 0) { try { localStorage.setItem("b1t-lang", l); } catch (e) {} }
+        else { try { l = localStorage.getItem("b1t-lang"); } catch (e) {} }
+        if (S.indexOf(l) < 0) {
+          l = "en";
+          var list = navigator.languages || [navigator.language || "en"];
+          for (var i = 0; i < list.length; i++) {
+            var c = String(list[i] || "").slice(0, 2).toLowerCase();
+            if (S.indexOf(c) >= 0) { l = c; break; }
+          }
+        }
+        document.documentElement.setAttribute("data-lang", l);
+        document.documentElement.lang = l;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="brand" href="index.html"><img src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" /><small>API</small></a>
+      <button class="theme" type="button" aria-label="Tema">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+      </button>
+      <label class="langsel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z"/></svg>
+        <select id="langsel" aria-label="Idioma / Language">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="nl">Nederlands</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="hero hero-s">
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gPlane" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#385BD6" stop-opacity=".95" />
+              <stop offset="1" stop-color="#385BD6" stop-opacity=".55" />
+            </linearGradient>
+          </defs>
+          <g class="rings r2"><circle cx="110" cy="40" r="60" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="122" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="184" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="246" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="308" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="370" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="432" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="494" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="556" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="618" fill="#385BD6" fill-opacity=".06" /></g>
+          <polygon class="plane" points="560,860 1500,120 1500,860" fill="url(#gPlane)" />
+          <g class="rings r1"><circle cx="1270" cy="700" r="70" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="140" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="210" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="280" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="350" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="420" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="490" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="560" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="630" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="700" fill="#A2B2F4" fill-opacity=".07" /></g>
+        </svg>
+      </div>
+      <svg class="ribbon" viewBox="0 0 660 320" aria-hidden="true">
+        <defs>
+          <linearGradient id="gRib" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="640" y2="0">
+            <stop offset="0" stop-color="#385BD6" />
+            <stop offset=".55" stop-color="#385BD6" stop-opacity=".75" />
+            <stop offset="1" stop-color="#17062B" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g>
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".22" transform="translate(30 18)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".4" transform="translate(20 12)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".65" transform="translate(10 6)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" />
+        </g>
+      </svg>
+      <canvas class="wind" aria-hidden="true"></canvas>
+      <div class="hero-in">
+        <p class="eyebrow">B1TMET API</p>
+        <h1 lang="es">Tu clave de API</h1>
+        <h1 lang="en">Your API key</h1>
+        <h1 lang="pt">Sua chave de API</h1>
+        <h1 lang="fr">Votre clé d'API</h1>
+        <h1 lang="it">La tua chiave API</h1>
+        <h1 lang="nl">Je API-sleutel</h1>
+        <p class="sub" lang="es">API de pronóstico B1TMET</p>
+        <p class="sub" lang="en">B1TMET Forecast API</p>
+        <p class="sub" lang="pt">API de previsão B1TMET</p>
+        <p class="sub" lang="fr">API de prévision B1TMET</p>
+        <p class="sub" lang="it">API di previsione B1TMET</p>
+        <p class="sub" lang="nl">B1TMET-weersvoorspellings-API</p>
+      </div>
+      <div class="edge back" aria-hidden="true"></div>
+      <div class="edge" aria-hidden="true"></div>
+    </section>
+
+    <main class="app">
+      <!-- Contenido dinámico (sin atributo lang: el texto se elige en el script) -->
+      <article class="card reveal" id="out" aria-live="polite"></article>
+    </main>
+
+    <footer class="foot">
+      <div class="foot-glow" aria-hidden="true"></div>
+      <div class="foot-in">
+        <img class="foot-logo" src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" />
+        <ul class="foot-links" lang="es">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Precios API</a></li>
+          <li><a href="legal/terminos.html">Términos de la API</a></li>
+          <li><a href="legal/privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contacto</a></li>
+        </ul>
+        <ul class="foot-links" lang="en">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">API Pricing</a></li>
+          <li><a href="legal/terminos.html">API Terms</a></li>
+          <li><a href="legal/privacidad.html">Privacy Policy</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+        </ul>
+        <ul class="foot-links" lang="pt">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Preços da API</a></li>
+          <li><a href="legal/terminos.html">Termos da API</a></li>
+          <li><a href="legal/privacidad.html">Aviso de privacidade</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contato</a></li>
+        </ul>
+        <ul class="foot-links" lang="fr">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Tarifs de l'API</a></li>
+          <li><a href="legal/terminos.html">Conditions de l'API</a></li>
+          <li><a href="legal/privacidad.html">Politique de confidentialité</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+        </ul>
+        <ul class="foot-links" lang="it">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Prezzi API</a></li>
+          <li><a href="legal/terminos.html">Termini dell'API</a></li>
+          <li><a href="legal/privacidad.html">Informativa sulla privacy</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contatti</a></li>
+        </ul>
+        <ul class="foot-links" lang="nl">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">API-prijzen</a></li>
+          <li><a href="legal/terminos.html">API-voorwaarden</a></li>
+          <li><a href="legal/privacidad.html">Privacybeleid</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+        </ul>
+        <div class="foot-copy"><span>© 2026 B1TMET Technologies</span><span class="wm">Bitmet</span></div>
+      </div>
+    </footer>
+
+
+    <script src="assets/lang.js"></script>
+    <script src="assets/marca.js"></script>
+    <script>
+      (function () {
+        // En local la página la sirve el propio backend (mismo origen); en Pages, la API pública.
+        var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+        var API = LOCAL ? location.origin : "https://thredds.b1tmet.com";
+        var MAIL = '<a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>';
+
+        var T = {
+          es: {
+            loading: "Preparando tu clave…",
+            okTitle: "Esta es tu clave",
+            okWarn: "<strong>Cópiala y guárdala ahora en un lugar seguro.</strong> Por seguridad no la guardamos: no se volverá a mostrar.",
+            copy: "Copiar", copied: "Copiada ✓",
+            plan: "Plan", expires: "Caduca", never: "sin caducidad",
+            next: 'Siguiente paso: consulta la <a href="index.html">documentación</a> y prueba tu clave con <code>/v1/usage</code>.',
+            already: 'Esta clave ya se mostró y no se puede volver a ver. Si no la guardaste, sustitúyela por una nueva en <a href="claves.html">Gestionar claves</a> (te enviaremos un enlace a tu correo).',
+            invalid: "El enlace no es válido o ha caducado. Si acabas de pagar y ves este mensaje, escríbenos a " + MAIL + ".",
+            verifyInvalid: 'El enlace de verificación no es válido, ya se usó o ha caducado (24 h). Puedes solicitar uno nuevo en la <a href="alta.html">página de alta</a>.',
+            pending: "Tu pago aún no está confirmado. Espera un minuto y vuelve a intentarlo.",
+            rate: "Demasiados intentos. Inténtalo de nuevo dentro de una hora.",
+            error: "No se pudo contactar con el servidor. Inténtalo de nuevo en unos minutos.",
+            retry: "Reintentar"
+          },
+          en: {
+            loading: "Preparing your key…",
+            okTitle: "This is your key",
+            okWarn: "<strong>Copy it and store it somewhere safe now.</strong> For security we don't keep it: it won't be shown again.",
+            copy: "Copy", copied: "Copied ✓",
+            plan: "Plan", expires: "Expires", never: "never",
+            next: 'Next step: read the <a href="index.html">documentation</a> and try your key with <code>/v1/usage</code>.',
+            already: 'This key has already been shown and cannot be displayed again. If you didn\'t save it, replace it with a new one in <a href="claves.html">Manage keys</a> (we\'ll email you a link).',
+            invalid: "This link is invalid or has expired. If you have just paid and see this message, write to " + MAIL + ".",
+            verifyInvalid: 'This verification link is invalid, already used or expired (24 h). You can request a new one on the <a href="alta.html">sign-up page</a>.',
+            pending: "Your payment is not confirmed yet. Wait a minute and try again.",
+            rate: "Too many attempts. Try again in an hour.",
+            error: "Could not reach the server. Try again in a few minutes.",
+            retry: "Try again"
+          },
+          pt: {
+            loading: "Preparando sua chave…",
+            okTitle: "Esta é a sua chave",
+            okWarn: "<strong>Copie-a e guarde-a agora em um lugar seguro.</strong> Por segurança não a guardamos: ela não será exibida novamente.",
+            copy: "Copiar", copied: "Copiada ✓",
+            plan: "Plano", expires: "Expira", never: "sem expiração",
+            next: 'Próximo passo: consulte a <a href="index.html">documentação</a> e teste sua chave com <code>/v1/usage</code>.',
+            already: 'Esta chave já foi exibida e não pode ser vista novamente. Se você não a guardou, substitua-a por uma nova em <a href="claves.html">Gerenciar chaves</a> (enviaremos um link para o seu e-mail).',
+            invalid: "O link é inválido ou expirou. Se você acabou de pagar e vê esta mensagem, escreva para " + MAIL + ".",
+            verifyInvalid: 'O link de verificação é inválido, já foi usado ou expirou (24 h). Você pode solicitar um novo na <a href="alta.html">página de cadastro</a>.',
+            pending: "Seu pagamento ainda não foi confirmado. Aguarde um minuto e tente novamente.",
+            rate: "Tentativas demais. Tente novamente em uma hora.",
+            error: "Não foi possível contatar o servidor. Tente novamente em alguns minutos.",
+            retry: "Tentar novamente"
+          },
+          fr: {
+            loading: "Préparation de votre clé…",
+            okTitle: "Voici votre clé",
+            okWarn: "<strong>Copiez-la et conservez-la dès maintenant en lieu sûr.</strong> Pour des raisons de sécurité, nous ne la conservons pas : elle ne sera plus affichée.",
+            copy: "Copier", copied: "Copiée ✓",
+            plan: "Offre", expires: "Expire le", never: "jamais",
+            next: 'Étape suivante : consultez la <a href="index.html">documentation</a> et testez votre clé avec <code>/v1/usage</code>.',
+            already: "Cette clé a déjà été affichée et ne peut plus l'être. Si vous ne l'avez pas conservée, remplacez-la par une nouvelle dans <a href=\"claves.html\">Gérer les clés</a> (nous vous enverrons un lien par e-mail).",
+            invalid: "Ce lien n'est pas valide ou a expiré. Si vous venez de payer et voyez ce message, écrivez à " + MAIL + ".",
+            verifyInvalid: 'Ce lien de vérification n\'est pas valide, a déjà été utilisé ou a expiré (24 h). Vous pouvez en demander un nouveau sur la <a href="alta.html">page d\'inscription</a>.',
+            pending: "Votre paiement n'est pas encore confirmé. Patientez une minute et réessayez.",
+            rate: "Trop de tentatives. Réessayez dans une heure.",
+            error: "Impossible de joindre le serveur. Réessayez dans quelques minutes.",
+            retry: "Réessayer"
+          },
+          it: {
+            loading: "Preparazione della chiave…",
+            okTitle: "Questa è la tua chiave",
+            okWarn: "<strong>Copiala e conservala subito in un luogo sicuro.</strong> Per sicurezza non la conserviamo: non verrà mostrata di nuovo.",
+            copy: "Copia", copied: "Copiata ✓",
+            plan: "Piano", expires: "Scade", never: "nessuna scadenza",
+            next: 'Prossimo passo: consulta la <a href="index.html">documentazione</a> e prova la chiave con <code>/v1/usage</code>.',
+            already: "Questa chiave è già stata mostrata e non può essere visualizzata di nuovo. Se non l'hai salvata, sostituiscila con una nuova in <a href=\"claves.html\">Gestisci le chiavi</a> (ti invieremo un link via e-mail).",
+            invalid: "Il link non è valido o è scaduto. Se hai appena pagato e vedi questo messaggio, scrivi a " + MAIL + ".",
+            verifyInvalid: 'Il link di verifica non è valido, è già stato usato o è scaduto (24 h). Puoi richiederne uno nuovo nella <a href="alta.html">pagina di registrazione</a>.',
+            pending: "Il pagamento non è ancora confermato. Attendi un minuto e riprova.",
+            rate: "Troppi tentativi. Riprova tra un'ora.",
+            error: "Impossibile contattare il server. Riprova tra qualche minuto.",
+            retry: "Riprova"
+          },
+          nl: {
+            loading: "Je sleutel wordt voorbereid…",
+            okTitle: "Dit is je sleutel",
+            okWarn: "<strong>Kopieer hem en bewaar hem nu op een veilige plek.</strong> Om veiligheidsredenen bewaren wij hem niet: hij wordt niet opnieuw getoond.",
+            copy: "Kopiëren", copied: "Gekopieerd ✓",
+            plan: "Abonnement", expires: "Verloopt", never: "nooit",
+            next: 'Volgende stap: lees de <a href="index.html">documentatie</a> en test je sleutel met <code>/v1/usage</code>.',
+            already: 'Deze sleutel is al getoond en kan niet opnieuw worden weergegeven. Heb je hem niet bewaard? Vervang hem door een nieuwe via <a href="claves.html">Sleutels beheren</a> (we sturen je een link per e-mail).',
+            invalid: "Deze link is ongeldig of verlopen. Heb je net betaald en zie je dit bericht? Schrijf naar " + MAIL + ".",
+            verifyInvalid: 'Deze verificatielink is ongeldig, al gebruikt of verlopen (24 uur). Je kunt een nieuwe aanvragen op de <a href="alta.html">aanmeldpagina</a>.',
+            pending: "Je betaling is nog niet bevestigd. Wacht een minuut en probeer het opnieuw.",
+            rate: "Te veel pogingen. Probeer het over een uur opnieuw.",
+            error: "Kan de server niet bereiken. Probeer het over een paar minuten opnieuw.",
+            retry: "Opnieuw proberen"
+          }
+        };
+        var LOCALES = { es: "es-ES", en: "en-US", pt: "pt-PT", fr: "fr-FR", it: "it-IT", nl: "nl-NL" };
+
+        var out = document.getElementById("out");
+        var lang = function () { var l = document.documentElement.getAttribute("data-lang"); return T[l] ? l : "en"; };
+        var t = function () { return T[lang()]; };
+
+        // Parámetros: session_id (pago con Stripe) o verify (alta Free, paso 6)
+        var qs = new URLSearchParams(location.search);
+        var sid = qs.get("session_id"), token = qs.get("verify");
+        var req = null;
+        if (sid && /^cs_(test|live)_[A-Za-z0-9]{10,200}$/.test(sid)) req = { path: "/billing/reveal", body: { session_id: sid }, kind: "pay" };
+        else if (token && /^[a-f0-9]{64}$/.test(token)) req = { path: "/billing/free/verify", body: { token: token }, kind: "free" };
+
+        // Quita session_id / verify de la barra de direcciones (y del historial).
+        // done=1: la clave ya se mostró; al recargar se indica eso en vez de "enlace no válido".
+        function cleanUrl(done) {
+          try {
+            var u = new URL(location.href);
+            u.searchParams.delete("session_id"); u.searchParams.delete("verify");
+            if (done) u.searchParams.set("done", "1");
+            history.replaceState(null, "", u);
+          } catch (e) {}
+        }
+
+        var state = { name: "loading" }, keyShown = false, copied = false;
+
+        function render() {
+          var m = t(), s = state;
+          if (s.name === "loading") {
+            out.innerHTML = '<p><span class="spin" aria-hidden="true"></span>' + m.loading + "</p>";
+          } else if (s.name === "ok") {
+            var exp = s.expires ? new Intl.DateTimeFormat(LOCALES[lang()], { dateStyle: "long", timeStyle: "short", timeZone: "UTC" }).format(new Date(s.expires)) + " UTC" : m.never;
+            out.innerHTML =
+              "<h2>" + m.okTitle + "</h2>" +
+              '<p class="warn">' + m.okWarn + "</p>" +
+              '<div class="keybox"><code id="key"></code><button class="btn" id="copy" type="button"></button></div>' +
+              '<ul class="facts"><li><strong>' + m.plan + ":</strong> " + s.plan.charAt(0).toUpperCase() + s.plan.slice(1) + "</li>" +
+              "<li><strong>" + m.expires + ":</strong> " + exp + "</li></ul>" +
+              "<p>" + m.next + "</p>";
+            document.getElementById("key").textContent = s.key;      // nunca innerHTML para la clave
+            var b = document.getElementById("copy");
+            b.textContent = copied ? m.copied : m.copy;
+            b.addEventListener("click", copyKey);
+          } else {
+            out.innerHTML = '<p class="err">' + m[s.msg] + "</p>" +
+              (s.retry ? '<p><button class="btn" id="retry" type="button">' + m.retry + "</button></p>" : "");
+            if (s.retry) document.getElementById("retry").addEventListener("click", run);
+          }
+        }
+
+        function copyKey() {
+          var done = function () { copied = true; render(); };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(state.key).then(done, selectKey);
+          } else selectKey();
+        }
+        function selectKey() {
+          var r = document.createRange(); r.selectNodeContents(document.getElementById("key"));
+          var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        }
+
+        function fail(msg, retry, final) {
+          if (final) cleanUrl(msg === "already");   // si no es definitivo, se deja en la URL para poder recargar
+          state = { name: "err", msg: msg, retry: retry }; render();
+        }
+
+        function run() {
+          state = { name: "loading" }; render();
+          fetch(API + req.path, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(req.body),
+            cache: "no-store",
+            credentials: "omit",
+            referrerPolicy: "no-referrer"
+          }).then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, j: j }; });
+          }).then(function (res) {
+            var e = res.j && res.j.error;
+            if (res.status === 200 && res.j.key) {
+              cleanUrl(true);
+              keyShown = true;
+              state = { name: "ok", key: res.j.key, plan: res.j.plan || "", expires: res.j.expires_at };
+              render();
+            } else if (e === "already_revealed") fail("already", false, true);
+            else if (e === "not_active") fail("pending", true, false);
+            else if (e === "rate_limited") fail("rate", false, false);
+            else if (res.status === 400 || res.status === 404) fail(req.kind === "free" ? "verifyInvalid" : "invalid", false, true);
+            else fail("error", true, false);
+          }).catch(function () { fail("error", true, false); });
+        }
+
+        // Si se va de la página con la clave en pantalla sin haberla copiado, el navegador pide confirmación
+        window.addEventListener("beforeunload", function (ev) {
+          if (keyShown && !copied) { ev.preventDefault(); ev.returnValue = ""; }
+        });
+
+        var sel = document.getElementById("langsel");
+        if (sel) sel.addEventListener("change", render);
+
+        if (!req && qs.get("done") === "1") fail("already", false, false);
+        else if (!req) fail(token != null ? "verifyInvalid" : "invalid", false, true);
+        else run();
+      })();
+    </script>
+  </body>
+</html>

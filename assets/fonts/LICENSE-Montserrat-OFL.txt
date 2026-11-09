@@ -1,0 +1,8 @@
+Montserrat
+Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+The license is available with a FAQ at: https://openfontlicense.org
+
+Archivos .woff2 generados a partir de los TTF originales, reducidos a los
+caracteres latinos (español, inglés, portugués, francés, italiano y neerlandés).

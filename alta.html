@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clave gratuita de la API · Free API key — B1TMET</title>
+    <meta name="theme-color" content="#17062b" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="preload" href="assets/fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="assets/marca.css" />
+    <script>
+      (function () {
+        var d = document.documentElement;
+        d.className += " js";
+        var hr = new Date().getHours();
+        d.setAttribute("data-tod", hr >= 5 && hr < 8 ? "dawn" : hr >= 8 && hr < 17 ? "day" : hr >= 17 && hr < 20 ? "dusk" : "night");
+        try { var th = localStorage.getItem("b1t-theme"); if (th === "dark" || th === "light") d.setAttribute("data-theme", th); } catch (e) {}
+
+        var S = ["es", "en", "pt", "fr", "it", "nl"], l = null;
+        try { l = new URLSearchParams(location.search).get("lang"); } catch (e) {}
+        if (S.indexOf(l) >= 0) { try { localStorage.setItem("b1t-lang", l); } catch (e) {} }
+        else { try { l = localStorage.getItem("b1t-lang"); } catch (e) {} }
+        if (S.indexOf(l) < 0) {
+          l = "en";
+          var list = navigator.languages || [navigator.language || "en"];
+          for (var i = 0; i < list.length; i++) {
+            var c = String(list[i] || "").slice(0, 2).toLowerCase();
+            if (S.indexOf(c) >= 0) { l = c; break; }
+          }
+        }
+        document.documentElement.setAttribute("data-lang", l);
+        document.documentElement.lang = l;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="brand" href="index.html"><img src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" /><small>API</small></a>
+      <nav class="top-nav" aria-label="API">
+        <a href="index.html"><span lang="es">Inicio</span><span lang="en">Overview</span><span lang="pt">Início</span><span lang="fr">Aperçu</span><span lang="it">Panoramica</span><span lang="nl">Overzicht</span></a>
+        <a href="docs.html"><span lang="es">Documentación</span><span lang="en">Documentation</span><span lang="pt">Documentação</span><span lang="fr">Documentation</span><span lang="it">Documentazione</span><span lang="nl">Documentatie</span></a>
+        <a href="precios.html"><span lang="es">Precios</span><span lang="en">Pricing</span><span lang="pt">Preços</span><span lang="fr">Tarifs</span><span lang="it">Prezzi</span><span lang="nl">Prijzen</span></a>
+        <a href="verificacion.html"><span lang="es">Verificación</span><span lang="en">Verification</span><span lang="pt">Verificação</span><span lang="fr">Vérification</span><span lang="it">Verifica</span><span lang="nl">Verificatie</span></a>
+      </nav>
+      <button class="theme" type="button" aria-label="Tema">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+      </button>
+      <label class="langsel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z"/></svg>
+        <select id="langsel" aria-label="Idioma / Language">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="nl">Nederlands</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="hero hero-s">
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gPlane" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#385BD6" stop-opacity=".95" />
+              <stop offset="1" stop-color="#385BD6" stop-opacity=".55" />
+            </linearGradient>
+          </defs>
+          <g class="rings r2"><circle cx="110" cy="40" r="60" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="122" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="184" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="246" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="308" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="370" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="432" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="494" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="556" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="618" fill="#385BD6" fill-opacity=".06" /></g>
+          <polygon class="plane" points="560,860 1500,120 1500,860" fill="url(#gPlane)" />
+          <g class="rings r1"><circle cx="1270" cy="700" r="70" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="140" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="210" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="280" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="350" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="420" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="490" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="560" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="630" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="700" fill="#A2B2F4" fill-opacity=".07" /></g>
+        </svg>
+      </div>
+      <svg class="ribbon" viewBox="0 0 660 320" aria-hidden="true">
+        <defs>
+          <linearGradient id="gRib" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="640" y2="0">
+            <stop offset="0" stop-color="#385BD6" />
+            <stop offset=".55" stop-color="#385BD6" stop-opacity=".75" />
+            <stop offset="1" stop-color="#17062B" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g>
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".22" transform="translate(30 18)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".4" transform="translate(20 12)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".65" transform="translate(10 6)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" />
+        </g>
+      </svg>
+      <canvas class="wind" aria-hidden="true"></canvas>
+      <div class="hero-in">
+        <p class="eyebrow">B1TMET API</p>
+        <h1 lang="es">Clave gratuita de la API</h1>
+        <h1 lang="en">Free API key</h1>
+        <h1 lang="pt">Chave gratuita da API</h1>
+        <h1 lang="fr">Clé d'API gratuite</h1>
+        <h1 lang="it">Chiave API gratuita</h1>
+        <h1 lang="nl">Gratis API-sleutel</h1>
+        <p class="sub" lang="es">Plan Free · para evaluar la API</p>
+        <p class="sub" lang="en">Free plan · to evaluate the API</p>
+        <p class="sub" lang="pt">Plano Free · para avaliar a API</p>
+        <p class="sub" lang="fr">Offre Free · pour évaluer l'API</p>
+        <p class="sub" lang="it">Piano Free · per valutare l'API</p>
+        <p class="sub" lang="nl">Free-abonnement · om de API te evalueren</p>
+      </div>
+      <div class="edge back" aria-hidden="true"></div>
+      <div class="edge" aria-hidden="true"></div>
+    </section>
+
+    <main class="app">
+      <article class="card">
+        <p lang="es">Escribe tu correo y te enviaremos un enlace para ver tu clave. La clave se muestra una sola vez y es válida 30 días; podrás renovarla con este mismo formulario.</p>
+        <p lang="en">Enter your email and we'll send you a link to see your key. The key is shown only once and is valid for 30 days; you can renew it with this same form.</p>
+        <p lang="pt">Digite seu e-mail e enviaremos um link para ver sua chave. A chave é exibida uma única vez e vale 30 dias; você poderá renová-la neste mesmo formulário.</p>
+        <p lang="fr">Saisissez votre e-mail et nous vous enverrons un lien pour afficher votre clé. La clé n'est affichée qu'une fois et reste valable 30 jours ; vous pourrez la renouveler avec ce même formulaire.</p>
+        <p lang="it">Inserisci la tua e-mail e ti invieremo un link per vedere la chiave. La chiave viene mostrata una sola volta ed è valida 30 giorni; potrai rinnovarla con questo stesso modulo.</p>
+        <p lang="nl">Vul je e-mailadres in en we sturen je een link om je sleutel te bekijken. De sleutel wordt maar één keer getoond en is 30 dagen geldig; je kunt hem met ditzelfde formulier verlengen.</p>
+        <p lang="es" class="muted">Incluye 500 peticiones/día, 10/minuto, pronóstico hasta 24 h y resolución d01. Solo evaluación, sin uso comercial. <a href="precios.html">Ver todos los planes</a>.</p>
+        <p lang="en" class="muted">Includes 500 requests/day, 10/minute, forecasts up to 24 h and d01 resolution. Evaluation only, no commercial use. <a href="precios.html">See all plans</a>.</p>
+        <p lang="pt" class="muted">Inclui 500 requisições/dia, 10/minuto, previsão de até 24 h e resolução d01. Somente avaliação, sem uso comercial. <a href="precios.html">Ver todos os planos</a>.</p>
+        <p lang="fr" class="muted">Comprend 500 requêtes/jour, 10/minute, prévision jusqu'à 24 h et résolution d01. Évaluation uniquement, sans usage commercial. <a href="precios.html">Voir toutes les offres</a>.</p>
+        <p lang="it" class="muted">Include 500 richieste/giorno, 10/minuto, previsione fino a 24 h e risoluzione d01. Solo valutazione, nessun uso commerciale. <a href="precios.html">Vedi tutti i piani</a>.</p>
+        <p lang="nl" class="muted">Inclusief 500 verzoeken/dag, 10/minuut, voorspelling tot 24 uur en resolutie d01. Alleen evaluatie, geen commercieel gebruik. <a href="precios.html">Alle abonnementen bekijken</a>.</p>
+        <form class="form" id="form" novalidate>
+          <div class="field">
+            <label for="email"><span lang="es">Correo electrónico</span><span lang="en">Email</span><span lang="pt">E-mail</span><span lang="fr">E-mail</span><span lang="it">E-mail</span><span lang="nl">E-mailadres</span></label>
+            <input type="email" id="email" name="email" required maxlength="190" autocomplete="email" inputmode="email" />
+          </div>
+          <label class="chk"><input type="checkbox" id="terms" required /><span><span lang="es">Acepto los <a href="legal/terminos.html" target="_blank" rel="noopener">Términos de la API</a>.</span><span lang="en">I accept the <a href="legal/terminos.html" target="_blank" rel="noopener">API Terms</a>.</span><span lang="pt">Aceito os <a href="legal/terminos.html" target="_blank" rel="noopener">Termos da API</a>.</span><span lang="fr">J'accepte les <a href="legal/terminos.html" target="_blank" rel="noopener">Conditions de l'API</a>.</span><span lang="it">Accetto i <a href="legal/terminos.html" target="_blank" rel="noopener">Termini dell'API</a>.</span><span lang="nl">Ik ga akkoord met de <a href="legal/terminos.html" target="_blank" rel="noopener">API-voorwaarden</a>.</span></span></label>
+          <button class="btn" id="send" type="submit"><span lang="es">Enviar enlace</span><span lang="en">Send link</span><span lang="pt">Enviar link</span><span lang="fr">Envoyer le lien</span><span lang="it">Invia link</span><span lang="nl">Link versturen</span></button>
+        </form>
+        <p id="msg" role="status" aria-live="polite"></p>
+      </article>
+    </main>
+
+    <footer class="foot">
+      <div class="foot-glow" aria-hidden="true"></div>
+      <div class="foot-in">
+        <img class="foot-logo" src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" />
+        <ul class="foot-links" lang="es">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Precios API</a></li>
+          <li><a href="legal/terminos.html">Términos de la API</a></li>
+          <li><a href="legal/privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contacto</a></li>
+        </ul>
+        <ul class="foot-links" lang="en">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">API Pricing</a></li>
+          <li><a href="legal/terminos.html">API Terms</a></li>
+          <li><a href="legal/privacidad.html">Privacy Policy</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+        </ul>
+        <ul class="foot-links" lang="pt">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Preços da API</a></li>
+          <li><a href="legal/terminos.html">Termos da API</a></li>
+          <li><a href="legal/privacidad.html">Aviso de privacidade</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contato</a></li>
+        </ul>
+        <ul class="foot-links" lang="fr">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Tarifs de l'API</a></li>
+          <li><a href="legal/terminos.html">Conditions de l'API</a></li>
+          <li><a href="legal/privacidad.html">Politique de confidentialité</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+        </ul>
+        <ul class="foot-links" lang="it">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Prezzi API</a></li>
+          <li><a href="legal/terminos.html">Termini dell'API</a></li>
+          <li><a href="legal/privacidad.html">Informativa sulla privacy</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contatti</a></li>
+        </ul>
+        <ul class="foot-links" lang="nl">
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">API-prijzen</a></li>
+          <li><a href="legal/terminos.html">API-voorwaarden</a></li>
+          <li><a href="legal/privacidad.html">Privacybeleid</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+        </ul>
+        <div class="foot-copy"><span>© 2026 B1TMET Technologies</span><span class="wm">Bitmet</span></div>
+      </div>
+    </footer>
+
+
+    <script src="assets/lang.js"></script>
+    <script src="assets/marca.js"></script>
+    <script>
+      (function () {
+        var LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+        var API = LOCAL ? location.origin : "https://thredds.b1tmet.com";
+        var MAIL = '<a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>';
+        var LOCALES = { es: "es-ES", en: "en-US", pt: "pt-PT", fr: "fr-FR", it: "it-IT", nl: "nl-NL" };
+        // Textos: cadenas o funciones (p = parámetros de la respuesta)
+        var M = {
+          es: { sent: "Te hemos enviado un enlace para ver tu clave. Revisa tu bandeja de entrada y la carpeta de spam. El enlace caduca en 24 horas. Si no llega en 10 minutos, comprueba que el correo esté bien escrito.",
+                hasKey: function (d) { return d ? "Este correo ya tiene una clave Free vigente. Podrás renovarla a partir del " + d + ". Si la perdiste, rótala en <a href=\"claves.html\">Gestionar claves</a>." : "Este correo ya tiene una clave vigente sin caducidad."; },
+                cooldown: function (m) { return "Ya te enviamos un enlace hace un momento. Revisa tu correo (también spam) o vuelve a intentarlo en " + m + " min."; },
+                daily: "Has alcanzado el máximo de 3 enlaces por día para este correo. Inténtalo mañana.",
+                blocked: "No podemos emitir una clave para este correo. Escríbenos a " + MAIL + ".",
+                email: "El correo no es válido o su dominio no puede recibir mensajes. Revisa que esté bien escrito.",
+                terms: "Debes aceptar los Términos de la API.",
+                sendFailed: "No hemos podido enviar el correo en este momento. Inténtalo de nuevo en unos minutos.",
+                rate: "Demasiadas solicitudes desde tu conexión. Inténtalo mañana.",
+                error: "No se pudo contactar con el servidor. Inténtalo de nuevo en unos minutos." },
+          en: { sent: "We've sent you a link to see your key. Check your inbox and spam folder. The link expires in 24 hours. If it doesn't arrive within 10 minutes, check that the email is spelled correctly.",
+                hasKey: function (d) { return d ? "This email already has a valid Free key. You can renew it from " + d + ". If you lost it, rotate it in <a href=\"claves.html\">Manage keys</a>." : "This email already has a valid key with no expiry."; },
+                cooldown: function (m) { return "We sent you a link a moment ago. Check your email (spam too) or try again in " + m + " min."; },
+                daily: "You've reached the maximum of 3 links per day for this email. Try again tomorrow.",
+                blocked: "We can't issue a key for this email. Write to " + MAIL + ".",
+                email: "The email is invalid or its domain can't receive messages. Check the spelling.",
+                terms: "You must accept the API Terms.",
+                sendFailed: "We couldn't send the email right now. Try again in a few minutes.",
+                rate: "Too many requests from your connection. Try again tomorrow.",
+                error: "Could not reach the server. Try again in a few minutes." },
+          pt: { sent: "Enviamos um link para ver sua chave. Verifique a caixa de entrada e a pasta de spam. O link expira em 24 horas. Se não chegar em 10 minutos, confira se o e-mail está escrito corretamente.",
+                hasKey: function (d) { return d ? "Este e-mail já tem uma chave Free válida. Você poderá renová-la a partir de " + d + ". Se você a perdeu, rotacione-a em <a href=\"claves.html\">Gerenciar chaves</a>." : "Este e-mail já tem uma chave válida sem expiração."; },
+                cooldown: function (m) { return "Enviamos um link há pouco. Verifique seu e-mail (também o spam) ou tente novamente em " + m + " min."; },
+                daily: "Você atingiu o máximo de 3 links por dia para este e-mail. Tente novamente amanhã.",
+                blocked: "Não podemos emitir uma chave para este e-mail. Escreva para " + MAIL + ".",
+                email: "O e-mail é inválido ou o domínio não pode receber mensagens. Confira se está escrito corretamente.",
+                terms: "Você deve aceitar os Termos da API.",
+                sendFailed: "Não conseguimos enviar o e-mail agora. Tente novamente em alguns minutos.",
+                rate: "Solicitações demais a partir da sua conexão. Tente novamente amanhã.",
+                error: "Não foi possível contatar o servidor. Tente novamente em alguns minutos." },
+          fr: { sent: "Nous vous avons envoyé un lien pour afficher votre clé. Vérifiez votre boîte de réception et vos spams. Le lien expire dans 24 heures. S'il n'arrive pas dans 10 minutes, vérifiez l'orthographe de l'adresse.",
+                hasKey: function (d) { return d ? "Cette adresse a déjà une clé Free valide. Vous pourrez la renouveler à partir du " + d + ". Si vous l'avez perdue, remplacez-la dans <a href=\"claves.html\">Gérer les clés</a>." : "Cette adresse a déjà une clé valide sans expiration."; },
+                cooldown: function (m) { return "Nous vous avons envoyé un lien il y a un instant. Vérifiez votre e-mail (spams compris) ou réessayez dans " + m + " min."; },
+                daily: "Vous avez atteint le maximum de 3 liens par jour pour cette adresse. Réessayez demain.",
+                blocked: "Nous ne pouvons pas émettre de clé pour cette adresse. Écrivez à " + MAIL + ".",
+                email: "L'adresse n'est pas valide ou son domaine ne peut pas recevoir de messages. Vérifiez l'orthographe.",
+                terms: "Vous devez accepter les Conditions de l'API.",
+                sendFailed: "Nous n'avons pas pu envoyer l'e-mail pour le moment. Réessayez dans quelques minutes.",
+                rate: "Trop de demandes depuis votre connexion. Réessayez demain.",
+                error: "Impossible de joindre le serveur. Réessayez dans quelques minutes." },
+          it: { sent: "Ti abbiamo inviato un link per vedere la chiave. Controlla la posta in arrivo e lo spam. Il link scade tra 24 ore. Se non arriva entro 10 minuti, verifica che l'indirizzo sia scritto correttamente.",
+                hasKey: function (d) { return d ? "Questo indirizzo ha già una chiave Free valida. Potrai rinnovarla dal " + d + ". Se l'hai persa, ruotala in <a href=\"claves.html\">Gestisci le chiavi</a>." : "Questo indirizzo ha già una chiave valida senza scadenza."; },
+                cooldown: function (m) { return "Ti abbiamo inviato un link poco fa. Controlla la posta (anche lo spam) o riprova tra " + m + " min."; },
+                daily: "Hai raggiunto il massimo di 3 link al giorno per questo indirizzo. Riprova domani.",
+                blocked: "Non possiamo emettere una chiave per questo indirizzo. Scrivi a " + MAIL + ".",
+                email: "L'indirizzo non è valido o il suo dominio non può ricevere messaggi. Controlla che sia scritto correttamente.",
+                terms: "Devi accettare i Termini dell'API.",
+                sendFailed: "Non siamo riusciti a inviare l'e-mail in questo momento. Riprova tra qualche minuto.",
+                rate: "Troppe richieste dalla tua connessione. Riprova domani.",
+                error: "Impossibile contattare il server. Riprova tra qualche minuto." },
+          nl: { sent: "We hebben je een link gestuurd om je sleutel te bekijken. Kijk in je inbox en spammap. De link verloopt over 24 uur. Komt hij niet binnen 10 minuten, controleer dan of het e-mailadres goed gespeld is.",
+                hasKey: function (d) { return d ? "Dit e-mailadres heeft al een geldige Free-sleutel. Je kunt hem verlengen vanaf " + d + ". Ben je hem kwijt, roteer hem dan via <a href=\"claves.html\">Sleutels beheren</a>." : "Dit e-mailadres heeft al een geldige sleutel zonder vervaldatum."; },
+                cooldown: function (m) { return "We hebben je zojuist een link gestuurd. Kijk in je e-mail (ook spam) of probeer het over " + m + " min opnieuw."; },
+                daily: "Je hebt het maximum van 3 links per dag voor dit e-mailadres bereikt. Probeer het morgen opnieuw.",
+                blocked: "We kunnen geen sleutel uitgeven voor dit e-mailadres. Schrijf naar " + MAIL + ".",
+                email: "Het e-mailadres is ongeldig of het domein kan geen berichten ontvangen. Controleer de spelling.",
+                terms: "Je moet akkoord gaan met de API-voorwaarden.",
+                sendFailed: "We konden de e-mail nu niet versturen. Probeer het over een paar minuten opnieuw.",
+                rate: "Te veel aanvragen vanaf je verbinding. Probeer het morgen opnieuw.",
+                error: "Kan de server niet bereiken. Probeer het over een paar minuten opnieuw." }
+        };
+        var form = document.getElementById("form"), email = document.getElementById("email"),
+            terms = document.getElementById("terms"), send = document.getElementById("send"),
+            msg = document.getElementById("msg"), last = null;
+        var lang = function () { var l = document.documentElement.getAttribute("data-lang"); return M[l] ? l : "en"; };
+
+        function fmtDate(iso) {
+          return new Intl.DateTimeFormat(LOCALES[lang()], { dateStyle: "long", timeZone: "UTC" }).format(new Date(iso));
+        }
+        // Los textos son propios (no vienen del servidor): se pueden insertar como HTML.
+        // Para hasKey, arg es la fecha ISO: se formatea en el idioma actual (también al cambiarlo).
+        function show(kind, key, arg) {
+          last = { kind: kind, key: key, arg: arg };
+          var t = M[lang()][key];
+          var a = key === "hasKey" && arg ? fmtDate(arg) : arg;
+          msg.className = kind;
+          msg.innerHTML = typeof t === "function" ? t(a) : t;
+        }
+        var sel = document.getElementById("langsel");
+        if (sel) sel.addEventListener("change", function () { if (last) show(last.kind, last.key, last.arg); });
+
+        form.addEventListener("submit", function (ev) {
+          ev.preventDefault();
+          var v = email.value.trim();
+          if (!/^[^\s@]{1,64}@[^\s@]+\.[^\s@]{2,}$/.test(v) || v.length > 190) { show("err", "email"); email.focus(); return; }
+          if (!terms.checked) { show("err", "terms"); terms.focus(); return; }
+          send.disabled = true; send.classList.add("busy"); send.setAttribute("aria-busy", "true");
+          msg.className = ""; msg.textContent = ""; last = null;
+          fetch(API + "/billing/free/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: v, lang: lang(), accept_terms: true }),
+            cache: "no-store",
+            credentials: "omit"
+          }).then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, j: j }; });
+          }).then(function (res) {
+            var j = res.j || {};
+            if (res.status === 200 && j.status === "sent") { show("ok", "sent"); form.reset(); }
+            else if (res.status === 200 && j.status === "has_key") {
+              show("err", "hasKey", j.renew_from || null);
+            }
+            else if (res.status === 200 && j.status === "cooldown") show("err", "cooldown", Math.max(1, Math.ceil((j.retry_after || 600) / 60)));
+            else if (res.status === 200 && j.status === "daily_limit") show("err", "daily");
+            else if (res.status === 200 && j.status === "blocked") show("err", "blocked");
+            else if (res.status === 400) show("err", "email");
+            else if (res.status === 429) show("err", "rate");
+            else if (res.status === 503 && j.error === "send_failed") show("err", "sendFailed");
+            else show("err", "error");
+          }).catch(function () { show("err", "error"); })
+            .then(function () { send.disabled = false; send.classList.remove("busy"); send.removeAttribute("aria-busy"); });
+        });
+      })();
+    </script>
+  </body>
+</html>

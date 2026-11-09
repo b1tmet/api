@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>API de pronóstico · Forecast API — B1TMET</title>
+    <meta name="description" content="API de pronóstico WRF de alta resolución para el Caribe y Centroamérica / High-resolution WRF forecast API for the Caribbean and Central America" />
+    <!-- Tarjeta al compartir el enlace (Open Graph / X); en inglés para todos los idiomas -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="B1TMET" />
+    <meta property="og:title" content="B1TMET WRF Forecast API" />
+    <meta property="og:description" content="High-resolution WRF forecasts for the Caribbean and Central America, up to 3 km, as JSON. Try it on the map, no key needed." />
+    <meta property="og:url" content="https://b1tmet.github.io/api/" />
+    <meta property="og:image" content="https://b1tmet.github.io/api/assets/og-api.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="B1TMET WRF Forecast API — Caribbean &amp; Central America, up to 3 km" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#17062b" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="preload" href="assets/fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="assets/marca.css" />
+    <link rel="stylesheet" href="assets/api-comp.css" />
+    <script>
+      (function () {
+        var d = document.documentElement;
+        d.className += " js";
+        var hr = new Date().getHours();
+        d.setAttribute("data-tod", hr >= 5 && hr < 8 ? "dawn" : hr >= 8 && hr < 17 ? "day" : hr >= 17 && hr < 20 ? "dusk" : "night");
+        try { var th = localStorage.getItem("b1t-theme"); if (th === "dark" || th === "light") d.setAttribute("data-theme", th); } catch (e) {}
+
+        var S = ["es", "en", "pt", "fr", "it", "nl"], l = null;
+        try { l = new URLSearchParams(location.search).get("lang"); } catch (e) {}
+        if (S.indexOf(l) >= 0) { try { localStorage.setItem("b1t-lang", l); } catch (e) {} }
+        else { try { l = localStorage.getItem("b1t-lang"); } catch (e) {} }
+        if (S.indexOf(l) < 0) {
+          l = "en";
+          var list = navigator.languages || [navigator.language || "en"];
+          for (var i = 0; i < list.length; i++) {
+            var c = String(list[i] || "").slice(0, 2).toLowerCase();
+            if (S.indexOf(c) >= 0) { l = c; break; }
+          }
+        }
+        document.documentElement.setAttribute("data-lang", l);
+        document.documentElement.lang = l;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="brand" href="index.html"><img src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" /><small>API</small></a>
+      <nav class="top-nav" aria-label="API">
+        <a href="index.html" aria-current="page"><span lang="es">Inicio</span><span lang="en">Overview</span><span lang="pt">Início</span><span lang="fr">Aperçu</span><span lang="it">Panoramica</span><span lang="nl">Overzicht</span></a>
+        <a href="docs.html"><span lang="es">Documentación</span><span lang="en">Documentation</span><span lang="pt">Documentação</span><span lang="fr">Documentation</span><span lang="it">Documentazione</span><span lang="nl">Documentatie</span></a>
+        <a href="precios.html"><span lang="es">Precios</span><span lang="en">Pricing</span><span lang="pt">Preços</span><span lang="fr">Tarifs</span><span lang="it">Prezzi</span><span lang="nl">Prijzen</span></a>
+        <a href="verificacion.html"><span lang="es">Verificación</span><span lang="en">Verification</span><span lang="pt">Verificação</span><span lang="fr">Vérification</span><span lang="it">Verifica</span><span lang="nl">Verificatie</span></a>
+      </nav>
+      <button class="theme" type="button" aria-label="Tema">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+      </button>
+      <label class="langsel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z"/></svg>
+        <select id="langsel" aria-label="Idioma / Language">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="nl">Nederlands</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="hero hero-s">
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gPlane" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#385BD6" stop-opacity=".95" />
+              <stop offset="1" stop-color="#385BD6" stop-opacity=".55" />
+            </linearGradient>
+          </defs>
+          <g class="rings r2"><circle cx="110" cy="40" r="60" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="122" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="184" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="246" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="308" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="370" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="432" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="494" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="556" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="618" fill="#385BD6" fill-opacity=".06" /></g>
+          <polygon class="plane" points="560,860 1500,120 1500,860" fill="url(#gPlane)" />
+          <g class="rings r1"><circle cx="1270" cy="700" r="70" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="140" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="210" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="280" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="350" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="420" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="490" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="560" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="630" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="700" fill="#A2B2F4" fill-opacity=".07" /></g>
+        </svg>
+      </div>
+      <svg class="ribbon" viewBox="0 0 660 320" aria-hidden="true">
+        <defs>
+          <linearGradient id="gRib" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="640" y2="0">
+            <stop offset="0" stop-color="#385BD6" />
+            <stop offset=".55" stop-color="#385BD6" stop-opacity=".75" />
+            <stop offset="1" stop-color="#17062B" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g>
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".22" transform="translate(30 18)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".4" transform="translate(20 12)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".65" transform="translate(10 6)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" />
+        </g>
+      </svg>
+      <canvas class="wind" aria-hidden="true"></canvas>
+      <div class="hero-in">
+        <p class="eyebrow">B1TMET API</p>
+        <h1 lang="es">API de pronóstico WRF</h1>
+        <h1 lang="en">WRF Forecast API</h1>
+        <h1 lang="pt">API de previsão WRF</h1>
+        <h1 lang="fr">API de prévision WRF</h1>
+        <h1 lang="it">API di previsione WRF</h1>
+        <h1 lang="nl">WRF-weersvoorspellings-API</h1>
+        <p class="sub" lang="es">Pronósticos numéricos de alta resolución para el Caribe y Centroamérica, en JSON, desde cualquier lenguaje o navegador.</p>
+        <p class="sub" lang="en">High-resolution numerical forecasts for the Caribbean and Central America, in JSON, from any language or browser.</p>
+        <p class="sub" lang="pt">Previsões numéricas de alta resolução para o Caribe e a América Central, em JSON, a partir de qualquer linguagem ou navegador.</p>
+        <p class="sub" lang="fr">Prévisions numériques à haute résolution pour les Caraïbes et l'Amérique centrale, en JSON, depuis n'importe quel langage ou navigateur.</p>
+        <p class="sub" lang="it">Previsioni numeriche ad alta risoluzione per i Caraibi e l'America centrale, in JSON, da qualsiasi linguaggio o browser.</p>
+        <p class="sub" lang="nl">Numerieke weersvoorspellingen met hoge resolutie voor het Caribisch gebied en Midden-Amerika, in JSON, vanuit elke programmeertaal of browser.</p>
+        <div class="status" id="status" data-state="checking" role="status" aria-live="polite"><span class="dot" aria-hidden="true"></span><span id="status-text">…</span></div>
+      </div>
+      <div class="edge back" aria-hidden="true"></div>
+      <div class="edge" aria-hidden="true"></div>
+    </section>
+
+    <main class="app app-docs app-page">
+      <article class="card">
+        <!-- Cifras: animadas al entrar en pantalla; las dos primeras llevan al mapa, las otras a la documentación -->
+        <div class="stats" id="stats">
+          <a class="stat" href="#cobertura" data-act="res">
+            <svg class="viz" viewBox="0 0 64 40" aria-hidden="true">
+              <rect class="g27" x="4" y="2" width="56" height="36" rx="3"/>
+              <path class="g9" d="M22.7 2V38M41.3 2V38M4 14H60M4 26H60"/>
+              <path class="g3" d="M10.2 2V38M16.4 2V38M28.9 2V38M35.1 2V38M47.6 2V38M53.8 2V38M4 6H60M4 10H60M4 18H60M4 22H60M4 30H60M4 34H60"/>
+            </svg>
+            <b data-seq="27,9,3" data-unit=" km">3 km</b>
+            <div lang="es">resolución máxima</div><div lang="en">finest resolution</div><div lang="pt">resolução máxima</div><div lang="fr">résolution maximale</div><div lang="it">risoluzione massima</div><div lang="nl">hoogste resolutie</div>
+            <small class="sub">27 → 9 → 3 km</small>
+          </a>
+          <a class="stat" href="#cobertura" data-act="doms">
+            <svg class="viz" viewBox="0 0 64 40" aria-hidden="true">
+              <circle cx="10" cy="26" r="4" fill="#e76f51"/><circle cx="19" cy="14" r="4" fill="#2a9d8f"/><circle cx="28" cy="27" r="4" fill="#8e7dff"/><circle cx="35" cy="12" r="4" fill="#4f86f7"/><circle cx="42" cy="24" r="4" fill="#d264b6"/><circle cx="51" cy="15" r="4" fill="#e9b949"/><circle cx="56" cy="29" r="4" fill="#3fbf5f"/>
+            </svg>
+            <b data-to="7">7</b>
+            <div lang="es">dominios del modelo</div><div lang="en">model domains</div><div lang="pt">domínios do modelo</div><div lang="fr">domaines du modèle</div><div lang="it">domini del modello</div><div lang="nl">modeldomeinen</div>
+            <small class="sub">d01 · d02 · d03</small>
+          </a>
+          <a class="stat" href="docs.html#es-point" data-doc="point">
+            <svg class="viz" viewBox="0 0 64 40" aria-hidden="true">
+              <path class="axis" d="M4 30H60"/>
+              <g class="ticks"></g>
+              <path class="curve" d="M4 24C11 24 13 12 20 12S29 26 36 26 45 10 52 10 58 18 60 18" pathLength="1"/>
+            </svg>
+            <b data-to="72" data-unit=" h">72 h</b>
+            <div lang="es">de pronóstico, cada 3 h</div><div lang="en">of forecast, every 3 h</div><div lang="pt">de previsão, a cada 3 h</div><div lang="fr">de prévision, toutes les 3 h</div><div lang="it">di previsione, ogni 3 h</div><div lang="nl">vooruit, elke 3 uur</div>
+            <small class="sub">0 → 72 h</small>
+          </a>
+          <a class="stat" href="docs.html#es-runs" data-doc="runs">
+            <svg class="viz clock" viewBox="0 0 64 40" aria-hidden="true">
+              <circle class="face" cx="32" cy="20" r="17"/>
+              <path class="run" d="M32 3V8M49 20H44M32 37V32M15 20H20"/>
+              <path class="hand" d="M32 20V7"/>
+              <circle cx="32" cy="20" r="2"/>
+            </svg>
+            <b data-to="4">4</b>
+            <div lang="es">corridas del modelo al día</div><div lang="en">model runs per day</div><div lang="pt">rodadas do modelo por dia</div><div lang="fr">exécutions du modèle par jour</div><div lang="it">esecuzioni del modello al giorno</div><div lang="nl">modelruns per dag</div>
+            <small class="sub">00 · 06 · 12 · 18 UTC</small>
+          </a>
+        </div>
+
+
+        <!-- Por qué B1TMET (un bloque por idioma) -->
+        <section class="why" lang="es">
+          <h2>Por qué B1TMET</h2>
+          <p class="lead">Un pronóstico vale lo que vale el modelo que lo produce. Esto es lo que hay detrás de cada respuesta de la API.</p>
+          <div class="why-grid">
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M12 4a12 12 0 0 1 0 16M12 4a12 12 0 0 0 0 16"/><circle cx="12" cy="12" r="8"/></svg>
+              <h3>Modelo regional propio</h3>
+              <p>Los modelos globales calculan todo el planeta con una misma malla. B1TMET ejecuta el modelo WRF solo sobre el Caribe y Centroamérica: toma las condiciones del modelo global en los bordes y vuelve a resolver la atmósfera de la región con mucho más detalle.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19l6-9 4 5 3-4 5 8z"/><path d="M3 19h18"/></svg>
+              <h3>Más detalle donde se nota</h3>
+              <p>Una malla más fina representa mejor el relieve y la línea de costa: montañas, valles, bahías e islas pequeñas que en una malla gruesa casi no existen. Ahí es donde el viento, la temperatura y la lluvia cambian de un lugar a otro: brisas de mar y tierra, lluvia en las laderas, contrastes entre la costa y el interior.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15a4 4 0 0 1 .5-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 0 1 16.5 15z"/><path d="M11 15l-2 4h3l-1 3"/></svg>
+              <h3>Cada escala, bien configurada</h3>
+              <p>Una malla fina no es una ampliación de la gruesa: el modelo se ejecuta en cada una, anidada dentro de la anterior. La física del modelo, como la formación de nubes y lluvia, se eligió con estudios de sensibilidad: se probaron distintas combinaciones y se quedó la que mejor resultado dio en la región.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.5-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+              <h3>La mejor malla, sin pedirla</h3>
+              <p>Envías unas coordenadas y la API elige la malla más detallada que cubre tu punto dentro de tu plan. Cada respuesta indica qué malla y qué corrida se usaron: sabes siempre de dónde sale el dato.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+              <h3>Siempre al día</h3>
+              <p>El modelo se ejecuta cuatro veces al día, a las 00, 06, 12 y 18 UTC, y la API sirve siempre la corrida más reciente disponible.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5c-2 0-2 1.5-2 3s0 3-2 4c2 1 2 2.5 2 4s0 3 2 3M15 5c2 0 2 1.5 2 3s0 3 2 4c-2 1-2 2.5-2 4s0 3-2 3"/></svg>
+              <h3>Fácil de integrar</h3>
+              <p>Una petición HTTP y una respuesta en JSON, en unidades métricas o imperiales. Funciona desde cualquier lenguaje, servidor o navegador, sin librerías.</p>
+            </div>
+          </div>
+          <div class="team">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.2c.6-.1 1.3-.2 2-.2 2.8 0 4 1.8 4 5"/></svg>
+            <div>
+              <h3>Detrás hay un equipo de especialistas</h3>
+              <p>La API la desarrolla B1TMET, un equipo de meteorólogos, físicos y especialistas en computación y matemáticas con más de 20 años de experiencia en investigación y consultoría en modelación numérica del tiempo y el clima del Caribe. Es el mismo equipo que adapta el modelo WRF a la región y opera sus corridas a diario, y que ha realizado estudios de configuración de WRF para servicios meteorológicos de la zona.</p>
+              <a href="https://b1tmet.mx" target="_blank" rel="noopener">Conoce al equipo →</a>
+            </div>
+          </div>
+        </section>
+        <section class="why" lang="en">
+          <h2>Why B1TMET</h2>
+          <p class="lead">A forecast is only as good as the model behind it. This is what stands behind every API response.</p>
+          <div class="why-grid">
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M12 4a12 12 0 0 1 0 16M12 4a12 12 0 0 0 0 16"/><circle cx="12" cy="12" r="8"/></svg>
+              <h3>Our own regional model</h3>
+              <p>Global models compute the whole planet on a single grid. B1TMET runs the WRF model over the Caribbean and Central America only: it takes the global model’s conditions at the boundaries and solves the region’s atmosphere again in much greater detail.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19l6-9 4 5 3-4 5 8z"/><path d="M3 19h18"/></svg>
+              <h3>More detail where it matters</h3>
+              <p>A finer grid represents terrain and coastlines better: mountains, valleys, bays and small islands that barely exist on a coarse grid. That is where wind, temperature and rain change from one place to another: sea and land breezes, rain on the slopes, contrasts between the coast and inland areas.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15a4 4 0 0 1 .5-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 0 1 16.5 15z"/><path d="M11 15l-2 4h3l-1 3"/></svg>
+              <h3>Each scale, properly configured</h3>
+              <p>A fine grid is not a zoomed-in coarse grid: the model runs on each one, nested inside the previous one. The model physics, such as how clouds and rain form, was chosen through sensitivity studies: different combinations were tested and the one that performed best in the region was kept.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.5-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+              <h3>The best grid, automatically</h3>
+              <p>You send coordinates and the API picks the most detailed grid covering your point within your plan. Every response states which grid and which run were used, so you always know where the data comes from.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+              <h3>Always up to date</h3>
+              <p>The model runs four times a day, at 00, 06, 12 and 18 UTC, and the API always serves the latest available run.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5c-2 0-2 1.5-2 3s0 3-2 4c2 1 2 2.5 2 4s0 3 2 3M15 5c2 0 2 1.5 2 3s0 3 2 4c-2 1-2 2.5-2 4s0 3-2 3"/></svg>
+              <h3>Easy to integrate</h3>
+              <p>One HTTP request and a JSON response, in metric or imperial units. It works from any language, server or browser, with no libraries.</p>
+            </div>
+          </div>
+          <div class="team">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.2c.6-.1 1.3-.2 2-.2 2.8 0 4 1.8 4 5"/></svg>
+            <div>
+              <h3>A team of specialists behind it</h3>
+              <p>The API is built by B1TMET, a team of meteorologists, physicists and computer science and mathematics specialists with more than 20 years of experience in research and consulting on numerical weather and climate modelling of the Caribbean. It is the same team that adapts the WRF model to the region and operates its daily runs, and that has carried out WRF configuration studies for meteorological services in the area.</p>
+              <a href="https://b1tmet.mx" target="_blank" rel="noopener">Meet the team →</a>
+            </div>
+          </div>
+        </section>
+        <section class="why" lang="pt">
+          <h2>Por que a B1TMET</h2>
+          <p class="lead">Uma previsão vale o que vale o modelo que a produz. Isto é o que está por trás de cada resposta da API.</p>
+          <div class="why-grid">
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M12 4a12 12 0 0 1 0 16M12 4a12 12 0 0 0 0 16"/><circle cx="12" cy="12" r="8"/></svg>
+              <h3>Modelo regional próprio</h3>
+              <p>Os modelos globais calculam o planeta inteiro com uma mesma grade. A B1TMET executa o modelo WRF apenas sobre o Caribe e a América Central: recebe as condições do modelo global nas bordas e volta a resolver a atmosfera da região com muito mais detalhe.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19l6-9 4 5 3-4 5 8z"/><path d="M3 19h18"/></svg>
+              <h3>Mais detalhe onde faz diferença</h3>
+              <p>Uma grade mais fina representa melhor o relevo e a linha da costa: montanhas, vales, baías e ilhas pequenas que numa grade grossa quase não existem. É aí que o vento, a temperatura e a chuva mudam de um lugar para outro: brisas marítimas e terrestres, chuva nas encostas, contrastes entre o litoral e o interior.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15a4 4 0 0 1 .5-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 0 1 16.5 15z"/><path d="M11 15l-2 4h3l-1 3"/></svg>
+              <h3>Cada escala, bem configurada</h3>
+              <p>Uma grade fina não é uma ampliação da grossa: o modelo é executado em cada uma, aninhada dentro da anterior. A física do modelo, como a formação de nuvens e chuva, foi escolhida com estudos de sensibilidade: testaram-se várias combinações e ficou a que deu melhor resultado na região.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.5-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+              <h3>A melhor grade, sem pedir</h3>
+              <p>Você envia coordenadas e a API escolhe a grade mais detalhada que cobre o seu ponto dentro do seu plano. Cada resposta indica que grade e que rodada foram usadas: você sempre sabe de onde vem o dado.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+              <h3>Sempre atualizada</h3>
+              <p>O modelo é executado quatro vezes por dia, às 00, 06, 12 e 18 UTC, e a API serve sempre a rodada mais recente disponível.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5c-2 0-2 1.5-2 3s0 3-2 4c2 1 2 2.5 2 4s0 3 2 3M15 5c2 0 2 1.5 2 3s0 3 2 4c-2 1-2 2.5-2 4s0 3-2 3"/></svg>
+              <h3>Fácil de integrar</h3>
+              <p>Uma requisição HTTP e uma resposta em JSON, em unidades métricas ou imperiais. Funciona em qualquer linguagem, servidor ou navegador, sem bibliotecas.</p>
+            </div>
+          </div>
+          <div class="team">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.2c.6-.1 1.3-.2 2-.2 2.8 0 4 1.8 4 5"/></svg>
+            <div>
+              <h3>Por trás, uma equipe de especialistas</h3>
+              <p>A API é desenvolvida pela B1TMET, uma equipe de meteorologistas, físicos e especialistas em computação e matemática com mais de 20 anos de experiência em pesquisa e consultoria em modelagem numérica do tempo e do clima do Caribe. É a mesma equipe que adapta o modelo WRF à região e opera as suas rodadas diárias, e que realizou estudos de configuração do WRF para serviços meteorológicos da área.</p>
+              <a href="https://b1tmet.mx" target="_blank" rel="noopener">Conheça a equipe →</a>
+            </div>
+          </div>
+        </section>
+        <section class="why" lang="fr">
+          <h2>Pourquoi B1TMET</h2>
+          <p class="lead">Une prévision vaut ce que vaut le modèle qui la produit. Voici ce qu’il y a derrière chaque réponse de l’API.</p>
+          <div class="why-grid">
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M12 4a12 12 0 0 1 0 16M12 4a12 12 0 0 0 0 16"/><circle cx="12" cy="12" r="8"/></svg>
+              <h3>Un modèle régional propre</h3>
+              <p>Les modèles globaux calculent toute la planète avec une même grille. B1TMET exécute le modèle WRF uniquement sur les Caraïbes et l’Amérique centrale : il reçoit les conditions du modèle global aux bords et résout à nouveau l’atmosphère de la région avec beaucoup plus de détail.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19l6-9 4 5 3-4 5 8z"/><path d="M3 19h18"/></svg>
+              <h3>Plus de détail là où ça compte</h3>
+              <p>Une grille plus fine représente mieux le relief et le trait de côte : montagnes, vallées, baies et petites îles qui existent à peine sur une grille grossière. C’est là que le vent, la température et la pluie changent d’un endroit à l’autre : brises de mer et de terre, pluie sur les versants, contrastes entre la côte et l’intérieur.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15a4 4 0 0 1 .5-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 0 1 16.5 15z"/><path d="M11 15l-2 4h3l-1 3"/></svg>
+              <h3>Chaque échelle, bien configurée</h3>
+              <p>Une grille fine n’est pas un agrandissement de la grille grossière : le modèle est exécuté sur chacune, imbriquée dans la précédente. La physique du modèle, comme la formation des nuages et de la pluie, a été choisie par des études de sensibilité : plusieurs combinaisons ont été testées et la plus performante dans la région a été retenue.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.5-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+              <h3>La meilleure grille, automatiquement</h3>
+              <p>Vous envoyez des coordonnées et l’API choisit la grille la plus détaillée qui couvre votre point dans votre offre. Chaque réponse indique la grille et l’exécution utilisées : vous savez toujours d’où vient la donnée.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+              <h3>Toujours à jour</h3>
+              <p>Le modèle est exécuté quatre fois par jour, à 00, 06, 12 et 18 UTC, et l’API sert toujours l’exécution la plus récente disponible.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5c-2 0-2 1.5-2 3s0 3-2 4c2 1 2 2.5 2 4s0 3 2 3M15 5c2 0 2 1.5 2 3s0 3 2 4c-2 1-2 2.5-2 4s0 3-2 3"/></svg>
+              <h3>Facile à intégrer</h3>
+              <p>Une requête HTTP et une réponse en JSON, en unités métriques ou impériales. Fonctionne depuis n’importe quel langage, serveur ou navigateur, sans bibliothèque.</p>
+            </div>
+          </div>
+          <div class="team">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.2c.6-.1 1.3-.2 2-.2 2.8 0 4 1.8 4 5"/></svg>
+            <div>
+              <h3>Une équipe de spécialistes derrière l’API</h3>
+              <p>L’API est développée par B1TMET, une équipe de météorologues, de physiciens et de spécialistes en informatique et en mathématiques forte de plus de 20 ans d’expérience en recherche et en conseil sur la modélisation numérique du temps et du climat des Caraïbes. C’est la même équipe qui adapte le modèle WRF à la région et en opère les exécutions quotidiennes, et qui a réalisé des études de configuration de WRF pour des services météorologiques de la zone.</p>
+              <a href="https://b1tmet.mx" target="_blank" rel="noopener">Découvrir l’équipe →</a>
+            </div>
+          </div>
+        </section>
+        <section class="why" lang="it">
+          <h2>Perché B1TMET</h2>
+          <p class="lead">Una previsione vale quanto il modello che la produce. Ecco cosa c’è dietro ogni risposta dell’API.</p>
+          <div class="why-grid">
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M12 4a12 12 0 0 1 0 16M12 4a12 12 0 0 0 0 16"/><circle cx="12" cy="12" r="8"/></svg>
+              <h3>Un modello regionale proprio</h3>
+              <p>I modelli globali calcolano l’intero pianeta con un’unica griglia. B1TMET esegue il modello WRF solo sui Caraibi e sull’America centrale: riceve le condizioni del modello globale ai bordi e risolve di nuovo l’atmosfera della regione con molto più dettaglio.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19l6-9 4 5 3-4 5 8z"/><path d="M3 19h18"/></svg>
+              <h3>Più dettaglio dove conta</h3>
+              <p>Una griglia più fine rappresenta meglio il rilievo e la linea di costa: montagne, valli, baie e piccole isole che in una griglia grossolana quasi non esistono. È lì che vento, temperatura e pioggia cambiano da un luogo all’altro: brezze di mare e di terra, pioggia sui versanti, contrasti tra la costa e l’entroterra.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15a4 4 0 0 1 .5-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 0 1 16.5 15z"/><path d="M11 15l-2 4h3l-1 3"/></svg>
+              <h3>Ogni scala, ben configurata</h3>
+              <p>Una griglia fine non è un ingrandimento di quella grossolana: il modello viene eseguito su ciascuna, annidata nella precedente. La fisica del modello, come la formazione di nubi e pioggia, è stata scelta con studi di sensibilità: sono state provate diverse combinazioni ed è stata tenuta quella che ha dato i risultati migliori nella regione.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.5-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+              <h3>La griglia migliore, in automatico</h3>
+              <p>Invii delle coordinate e l’API sceglie la griglia più dettagliata che copre il tuo punto nel tuo piano. Ogni risposta indica quale griglia e quale esecuzione sono state usate: sai sempre da dove viene il dato.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+              <h3>Sempre aggiornata</h3>
+              <p>Il modello viene eseguito quattro volte al giorno, alle 00, 06, 12 e 18 UTC, e l’API fornisce sempre l’esecuzione più recente disponibile.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5c-2 0-2 1.5-2 3s0 3-2 4c2 1 2 2.5 2 4s0 3 2 3M15 5c2 0 2 1.5 2 3s0 3 2 4c-2 1-2 2.5-2 4s0 3-2 3"/></svg>
+              <h3>Facile da integrare</h3>
+              <p>Una richiesta HTTP e una risposta in JSON, in unità metriche o imperiali. Funziona da qualsiasi linguaggio, server o browser, senza librerie.</p>
+            </div>
+          </div>
+          <div class="team">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.2c.6-.1 1.3-.2 2-.2 2.8 0 4 1.8 4 5"/></svg>
+            <div>
+              <h3>Dietro c’è un team di specialisti</h3>
+              <p>L’API è sviluppata da B1TMET, un team di meteorologi, fisici e specialisti in informatica e matematica con oltre 20 anni di esperienza nella ricerca e nella consulenza sulla modellazione numerica del tempo e del clima dei Caraibi. È lo stesso team che adatta il modello WRF alla regione e ne gestisce le esecuzioni quotidiane, e che ha realizzato studi di configurazione di WRF per servizi meteorologici dell’area.</p>
+              <a href="https://b1tmet.mx" target="_blank" rel="noopener">Scopri il team →</a>
+            </div>
+          </div>
+        </section>
+        <section class="why" lang="nl">
+          <h2>Waarom B1TMET</h2>
+          <p class="lead">Een verwachting is zo goed als het model dat haar maakt. Dit zit er achter elk antwoord van de API.</p>
+          <div class="why-grid">
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M12 4a12 12 0 0 1 0 16M12 4a12 12 0 0 0 0 16"/><circle cx="12" cy="12" r="8"/></svg>
+              <h3>Een eigen regionaal model</h3>
+              <p>Mondiale modellen rekenen de hele planeet door met één rooster. B1TMET draait het WRF-model alleen boven het Caribisch gebied en Midden-Amerika: het neemt de omstandigheden van het mondiale model aan de randen over en berekent de atmosfeer van de regio opnieuw, veel gedetailleerder.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19l6-9 4 5 3-4 5 8z"/><path d="M3 19h18"/></svg>
+              <h3>Meer detail waar het telt</h3>
+              <p>Een fijner rooster geeft reliëf en kustlijn beter weer: bergen, dalen, baaien en kleine eilanden die in een grof rooster nauwelijks bestaan. Juist daar veranderen wind, temperatuur en regen van plek tot plek: zee- en landbries, regen op de hellingen, verschillen tussen kust en binnenland.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 15a4 4 0 0 1 .5-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 0 1 16.5 15z"/><path d="M11 15l-2 4h3l-1 3"/></svg>
+              <h3>Elke schaal, goed ingesteld</h3>
+              <p>Een fijn rooster is geen uitvergroting van het grove: het model draait op elk rooster, genest in het vorige. De modelfysica, zoals de vorming van wolken en regen, is gekozen met gevoeligheidsstudies: verschillende combinaties zijn getest en de combinatie met de beste resultaten in de regio is behouden.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.5-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+              <h3>Het beste rooster, automatisch</h3>
+              <p>Je stuurt coördinaten en de API kiest het meest gedetailleerde rooster dat je punt binnen je abonnement dekt. Elk antwoord vermeldt welk rooster en welke run zijn gebruikt: je weet altijd waar de gegevens vandaan komen.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+              <h3>Altijd actueel</h3>
+              <p>Het model draait vier keer per dag, om 00, 06, 12 en 18 UTC, en de API levert altijd de meest recente beschikbare run.</p>
+            </div>
+            <div class="why-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5c-2 0-2 1.5-2 3s0 3-2 4c2 1 2 2.5 2 4s0 3 2 3M15 5c2 0 2 1.5 2 3s0 3 2 4c-2 1-2 2.5-2 4s0 3-2 3"/></svg>
+              <h3>Eenvoudig te integreren</h3>
+              <p>Eén HTTP-verzoek en een antwoord in JSON, in metrische of imperiale eenheden. Werkt vanuit elke programmeertaal, server of browser, zonder bibliotheken.</p>
+            </div>
+          </div>
+          <div class="team">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6M15 14.2c.6-.1 1.3-.2 2-.2 2.8 0 4 1.8 4 5"/></svg>
+            <div>
+              <h3>Een team van specialisten erachter</h3>
+              <p>De API wordt ontwikkeld door B1TMET, een team van meteorologen, natuurkundigen en specialisten in informatica en wiskunde met meer dan 20 jaar ervaring in onderzoek en advies op het gebied van numerieke weer- en klimaatmodellering van het Caribisch gebied. Het is hetzelfde team dat het WRF-model aanpast aan de regio en de dagelijkse runs uitvoert, en dat WRF-configuratiestudies heeft gedaan voor meteorologische diensten in het gebied.</p>
+              <a href="https://b1tmet.mx" target="_blank" rel="noopener">Maak kennis met het team →</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Relieve por región en sus mallas (imágenes de HGT de los wrfout, export_terrain.py) -->
+        <section class="terrain" id="relieve">
+          <h2 lang="es">Así ve el modelo cada región</h2><h2 lang="en">How the model sees each region</h2><h2 lang="pt">Como o modelo vê cada região</h2><h2 lang="fr">Comment le modèle voit chaque région</h2><h2 lang="it">Come il modello vede ogni regione</h2><h2 lang="nl">Zo ziet het model elke regio</h2>
+          <p lang="es">La misma zona en las distintas mallas del modelo. Elige una región: cada cuadro es un punto de cálculo y, cuanto más fina la malla, mejor se representan las montañas, los valles y la costa, y con ellos el viento, la temperatura y la lluvia que dependen del relieve.</p>
+          <p lang="en">The same area on the model’s different grids. Pick a region: each square is a computation point and, the finer the grid, the better mountains, valleys and coastline are represented, and with them the wind, temperature and rain that depend on the terrain.</p>
+          <p lang="pt">A mesma área nas diferentes grades do modelo. Escolha uma região: cada quadrado é um ponto de cálculo e, quanto mais fina a grade, melhor são representados as montanhas, os vales e a costa, e com eles o vento, a temperatura e a chuva que dependem do relevo.</p>
+          <p lang="fr">La même zone sur les différentes grilles du modèle. Choisissez une région : chaque carré est un point de calcul et, plus la grille est fine, mieux sont représentés les montagnes, les vallées et le littoral, et avec eux le vent, la température et la pluie qui dépendent du relief.</p>
+          <p lang="it">La stessa area nelle diverse griglie del modello. Scegli una regione: ogni quadrato è un punto di calcolo e, più la griglia è fine, meglio sono rappresentati montagne, valli e costa, e con essi il vento, la temperatura e la pioggia che dipendono dal rilievo.</p>
+          <p lang="nl">Hetzelfde gebied op de verschillende roosters van het model. Kies een regio: elk vakje is een rekenpunt en hoe fijner het rooster, hoe beter bergen, dalen en kustlijn worden weergegeven, en daarmee de wind, temperatuur en regen die van het reliëf afhangen.</p>
+          <div class="tr-regions" role="group"></div>
+          <div class="tr-tabs" role="tablist"></div>
+          <div class="tr-view"><div class="tr-info"></div></div>
+          <p class="muted tr-note"></p>
+        </section>
+
+        <span id="cobertura"></span>
+        <h2 lang="es">Cobertura</h2>
+        <h2 lang="en">Coverage</h2>
+        <h2 lang="pt">Cobertura</h2>
+        <h2 lang="fr">Couverture</h2>
+        <h2 lang="it">Copertura</h2>
+        <h2 lang="nl">Dekking</h2>
+        <p lang="es">Cada color es un dominio del modelo, y cada recuadro, una de sus mallas: cuanto más interior, más fina. Pasa el cursor por un dominio de la lista (o tócalo) para resaltarlo.</p>
+        <p lang="en">Each color is a model domain, and each box one of its grids: the further in, the finer. Hover over a domain in the list (or tap it) to highlight it.</p>
+        <p lang="pt">Cada cor é um domínio do modelo, e cada retângulo, uma das suas grades: quanto mais interna, mais fina. Passe o cursor sobre um domínio da lista (ou toque nele) para destacá-lo.</p>
+        <p lang="fr">Chaque couleur est un domaine du modèle, et chaque cadre l'une de ses grilles : plus elle est intérieure, plus elle est fine. Survolez un domaine de la liste (ou touchez-le) pour le mettre en évidence.</p>
+        <p lang="it">Ogni colore è un dominio del modello e ogni riquadro una delle sue griglie: più è interna, più è fine. Passa il cursore su un dominio dell'elenco (o toccalo) per evidenziarlo.</p>
+        <p lang="nl">Elke kleur is een modeldomein en elk kader een van zijn roosters: hoe verder naar binnen, hoe fijner. Beweeg over een domein in de lijst (of tik erop) om het te markeren.</p>
+        <div class="map-tabs" role="group"><button type="button" data-view="best" class="active" id="tab-best"></button><button type="button" data-view="d01" id="tab-d01"></button></div>
+        <div class="map-wrap">
+          <svg class="map" id="map" viewBox="0 0 1100 550" role="img" aria-label="Mapa de cobertura / Coverage map">
+            <path class="grat" d="M50 0V550M150 0V550M250 0V550M350 0V550M450 0V550M550 0V550M650 0V550M750 0V550M850 0V550M950 0V550M1050 0V550M0 50H1100M0 150H1100M0 250H1100M0 350H1100M0 450H1100M0 550H1100"/>
+            <path class="land" d="M537,203L536,204L536,203L536,202ZM577,265L579,266L580,266L581,266L582,267L583,267L586,268L588,270L588,271L587,271L586,271L585,271L584,271L583,271L582,271L583,270L582,270L581,270L581,271L581,272L580,271L579,271L578,272L578,273L577,272L576,272L575,271L573,271L572,271L572,270L571,270L570,270L570,268L569,268L567,268L567,267L567,266L568,266L569,266L570,265L571,265L575,265L576,265ZM689,266L689,265L691,266L692,266L694,266L694,268L693,268L692,269L690,270L689,271L688,271L687,271L687,270L686,270L685,270L684,270L682,270L681,271L680,270L679,270L678,270L678,268L678,267L677,266L678,266L678,265L679,265L682,265L688,265ZM625,40L624,41L625,41L626,40L627,40L628,40L628,39L629,40L630,40L631,39L627,41L626,41L624,42L623,42L622,42L618,43L617,43L614,44L612,44L611,44L612,44L612,43L611,43L611,44L610,44L610,43L611,42L612,42L613,41L613,42L614,41L615,41L616,41L617,41L618,41L619,40L620,40L622,40L624,40L625,40L626,39L627,38L626,40ZM532,218L534,219L536,219L537,218L537,219L538,219L539,219L540,219L544,219L545,220L546,221L547,221L548,221L549,221L550,221L551,221L552,221L551,222L553,223L555,224L555,225L556,226L557,226L558,226L561,226L562,226L563,226L569,229L570,230L571,231L574,232L575,232L574,231L575,231L577,232L577,233L578,233L579,234L578,234L576,234L577,235L578,235L579,235L579,234L581,235L582,236L581,236L581,237L582,236L583,236L583,237L584,237L585,237L587,238L589,239L591,239L593,239L594,239L594,240L594,241L593,241L594,242L593,242L592,242L592,243L593,243L594,243L595,243L597,243L598,243L600,243L601,243L603,244L603,245L605,246L606,247L607,247L608,247L609,248L608,248L608,249L607,249L606,249L604,249L601,250L600,250L600,251L599,251L599,250L598,250L598,251L597,251L594,251L593,251L592,250L588,250L587,250L585,250L582,251L581,251L580,251L578,251L575,251L573,251L574,249L578,247L579,246L579,245L578,244L577,243L575,243L574,243L571,243L570,243L569,242L567,241L566,240L565,240L565,239L565,237L564,236L564,235L563,234L562,234L558,234L557,234L556,234L551,233L549,232L548,231L547,231L546,230L545,229L540,229L539,229L539,228L538,227L538,228L538,229L537,229L536,229L536,228L532,228L530,227L529,226L530,226L532,225L533,225L533,224L532,223L531,223L523,223L522,223L521,224L520,225L519,226L518,226L517,227L516,228L515,228L514,228L513,228L511,228L510,229L510,230L510,231L509,231L508,231L506,232L505,232L505,231L504,231L503,231L502,232L501,231L505,230L506,230L507,229L506,227L506,226L507,225L509,224L510,223L517,220L518,220L523,220L524,219L527,218L529,218ZM630,253L632,253L633,253L633,252L634,251L636,251L637,252L638,252L639,251L640,251L642,251L643,252L644,252L645,252L646,252L647,253L648,254L649,254L650,253L651,254L651,255L652,256L653,257L657,257L658,257L657,258L655,258L654,258L654,259L655,259L656,259L657,259L658,260L660,260L661,260L663,261L666,263L667,264L666,265L666,266L665,266L664,266L664,267L663,268L662,267L661,266L659,266L657,266L656,266L655,266L654,266L652,266L651,266L650,266L649,267L648,267L645,268L644,267L642,267L641,267L640,267L639,268L639,269L637,271L636,273L636,274L635,273L634,272L633,272L633,271L633,270L632,270L631,269L631,268L630,268L629,268L625,268L624,268L622,268L621,268L618,268L617,268L616,267L615,268L614,268L613,268L612,269L611,270L610,269L609,268L608,267L606,267L605,266L606,264L607,263L608,263L609,264L610,264L611,264L613,264L614,265L621,265L622,266L623,266L623,265L624,264L626,264L627,264L627,263L625,263L623,261L622,259L623,259L622,258L623,257L623,256L621,255L619,254L617,254L616,253L616,252L617,251L618,251L619,251L621,251L624,251L626,252L628,253ZM854,452L855,452L856,452L857,452L858,452L859,452L862,452L864,452L865,452L866,453L866,454L865,455L865,457L864,457L865,458L864,459L864,460L863,461L862,462L862,463L862,464L861,465L860,465L859,465L858,464L858,465L858,466L857,466L856,466L855,465L855,466L854,467L853,468L852,468L851,468L850,467L849,467L847,468L846,468L845,468L844,467L844,466L843,465L843,464L842,462L843,461L844,461L843,461L842,460L842,459L842,457L842,456L843,456L843,455L843,454L844,453L845,452L848,451ZM702,267L701,267L700,266L701,266ZM147,110L146,110L146,109ZM156,118L155,118L154,117L155,117ZM651,325L651,326L650,325L649,325L649,324L650,324ZM698,341L697,341L696,341L696,340L697,340ZM622,262L622,263L619,262L617,261L617,260L618,260L619,261L621,261ZM1100,80L1100,81L1099,81L1098,81L1098,80L1099,80ZM752,11L751,11L750,11L749,11L749,10L751,11L753,10ZM380,171L380,170L381,169L382,169L381,170ZM464,148L463,148L463,147ZM469,147L468,148L467,148L467,147ZM720,270L719,270L719,269L720,269ZM696,269L695,269L694,269L695,268L696,268L697,269ZM725,279L724,279L724,278L725,278ZM703,266L703,267L702,267L702,266ZM704,266L703,266L704,266L705,266ZM702,272L703,273L704,273L703,273L701,273L701,272ZM577,200L575,200L574,200L575,199L577,199ZM540,203L539,203L541,202ZM585,103L584,103L583,103L584,103ZM486,286L484,287L484,286L486,286L487,286ZM561,367L561,368L560,367L560,366L561,365L561,366L562,367ZM664,8L663,8L663,7L663,8ZM682,3L681,4L682,2L683,2ZM668,7L667,7L667,8L666,7L666,6L667,6L667,5L668,6ZM1100,279L1100,280L1098,281L1097,281L1097,280L1097,279L1099,278L1100,278ZM1100,282L1099,282L1099,281L1100,281ZM1039,56L1038,56L1037,56L1037,55L1038,55L1039,55ZM1079,64L1077,63L1076,63L1076,62L1077,62L1079,62L1080,63ZM1072,64L1072,65L1069,64L1068,63L1067,63L1070,64ZM1064,65L1063,65L1062,64L1063,64L1064,64ZM1069,65L1069,66L1068,66L1067,66L1065,66L1065,65L1064,65L1065,64L1066,64ZM1094,72L1097,72L1098,72L1097,73L1096,73L1093,72L1092,72L1092,71ZM167,122L166,122L165,122L165,121L164,120L165,120L166,122ZM168,161L167,161L166,159L166,158L167,158L167,159L168,160ZM150,111L149,111L148,111L147,110L149,110L150,110ZM151,109L153,110L154,109L155,110L154,110L152,110L151,110ZM167,116L167,117L166,117L165,116L164,116L164,115L166,116ZM609,53L608,55L607,54ZM608,45L608,44L609,43L609,44L609,45ZM703,127L702,127L701,127L702,127L703,126ZM645,36L642,37L642,36L643,36L644,35ZM638,35L637,35L637,34L638,33ZM650,37L649,38L648,37L649,37L650,36ZM592,98L590,99L591,98ZM594,91L594,92L593,91ZM597,71L596,71L598,69L599,68L599,67L599,68L598,69ZM595,98L593,98L595,97L595,95L595,94L595,93L595,92L595,93L595,94L595,96L595,97ZM585,104L586,102L587,101L588,101L586,102ZM382,168L382,169L382,168L383,168L385,167L386,166L386,167L385,167ZM376,177L376,178L376,177L377,175L379,172L378,175ZM400,159L399,159L401,157L402,157L401,157ZM378,188L378,189L377,187L376,182L376,179L376,178L376,182L378,187ZM501,154L500,154L499,154L500,154L501,153L502,153L503,153ZM536,140L535,143L535,142L535,141ZM458,149L458,150L457,149L458,148ZM432,155L430,154L431,154L432,154ZM462,152L461,152L462,151L461,149L462,150L462,151ZM573,208L572,208L573,209L574,208L574,209L575,210L575,211L574,213L572,212L572,211L571,210L571,209L570,208L571,207L571,208L572,207L573,207ZM573,230L573,231L572,230L571,230L571,229L572,229L574,229L574,230ZM570,227L569,227L568,227L568,226L567,226L568,226L569,226L569,227ZM564,224L565,225L566,225L567,225L567,226L566,226L566,225L565,225L564,225L563,225ZM578,191L577,190L576,190L577,189L578,188L578,187L578,186L578,185L578,184L577,184L575,182L572,181L571,181L572,181L573,181L575,181L576,182L576,183L577,183L577,184L578,184L579,185L580,187L578,188L578,190ZM609,223L610,223L609,223L608,223L607,223L607,222L608,222ZM606,209L605,210L604,210L605,209ZM620,238L619,239L618,240L616,241L613,241L613,240L613,239L614,239L615,238L616,238L617,238L618,238L619,238L619,237L620,237ZM608,228L607,228L609,227L609,226L610,226L611,225L611,224L610,224L610,223L612,223L611,223L612,225L610,226L609,227ZM583,195L585,196L587,197L588,198L589,199L589,201L588,202L588,203L588,202L587,202L588,202L588,201L588,200L588,199L587,198L586,197L585,197L584,196L583,196L582,196L583,195L583,194ZM593,215L593,216L592,215L590,214L590,213L591,214L592,215ZM602,221L600,219L599,219L598,218L599,218L599,217L598,217L598,215L597,214L597,213L598,215L598,216L599,217L599,218L601,219L602,220ZM597,208L597,209L596,208L595,209L595,208L596,208L596,207L595,207L594,205L593,204L593,203L595,206ZM571,229L570,228L570,227L570,228L571,228L572,229ZM530,185L529,186L528,185L529,185ZM573,203L573,204L573,205L571,206L570,207L569,206L569,205L568,205L567,205L566,205L566,204L567,204L568,203L567,203L567,202L568,201L568,200L568,198L570,199L570,200L571,201L572,202ZM534,204L534,203L535,204ZM548,177L548,178L547,176L546,174L546,171L546,172L546,173ZM524,234L523,235L521,236L520,236L519,235L518,234L519,234L519,235L520,234L519,232L520,231L522,231L523,231L523,232L524,232ZM529,184L529,185L529,184L528,183L529,183ZM556,223L557,224L555,223L554,222ZM565,183L566,183L567,183L569,183L571,183L568,184L565,184L563,185L562,185L560,183L561,183L562,184L563,184L564,183L564,182ZM546,199L544,200L545,199L545,198L546,198L546,197L547,197ZM470,271L470,270L471,268L472,269ZM471,276L471,277L471,276L471,275L472,275ZM433,263L432,263L434,262L435,262ZM528,356L528,357L527,356ZM536,257L537,257L537,256L539,257L538,257L537,257L536,257L536,256ZM481,247L480,247L480,246L480,245L481,244L482,244L482,245ZM724,278L723,278L723,277L722,277L722,276L723,276L723,277L724,277ZM741,312L740,313L739,312L739,311L740,310L741,309L741,310ZM742,305L742,306L741,306L741,305L739,305L740,304L739,304L739,303L738,302L738,301L739,301L740,302L741,302L741,303L741,304ZM740,349L738,349L734,349L732,349L731,349L733,348L734,348L735,347L735,345L735,344L735,343L734,343L733,343L734,343L735,342L736,342L738,342L739,342L741,342L740,343L740,344L740,345L740,346L740,347L740,348ZM668,329L667,330L667,329L667,328L666,327L668,328ZM742,338L743,337L744,337L745,337ZM729,283L728,283L728,282ZM755,319L754,319L754,318L754,317L755,318L756,318ZM712,339L712,340L711,341L710,341L709,341L708,340L708,341L706,340L707,339L708,339L708,340L709,340L710,340L710,339L711,338ZM720,268L718,268L720,267ZM733,330L732,330L733,329L733,328L734,328L734,329ZM733,274L732,275L732,274L731,273L732,273L733,273ZM738,291L737,291L737,290L738,290ZM733,280L731,280L731,279L732,278L733,279ZM737,298L736,298L736,296L735,295L735,294L737,294L737,295L737,296ZM737,288L736,288L735,288L735,287L735,286L735,285L736,285L736,286L738,287ZM734,290L733,290L732,289L732,287L733,286L734,287L734,288ZM738,318L738,319L737,318L737,317L738,317L738,316L739,316L739,317L739,318ZM620,226L621,226L622,226L622,227L623,227L622,227L621,226L620,226L619,226L618,226L619,225ZM662,329L662,330L660,329L658,327L658,326L659,326L659,327L660,328L662,328ZM633,232L632,232L632,231L633,232L634,232ZM621,235L619,235L620,234ZM631,232L630,231L630,230L631,230L631,231ZM627,231L628,232L629,232L628,232L627,232ZM740,361L739,362L739,361L739,360L741,359L741,360L742,360L741,361ZM549,480L548,480L547,480L547,478L548,478L549,477L550,477L551,477L550,478L549,478ZM832,464L831,465L832,462L833,461L833,459L835,457L836,456L837,455L838,457L837,460L835,462L834,463ZM561,437L560,438L560,437L561,437L561,436ZM569,425L568,424L569,424ZM742,359L741,359L741,358L742,358L743,358L742,358ZM905,479L904,480L904,479L904,478L905,477L905,478ZM901,463L901,464L900,464L900,463ZM853,447L853,448L852,450L851,450L850,450L849,450L847,450L847,449L847,448L849,448L851,447ZM847,431L846,431L845,431L845,430L845,429L846,428L847,429L847,430ZM843,451L841,453L840,453L840,452L840,451L842,450ZM856,451L853,451L852,451L853,450L854,449L855,449L856,449L856,450ZM846,449L846,450L844,449L844,448L845,448L845,447L846,446L846,444L847,446L847,447ZM848,446L847,446L847,445L847,444L849,444L850,444L850,445ZM447,458L446,458L445,457L445,456L445,455L447,455L448,455L448,457L447,457ZM456,459L455,460L454,459L455,458L456,457L457,457L457,458L456,458ZM534,377L533,377L532,376L531,375L532,374L533,374L533,375L533,376L534,376ZM436,455L435,455L434,454L433,453L434,453L435,453L436,453L436,454ZM446,463L445,463L445,462L446,462ZM437,450L438,450L438,452L440,454L441,455L440,456L441,457L442,458L441,459L439,460L436,460L435,459L435,458L437,457L439,456L438,455L438,454L436,453L436,450L435,450L434,450L435,449L436,449L437,449ZM444,453L444,454L442,453L441,453L442,452L443,452ZM285,234L285,235L284,234L284,233L285,233ZM241,263L240,263L239,262L240,262L240,261L241,262ZM244,200L245,201L244,201L243,200L243,199ZM252,208L252,209L251,208L251,207ZM218,159L218,160L217,159L215,157L214,156L214,155L214,154L215,154L216,155L216,156L216,157L218,157ZM203,133L202,133L202,132L203,132ZM198,169L198,170L196,169L197,168L197,167L198,166L198,167L199,168ZM233,206L233,207L230,205L231,204L231,205ZM239,190L238,192L238,190L239,189ZM228,160L227,162L226,162L225,162L225,161L225,158L226,158L227,158L228,159ZM229,205L228,203L228,202L227,202L228,200L228,197L229,198L228,201L228,202L229,203L229,204ZM730,0L727,1L725,2L722,2L720,3L719,3L718,3L717,4L716,3L715,4L715,3L714,3L714,4L715,5L714,5L712,5L711,5L711,4L710,4L710,5L709,5L708,4L707,5L707,6L707,7L706,7L705,8L704,9L703,10L702,11L701,11L699,13L698,13L697,13L697,14L696,14L695,15L694,14L693,15L693,14L692,13L691,12L690,12L690,13L689,12L688,9L689,6L691,4L689,6L689,5L690,4L691,4L692,4L693,3L694,3L695,3L695,2L694,3L693,3L693,2L698,0ZM679,0L679,1L680,1L680,2L678,3L676,3L675,3L674,4L673,4L672,4L671,5L670,5L670,6L669,6L669,5L668,5L667,5L666,6L666,5L665,6L665,7L664,7L663,7L662,7L662,6L663,6L663,5L662,6L662,5L662,4L662,5L660,6L660,7L659,8L659,9L659,10L658,10L657,10L656,10L655,11L655,10L654,10L654,11L653,10L653,11L652,11L652,12L651,12L650,12L650,11L649,12L648,12L647,13L648,13L648,14L646,15L645,17L644,19L643,19L642,21L642,22L642,23L643,23L644,23L644,24L643,24L642,24L641,25L641,26L640,27L642,27L643,28L644,30L643,30L645,31L645,32L646,32L647,33L649,32L650,32L650,31L649,30L648,29L648,30L648,29L649,29L650,30L651,32L651,33L650,33L649,33L646,34L645,34L643,35L643,34L643,33L640,35L639,35L638,35L638,34L639,33L638,33L637,33L637,32L636,32L636,33L636,34L636,35L635,36L632,37L631,37L629,37L627,37L626,37L625,37L622,37L621,37L620,38L618,38L614,40L613,40L612,41L611,42L610,42L611,41L611,39L611,38L610,38L611,39L611,40L611,41L610,42L609,43L608,43L608,44L607,45L608,45L609,46L610,45L610,46L610,47L610,48L610,49L610,51L609,52L609,50L609,51L608,53L607,54L607,55L606,55L606,56L605,57L604,57L604,58L602,60L601,61L600,61L601,60L601,59L600,58L599,58L598,57L596,57L595,55L595,54L595,53L596,52L598,51L599,51L599,50L598,51L597,51L596,52L595,52L595,53L594,54L594,55L595,56L596,57L596,59L597,60L598,62L599,62L599,63L599,64L598,64L599,64L600,65L600,66L599,66L599,67L598,67L598,68L597,69L596,69L594,74L594,75L593,75L592,75L592,76L591,77L591,78L590,78L590,77L590,76L591,74L592,72L593,72L593,70L591,70L592,70L592,69L591,69L591,68L591,67L591,66L591,67L590,67L589,67L588,66L587,66L587,65L587,64L588,64L589,64L590,64L589,64L588,63L588,62L587,62L587,63L587,62L588,62L588,61L587,61L587,60L588,60L589,59L588,59L588,58L588,57L589,56L590,56L591,56L590,56L590,55L591,55L590,55L590,54L589,54L589,55L589,56L588,56L587,56L587,57L587,56L586,57L586,58L584,57L585,58L586,59L585,60L585,59L584,59L585,60L585,61L585,62L585,63L585,65L586,66L585,66L584,66L584,65L583,64L583,65L584,65L586,67L586,68L587,69L586,69L585,68L584,68L582,67L581,66L581,67L580,66L579,66L578,66L578,65L579,64L579,63L580,62L580,61L580,62L579,63L578,63L577,64L577,65L577,66L578,67L579,66L580,66L581,68L584,69L585,69L585,70L586,70L587,71L587,72L587,73L586,73L585,73L582,71L582,70L581,69L579,68L581,70L582,71L583,72L584,72L585,73L585,74L587,74L586,75L587,75L587,76L586,76L586,77L585,77L582,75L583,76L584,77L585,78L586,78L587,79L587,80L586,80L585,80L585,79L584,79L584,78L583,78L580,77L577,77L578,77L580,77L581,78L582,78L583,78L584,80L585,80L585,81L586,81L588,80L589,81L590,81L591,82L591,83L592,88L594,91L595,92L594,91L593,89L592,87L591,84L591,83L590,84L590,85L590,86L591,86L591,87L592,89L591,88L590,88L589,88L589,87L589,88L589,89L588,88L587,88L588,89L587,89L586,89L585,90L584,90L583,89L583,88L583,89L583,90L584,91L585,90L586,90L587,90L588,90L589,90L589,91L589,92L589,93L590,93L590,91L591,90L592,90L592,91L592,92L593,92L592,94L590,95L589,96L588,96L587,96L586,96L585,96L585,95L584,95L583,96L581,95L580,95L584,97L585,97L584,98L584,99L582,100L581,100L579,98L580,100L581,100L583,101L585,100L586,101L586,102L585,102L584,102L583,102L583,103L582,103L581,103L580,103L579,103L577,104L576,104L576,103L576,104L576,105L575,105L573,106L573,107L572,107L571,109L571,111L571,110L571,109L570,108L570,110L570,111L566,111L564,111L562,113L561,113L559,116L558,118L558,117L558,116L557,117L558,118L557,119L556,120L555,120L554,120L554,121L553,122L552,122L551,122L551,123L550,124L549,124L548,124L547,125L546,125L545,125L544,125L545,125L545,126L545,127L544,127L544,126L543,126L543,127L542,126L542,127L543,127L543,128L542,129L541,129L541,130L541,131L540,131L539,131L539,132L538,133L538,134L537,135L538,135L537,136L536,136L536,137L537,137L536,138L535,139L535,140L535,141L535,142L535,143L535,144L536,147L537,149L537,152L539,155L541,160L544,164L545,165L544,166L544,167L544,168L545,169L545,171L544,168L544,167L544,165L543,165L543,166L543,167L543,165L543,164L542,164L542,163L542,162L542,164L543,166L543,167L544,168L548,178L549,179L549,180L550,182L550,184L549,189L549,192L549,191L548,191L548,193L547,194L547,196L546,197L545,198L544,198L543,198L541,198L540,199L539,199L538,198L538,197L539,197L540,198L541,197L540,197L539,197L539,196L538,194L537,193L536,192L534,191L533,190L532,189L531,186L531,185L530,185L531,184L532,183L531,183L531,184L530,184L530,185L530,184L529,183L529,181L530,180L529,180L528,181L528,182L527,181L526,181L526,179L524,176L523,176L523,175L524,175L525,173L526,172L526,171L525,171L524,170L523,170L524,171L524,172L524,173L523,173L522,173L522,172L523,168L523,165L523,162L524,162L523,161L522,159L517,155L513,151L510,149L507,149L506,150L506,151L505,151L502,152L501,152L500,153L498,153L497,153L496,153L496,152L497,153L497,152L496,151L495,150L493,149L494,149L493,148L494,148L494,147L493,147L493,148L492,148L491,148L488,147L485,146L488,146L489,146L488,145L487,145L486,145L485,145L484,146L483,146L480,146L478,147L478,146L479,146L480,146L480,145L480,144L479,145L478,145L477,146L477,147L475,147L476,146L475,146L474,147L470,148L470,147L471,147L472,147L471,146L471,145L471,144L470,143L469,144L469,146L468,146L466,146L463,146L462,146L461,146L459,146L458,147L457,147L456,148L454,148L450,147L450,146L449,146L448,146L447,147L446,149L447,149L448,150L450,149L451,149L452,149L453,148L453,149L452,150L453,151L454,151L454,150L455,149L456,150L456,151L456,152L455,152L454,153L453,153L453,154L453,155L454,155L455,156L458,157L459,158L460,158L460,159L459,159L459,160L458,160L458,159L457,160L456,160L456,159L456,158L455,158L454,157L453,157L452,157L452,156L451,155L448,155L449,155L449,156L449,157L449,158L449,159L448,159L447,157L446,157L445,157L444,157L443,159L442,159L440,158L437,157L438,157L438,156L438,155L437,155L438,154L437,154L437,155L435,154L434,154L433,153L432,152L431,152L430,152L429,152L429,153L429,154L427,154L423,154L422,154L420,153L418,152L417,152L416,152L413,152L412,152L412,153L411,152L412,152L412,151L412,150L411,152L411,153L409,153L404,155L402,156L405,155L404,154L403,155L402,155L403,153L403,152L402,152L401,153L400,153L400,155L401,155L401,156L400,157L399,158L398,159L397,160L396,161L393,163L391,164L390,164L388,165L389,164L390,164L389,164L387,163L386,163L386,164L385,164L384,163L385,165L386,165L385,166L384,166L383,167L382,166L382,167L382,168L381,168L380,168L379,168L378,169L379,169L380,169L379,170L378,171L377,171L376,171L376,172L377,173L376,176L376,177L375,177L373,176L372,175L373,177L375,178L375,179L374,180L375,181L375,182L375,183L376,185L376,186L378,189L379,189L379,190L378,192L378,194L376,198L375,200L373,206L373,210L373,212L373,213L372,217L373,221L372,221L372,222L371,224L372,224L372,225L372,227L372,229L374,232L375,233L376,234L377,234L377,236L376,236L376,237L376,236L376,235L376,234L375,234L374,232L372,230L374,234L374,235L375,235L375,236L376,239L378,242L378,243L379,244L383,248L385,251L386,254L387,255L387,257L389,258L389,259L390,259L391,261L392,262L391,261L391,262L392,262L394,263L393,263L393,262L394,263L398,263L400,264L402,265L403,267L405,268L406,268L408,268L411,267L412,266L414,266L418,266L419,266L421,265L422,265L423,264L425,263L426,263L428,263L429,263L430,263L431,264L431,265L432,265L434,266L435,265L436,265L437,264L437,263L437,262L436,262L437,261L436,262L435,262L435,261L436,261L439,260L439,259L440,258L443,256L443,253L443,252L445,251L445,250L445,248L445,246L445,244L445,243L446,242L446,240L448,239L451,237L452,237L461,236L463,236L464,235L465,234L468,234L469,234L470,234L472,235L473,235L475,235L477,236L478,235L477,235L476,234L477,234L478,234L479,234L480,234L481,235L482,236L482,238L482,240L481,241L481,242L479,244L478,245L476,248L475,249L475,250L476,251L475,252L474,252L473,254L474,254L475,254L476,254L476,255L475,256L474,256L473,256L473,257L474,257L475,257L474,260L473,262L473,263L472,266L471,267L470,266L470,265L469,265L470,263L470,262L469,262L468,263L468,264L467,265L466,266L467,267L468,266L469,266L469,268L469,269L468,272L467,274L468,275L467,276L467,277L467,278L467,280L467,284L466,285L465,286L464,287L463,288L461,290L461,291L462,291L463,292L464,292L465,291L464,291L464,290L468,293L469,293L469,292L470,292L471,291L473,291L474,291L475,292L476,292L477,292L481,292L482,292L485,292L486,292L488,291L489,291L491,290L490,290L492,290L495,291L498,291L500,290L504,291L504,292L505,292L506,292L505,292L505,291L507,292L512,296L510,295L509,295L509,296L510,296L511,296L512,297L512,298L513,298L513,297L514,297L515,298L514,297L513,296L514,296L516,298L517,299L518,300L518,301L517,302L517,301L516,301L516,302L517,302L517,303L518,307L517,308L517,309L516,310L515,313L514,317L515,321L515,324L515,325L515,326L514,326L514,325L514,324L514,323L514,324L513,324L512,325L513,326L513,327L513,328L513,330L513,329L512,329L512,330L512,331L512,332L513,332L513,333L513,334L512,335L512,336L511,336L511,337L512,339L512,340L513,341L514,341L514,342L514,343L516,345L517,347L519,350L520,350L521,352L522,353L524,354L525,355L526,356L526,357L527,358L528,358L528,359L528,360L529,360L529,361L531,360L532,361L532,360L531,359L532,359L533,360L535,362L536,362L538,362L539,362L542,361L543,360L545,359L549,358L550,357L551,356L553,355L553,354L554,354L556,354L558,355L559,355L560,355L561,356L563,356L565,356L569,358L572,359L573,361L576,363L577,364L577,365L579,366L580,367L581,369L581,370L581,371L582,371L583,370L582,367L582,365L581,365L581,364L582,364L583,363L587,360L589,357L590,356L591,356L592,356L594,356L594,355L594,353L593,353L594,352L594,350L594,349L595,348L594,348L593,349L593,348L594,347L595,345L596,344L597,343L598,342L599,341L601,339L602,339L605,340L607,340L606,340L605,341L605,342L606,342L607,342L607,340L608,339L608,337L609,337L611,337L612,337L613,337L617,337L623,333L626,332L627,331L628,329L629,328L630,328L631,327L633,326L634,326L635,326L637,327L638,328L639,330L637,331L636,332L635,333L631,334L630,334L630,335L631,336L632,338L632,339L634,340L633,340L633,342L634,343L633,346L632,347L631,348L630,349L629,352L630,354L631,356L632,356L632,357L633,359L634,360L635,360L637,359L638,358L639,357L639,355L639,353L639,352L638,350L637,349L636,347L635,345L635,344L635,342L635,340L637,340L642,338L645,337L648,336L649,335L650,335L651,336L652,335L652,333L651,333L648,334L648,333L647,331L648,330L648,329L649,329L650,328L651,329L652,330L652,332L652,333L653,334L654,335L655,335L658,335L659,335L662,336L664,337L666,338L667,339L667,341L667,342L667,343L668,344L669,345L671,345L674,345L679,344L680,344L688,344L689,344L689,345L691,347L693,348L695,348L697,349L699,349L700,349L701,349L702,349L708,345L712,346L712,345L713,345L711,344L708,344L708,345L707,344L708,344L711,343L715,344L718,343L720,343L721,343L723,343L728,343L731,343L730,344L728,344L726,345L723,344L721,345L722,345L722,346L723,347L723,348L723,349L724,349L724,348L725,348L726,351L727,352L728,351L728,352L728,351L729,350L728,350L729,350L730,350L731,351L732,352L732,353L733,354L733,353L732,352L734,352L734,351L735,352L737,354L738,354L740,354L741,355L742,356L742,357L740,358L739,359L739,360L739,361L739,362L738,363L738,364L734,364L735,365L736,365L737,366L738,365L740,365L741,364L742,364L745,365L746,364L747,364L748,364L750,365L752,366L752,367L753,367L753,366L755,367L758,369L762,373L763,374L764,375L765,376L765,377L765,380L764,382L764,383L764,385L763,386L764,385L764,384L765,383L766,381L767,381L768,382L769,382L770,382L772,384L774,386L775,387L777,387L778,388L778,389L778,391L778,394L778,395L779,394L779,393L779,392L779,391L780,390L785,391L788,391L791,392L791,393L791,392L791,391L792,390L794,390L796,390L799,390L802,390L806,391L809,391L809,392L810,393L810,394L809,395L808,396L809,396L810,393L811,392L812,392L815,394L817,395L821,396L822,397L825,400L827,401L827,402L828,401L829,403L830,404L830,405L830,406L831,406L831,405L831,404L832,404L833,407L833,408L833,409L834,408L835,407L837,408L838,409L839,413L839,417L840,419L842,423L842,424L842,425L843,426L843,428L843,429L844,429L844,430L845,431L845,432L847,432L848,432L849,433L850,433L851,436L851,437L851,438L851,439L850,439L849,440L847,442L845,444L844,446L842,448L841,448L840,449L839,450L837,451L837,452L836,454L835,455L834,455L833,458L833,459L833,460L832,461L831,462L831,463L830,464L828,464L824,465L823,466L827,466L828,466L831,466L834,464L835,464L837,462L838,461L840,460L841,459L842,460L841,461L841,462L842,462L842,463L842,464L842,465L843,466L843,467L843,468L844,468L846,470L847,469L848,469L849,469L850,468L851,469L853,469L854,469L857,467L856,470L855,472L855,473L854,475L854,476L854,477L854,476L855,476L855,475L856,473L858,469L860,468L863,465L864,465L865,466L866,465L865,464L865,463L866,462L865,461L867,460L867,459L868,458L869,458L869,457L870,457L870,458L871,457L872,457L873,457L874,457L875,457L876,458L876,457L875,457L876,456L877,456L878,457L879,457L880,458L881,457L881,458L882,458L884,459L884,460L885,460L886,460L887,460L888,460L888,461L889,461L890,461L890,462L892,463L894,463L895,464L896,466L897,467L898,466L898,465L899,465L900,465L901,466L902,467L903,467L902,468L903,468L903,467L904,468L905,469L905,471L904,471L904,472L903,472L902,473L903,473L903,474L904,472L905,472L906,472L906,473L906,474L905,474L905,475L904,475L904,476L904,477L904,478L903,481L903,482L904,481L906,479L906,477L907,475L908,475L909,475L909,476L908,477L908,478L910,476L911,476L913,475L915,475L916,474L918,474L921,475L922,475L923,476L924,477L928,478L930,478L931,477L933,478L934,479L935,479L937,479L938,479L941,479L945,478L948,478L950,479L952,480L954,481L955,481L956,482L960,484L961,485L963,487L965,487L966,489L967,489L969,492L972,494L974,496L977,497L978,499L980,499L981,500L983,501L984,501L986,501L988,501L990,501L995,501L995,502L996,503L998,506L999,509L999,512L1000,514L1001,518L1001,519L1001,520L1002,520L1002,523L1002,524L1001,525L1001,526L1001,527L1002,529L1002,530L1001,531L1000,534L998,539L997,542L994,545L992,547L991,547L992,548L991,548L990,550L568,550L567,548L566,547L566,544L564,542L563,540L562,537L562,536L561,534L560,532L558,530L557,529L556,528L554,524L554,523L552,521L551,519L550,518L549,517L542,513L539,511L538,509L539,508L540,509L541,508L541,506L541,505L538,502L538,501L539,500L538,499L537,498L537,497L537,493L538,492L541,489L542,487L543,486L545,485L547,484L548,483L549,483L550,482L551,481L552,478L553,476L553,475L552,474L552,472L552,471L551,471L551,474L551,475L550,476L550,474L549,474L549,475L547,476L547,477L546,477L545,476L543,474L542,473L541,473L540,472L541,471L542,471L542,469L542,468L542,466L542,464L542,463L541,461L542,460L544,459L544,458L545,457L545,456L546,456L547,456L546,456L545,454L547,452L548,451L549,450L550,448L550,446L549,444L549,442L550,442L551,441L552,441L553,440L554,440L555,439L558,439L561,438L562,437L561,435L560,434L560,432L562,432L564,432L564,431L564,429L564,427L564,426L565,426L565,425L566,425L567,425L569,425L570,425L570,424L571,424L571,423L572,423L572,422L573,421L573,420L574,419L575,418L576,417L577,415L578,414L579,411L578,411L577,411L578,410L577,409L576,411L576,409L576,408L575,408L575,407L576,407L576,406L577,405L577,404L577,403L577,402L576,399L576,398L576,397L576,396L575,395L577,393L578,392L577,390L575,388L575,387L576,387L576,385L576,384L576,383L575,383L574,382L574,381L573,380L572,379L571,378L571,377L568,375L566,371L566,369L567,369L567,368L568,367L569,366L570,367L570,368L572,368L572,369L571,368L570,367L569,366L569,365L568,365L568,366L567,366L567,365L566,365L566,366L565,366L565,364L564,363L563,363L563,362L562,362L560,361L559,360L558,360L556,360L555,360L554,361L553,361L553,362L552,363L552,364L553,364L549,367L548,367L546,367L545,368L545,369L546,370L547,371L549,373L550,374L550,375L549,375L549,376L547,376L546,377L543,378L542,378L541,377L541,376L540,373L539,371L538,371L538,372L538,373L538,374L537,374L536,373L535,373L533,370L533,369L531,368L530,368L529,368L528,368L528,367L526,367L525,367L523,367L522,367L521,368L521,369L521,368L520,367L519,366L519,365L518,364L517,363L516,363L515,363L516,364L517,365L517,366L516,366L515,366L514,365L513,364L514,363L514,362L514,360L513,358L511,357L509,356L508,355L505,355L504,354L503,354L503,353L504,352L503,351L500,349L498,348L497,347L498,349L498,350L500,351L501,351L501,352L500,353L499,353L499,354L498,354L497,352L494,351L493,350L492,349L492,347L492,346L493,344L493,343L493,342L492,341L491,341L492,340L493,340L493,339L492,338L490,337L485,333L483,330L482,328L481,328L479,326L478,325L475,322L473,321L473,320L474,320L475,320L476,321L477,321L477,320L477,319L476,319L475,318L475,317L475,316L474,316L473,316L472,316L472,317L471,318L470,318L468,318L466,318L464,317L463,317L464,318L465,318L461,317L457,315L455,315L452,314L450,313L449,313L445,311L444,311L439,311L436,310L434,309L432,308L428,305L427,304L425,302L422,299L421,298L420,297L418,296L415,293L413,291L411,289L409,289L408,288L407,288L406,287L406,288L407,288L408,289L410,289L410,290L405,288L403,288L404,287L403,286L402,287L402,286L401,286L400,287L402,288L401,288L399,288L395,290L392,291L388,293L386,293L385,293L382,293L378,291L372,290L369,288L365,287L362,285L361,285L360,284L357,283L353,283L350,281L348,280L346,279L342,278L340,277L339,276L336,275L335,274L334,273L332,272L332,271L331,270L330,270L328,270L325,270L323,269L320,268L316,267L314,265L313,264L311,262L310,261L307,260L306,259L304,258L301,257L300,256L299,254L297,253L295,250L295,249L294,248L294,247L293,246L294,246L295,245L296,245L297,244L298,244L297,243L297,242L296,242L295,242L296,241L297,240L298,239L298,238L298,236L298,235L296,234L295,233L295,232L294,230L294,227L292,224L291,222L290,222L288,219L286,218L284,216L283,214L281,211L279,210L272,205L273,205L275,206L275,205L274,205L273,205L272,205L270,204L270,203L270,202L268,200L267,199L268,199L268,200L269,200L270,200L270,199L269,199L266,198L265,197L263,196L262,196L262,195L261,195L260,195L259,195L259,194L260,194L261,193L260,194L259,194L258,194L257,194L256,193L256,190L256,189L257,188L258,187L259,187L258,186L258,185L257,185L255,183L253,183L252,183L252,182L251,181L251,180L251,179L247,178L246,178L245,177L245,176L244,175L244,173L244,172L245,171L242,171L241,171L240,171L239,170L237,169L235,166L233,165L233,164L232,164L231,162L230,161L228,160L228,159L228,157L227,157L226,157L226,156L226,155L224,153L223,151L223,150L222,149L222,147L220,145L219,143L219,142L219,141L219,140L219,139L220,139L220,138L219,138L218,138L218,137L215,137L214,137L214,135L213,135L212,134L211,134L210,134L210,135L209,135L207,134L205,133L204,132L203,132L201,131L202,132L202,134L202,135L201,138L202,139L202,140L203,142L203,144L204,145L204,148L204,150L206,151L206,152L208,153L209,154L212,156L215,159L215,160L215,161L216,161L217,161L217,162L218,162L219,165L220,165L221,166L221,167L222,168L222,169L223,170L222,171L223,172L224,173L227,175L227,177L228,178L229,179L230,179L230,180L231,182L231,183L232,184L233,184L232,183L232,182L232,181L234,183L235,184L235,185L235,186L236,187L237,189L237,191L237,192L239,194L240,195L240,196L241,199L242,200L243,201L243,202L243,203L243,204L243,207L245,208L246,208L246,209L247,209L247,208L247,207L250,208L250,209L251,210L252,211L253,212L253,213L255,214L256,215L256,216L255,218L254,219L253,220L252,221L251,221L250,221L249,220L248,217L248,216L247,215L246,214L244,213L242,211L241,210L240,209L236,207L234,206L233,204L232,204L232,205L232,204L232,203L229,202L229,201L229,200L229,197L229,195L229,194L229,192L228,191L226,188L225,187L223,187L220,184L219,183L219,182L218,181L217,182L216,182L214,183L213,182L212,181L212,180L211,180L210,180L209,179L208,179L207,178L206,178L205,177L205,176L203,175L201,173L200,173L200,172L202,172L204,172L206,172L207,171L207,172L208,173L209,173L208,172L208,171L207,171L208,170L209,168L210,166L209,164L207,163L203,159L201,157L201,156L200,156L198,156L197,155L194,153L193,152L192,151L192,150L192,149L192,147L191,146L190,146L190,144L190,143L189,142L187,140L187,139L187,138L185,136L184,135L183,134L183,133L184,132L184,131L182,130L181,128L180,127L179,127L179,125L179,124L178,123L177,122L177,121L177,119L175,117L172,115L170,114L169,113L168,112L167,112L167,113L166,113L166,111L165,110L164,110L162,110L159,109L158,108L157,107L156,107L154,106L153,106L151,106L149,105L148,105L146,105L145,105L144,105L144,104L144,103L144,102L143,101L144,99L143,99L143,98L141,98L141,97L141,96L140,95L139,94L137,93L137,92L136,91L135,91L133,88L131,87L131,86L131,84L132,83L132,82L132,81L131,81L128,80L126,78L126,76L125,75L125,73L125,72L126,72L126,73L127,74L128,74L128,75L129,75L128,74L128,73L127,72L127,71L126,71L126,70L127,70L128,70L129,69L133,70L134,69L135,69L134,69L133,69L131,69L130,69L128,69L127,69L126,69L125,69L125,70L125,72L124,71L123,71L122,71L121,70L121,69L120,70L120,69L120,68L121,69L121,68L120,67L119,66L117,65L116,63L113,61L113,59L112,56L112,55L112,54L112,52L111,51L109,49L107,47L106,46L106,45L107,44L107,43L108,43L108,42L109,40L109,38L109,36L109,35L109,34L108,33L108,32L108,31L108,30L106,29L106,27L106,26L106,24L106,23L105,22L105,21L105,20L107,17L107,16L108,16L107,16L108,15L108,13L109,13L109,9L109,7L110,6L109,5L110,4L109,2L110,0ZM491,285L491,286L490,286L491,285L492,285ZM623,250L624,250L623,250L622,250L621,250L620,249L621,249L622,249ZM483,238L482,237L483,237ZM532,205L532,204L533,204Z"/>
+            <g class="lbl"><text x="6" y="46">40°N</text><text x="6" y="146">30°N</text><text x="6" y="246">20°N</text><text x="6" y="346">10°N</text><text x="6" y="446">0°</text><text x="154" y="544">120°W</text><text x="354" y="544">100°W</text><text x="554" y="544">80°W</text><text x="754" y="544">60°W</text><text x="954" y="544">40°W</text></g>
+            <g id="doms"></g>
+            <g id="pin"></g>
+          </svg>
+          <ul class="legend" id="legend"></ul>
+        </div>
+        <div class="pick" id="pick" aria-live="polite"></div>
+        <p class="muted" lang="es">Los recuadros son los límites en latitud y longitud de cada malla. El plan Free usa las mallas d01; los planes de pago, todas.</p>
+        <p class="muted" lang="en">Boxes show the latitude and longitude bounds of each grid. The Free plan uses the d01 grids; paid plans use all of them.</p>
+        <p class="muted" lang="pt">Os retângulos mostram os limites de latitude e longitude de cada grade. O plano Free usa as grades d01; os planos pagos, todas.</p>
+        <p class="muted" lang="fr">Les cadres indiquent les limites en latitude et longitude de chaque grille. L'offre Free utilise les grilles d01 ; les offres payantes, toutes.</p>
+        <p class="muted" lang="it">I riquadri indicano i limiti in latitudine e longitudine di ciascuna griglia. Il piano Free usa le griglie d01; i piani a pagamento, tutte.</p>
+        <p class="muted" lang="nl">De kaders tonen de breedte- en lengtegrenzen van elk rooster. Het Free-abonnement gebruikt de d01-roosters; betaalde abonnementen alle roosters.</p>
+
+        <h2 lang="es">Primera petición</h2>
+        <h2 lang="en">First request</h2>
+        <h2 lang="pt">Primeira requisição</h2>
+        <h2 lang="fr">Première requête</h2>
+        <h2 lang="it">Prima richiesta</h2>
+        <h2 lang="nl">Eerste verzoek</h2>
+        <p lang="es">Una sola llamada devuelve el pronóstico de un punto. La API elige la malla más detallada que lo cubre.</p>
+        <p lang="en">A single call returns the forecast for a point. The API picks the most detailed grid that covers it.</p>
+        <p lang="pt">Uma única chamada retorna a previsão de um ponto. A API escolhe a grade mais detalhada que o cobre.</p>
+        <p lang="fr">Un seul appel renvoie la prévision d'un point. L'API choisit la grille la plus détaillée qui le couvre.</p>
+        <p lang="it">Una sola chiamata restituisce la previsione di un punto. L'API sceglie la griglia più dettagliata che lo copre.</p>
+        <p lang="nl">Eén aanroep geeft de voorspelling voor een locatie. De API kiest het meest gedetailleerde rooster dat die locatie dekt.</p>
+        <div class="tabs">
+          <div class="tab-btns"><button type="button" data-tab="curl">curl</button><button type="button" data-tab="js">JavaScript</button><button type="button" data-tab="py">Python</button></div>
+<pre class="code" data-panel="curl"><code>curl "https://thredds.b1tmet.com/v1/forecast/point?lat=23.13&amp;lon=-82.38&amp;hours=24" \
+  -H "Authorization: Bearer $B1TMET_KEY"</code></pre>
+<pre class="code" data-panel="js"><code>const res = await fetch(
+  "https://thredds.b1tmet.com/v1/forecast/point?lat=23.13&amp;lon=-82.38&amp;hours=24",
+  { headers: { Authorization: `Bearer ${B1TMET_KEY}` } }
+);
+const { model, data } = await res.json();
+console.log(model.domain, data[0].temperature_2m);</code></pre>
+<pre class="code" data-panel="py"><code>import os, requests
+
+r = requests.get(
+    "https://thredds.b1tmet.com/v1/forecast/point",
+    params={"lat": 23.13, "lon": -82.38, "hours": 24},
+    headers={"Authorization": f"Bearer {os.environ['B1TMET_KEY']}"},
+    timeout=60,
+)
+print(r.json()["data"][0]["temperature_2m"])</code></pre>
+        </div>
+        <p lang="es"><a href="docs.html">Documentación completa →</a></p>
+        <p lang="en"><a href="docs.html">Full documentation →</a></p>
+        <p lang="pt"><a href="docs.html">Documentação completa (em inglês) →</a></p>
+        <p lang="fr"><a href="docs.html">Documentation complète (en anglais) →</a></p>
+        <p lang="it"><a href="docs.html">Documentazione completa (in inglese) →</a></p>
+        <p lang="nl"><a href="docs.html">Volledige documentatie (in het Engels) →</a></p>
+
+        <h2 lang="es">Planes</h2>
+        <h2 lang="en">Plans</h2>
+        <h2 lang="pt">Planos</h2>
+        <h2 lang="fr">Offres</h2>
+        <h2 lang="it">Piani</h2>
+        <h2 lang="nl">Abonnementen</h2>
+        <div class="tbl" lang="es"><table>
+          <tr><th>Plan</th><th>Precio</th><th>Peticiones/día</th><th>Por minuto</th><th>Horizonte</th><th>Mallas</th></tr>
+          <tr><td><b>Free</b></td><td>0 USD/mes</td><td>500</td><td>10</td><td>24 h</td><td>d01 (9–27 km)</td></tr>
+          <tr><td><b>Starter</b></td><td>19 USD/mes</td><td>5 000</td><td>30</td><td>72 h</td><td>todas (hasta 3 km)</td></tr>
+          <tr><td><b>Pro</b></td><td>79 USD/mes</td><td>20 000</td><td>60</td><td>72 h</td><td>todas (hasta 3 km)</td></tr>
+          <tr><td><b>Enterprise</b></td><td>desde 199 USD/mes</td><td>a medida</td><td>a medida</td><td>72 h</td><td>todas (hasta 3 km)</td></tr>
+        </table></div>
+        <div class="tbl" lang="en"><table>
+          <tr><th>Plan</th><th>Price</th><th>Requests/day</th><th>Per minute</th><th>Horizon</th><th>Grids</th></tr>
+          <tr><td><b>Free</b></td><td>0 USD/month</td><td>500</td><td>10</td><td>24 h</td><td>d01 (9–27 km)</td></tr>
+          <tr><td><b>Starter</b></td><td>19 USD/month</td><td>5,000</td><td>30</td><td>72 h</td><td>all (down to 3 km)</td></tr>
+          <tr><td><b>Pro</b></td><td>79 USD/month</td><td>20,000</td><td>60</td><td>72 h</td><td>all (down to 3 km)</td></tr>
+          <tr><td><b>Enterprise</b></td><td>from 199 USD/month</td><td>custom</td><td>custom</td><td>72 h</td><td>all (down to 3 km)</td></tr>
+        </table></div>
+        <div class="tbl" lang="pt"><table>
+          <tr><th>Plano</th><th>Preço</th><th>Requisições/dia</th><th>Por minuto</th><th>Horizonte</th><th>Grades</th></tr>
+          <tr><td><b>Free</b></td><td>0 USD/mês</td><td>500</td><td>10</td><td>24 h</td><td>d01 (9–27 km)</td></tr>
+          <tr><td><b>Starter</b></td><td>19 USD/mês</td><td>5.000</td><td>30</td><td>72 h</td><td>todas (até 3 km)</td></tr>
+          <tr><td><b>Pro</b></td><td>79 USD/mês</td><td>20.000</td><td>60</td><td>72 h</td><td>todas (até 3 km)</td></tr>
+          <tr><td><b>Enterprise</b></td><td>a partir de 199 USD/mês</td><td>sob medida</td><td>sob medida</td><td>72 h</td><td>todas (até 3 km)</td></tr>
+        </table></div>
+        <div class="tbl" lang="fr"><table>
+          <tr><th>Offre</th><th>Prix</th><th>Requêtes/jour</th><th>Par minute</th><th>Horizon</th><th>Grilles</th></tr>
+          <tr><td><b>Free</b></td><td>0 USD/mois</td><td>500</td><td>10</td><td>24 h</td><td>d01 (9–27 km)</td></tr>
+          <tr><td><b>Starter</b></td><td>19 USD/mois</td><td>5 000</td><td>30</td><td>72 h</td><td>toutes (jusqu'à 3 km)</td></tr>
+          <tr><td><b>Pro</b></td><td>79 USD/mois</td><td>20 000</td><td>60</td><td>72 h</td><td>toutes (jusqu'à 3 km)</td></tr>
+          <tr><td><b>Enterprise</b></td><td>à partir de 199 USD/mois</td><td>sur mesure</td><td>sur mesure</td><td>72 h</td><td>toutes (jusqu'à 3 km)</td></tr>
+        </table></div>
+        <div class="tbl" lang="it"><table>
+          <tr><th>Piano</th><th>Prezzo</th><th>Richieste/giorno</th><th>Al minuto</th><th>Orizzonte</th><th>Griglie</th></tr>
+          <tr><td><b>Free</b></td><td>0 USD/mese</td><td>500</td><td>10</td><td>24 h</td><td>d01 (9–27 km)</td></tr>
+          <tr><td><b>Starter</b></td><td>19 USD/mese</td><td>5.000</td><td>30</td><td>72 h</td><td>tutte (fino a 3 km)</td></tr>
+          <tr><td><b>Pro</b></td><td>79 USD/mese</td><td>20.000</td><td>60</td><td>72 h</td><td>tutte (fino a 3 km)</td></tr>
+          <tr><td><b>Enterprise</b></td><td>da 199 USD/mese</td><td>su misura</td><td>su misura</td><td>72 h</td><td>tutte (fino a 3 km)</td></tr>
+        </table></div>
+        <div class="tbl" lang="nl"><table>
+          <tr><th>Abonnement</th><th>Prijs</th><th>Verzoeken/dag</th><th>Per minuut</th><th>Horizon</th><th>Roosters</th></tr>
+          <tr><td><b>Free</b></td><td>0 USD/maand</td><td>500</td><td>10</td><td>24 h</td><td>d01 (9–27 km)</td></tr>
+          <tr><td><b>Starter</b></td><td>19 USD/maand</td><td>5.000</td><td>30</td><td>72 h</td><td>alle (tot 3 km)</td></tr>
+          <tr><td><b>Pro</b></td><td>79 USD/maand</td><td>20.000</td><td>60</td><td>72 h</td><td>alle (tot 3 km)</td></tr>
+          <tr><td><b>Enterprise</b></td><td>vanaf 199 USD/maand</td><td>op maat</td><td>op maat</td><td>72 h</td><td>alle (tot 3 km)</td></tr>
+        </table></div>
+        <p lang="es"><a href="precios.html">Ver precios y condiciones →</a></p>
+        <p lang="en"><a href="precios.html">See pricing and terms →</a></p>
+        <p lang="pt"><a href="precios.html">Ver preços e condições →</a></p>
+        <p lang="fr"><a href="precios.html">Voir les tarifs et conditions →</a></p>
+        <p lang="it"><a href="precios.html">Vedi prezzi e condizioni →</a></p>
+        <p lang="nl"><a href="precios.html">Prijzen en voorwaarden bekijken →</a></p>
+        <div class="note" lang="es">Los pronósticos son orientativos y no sustituyen los avisos oficiales de los servicios meteorológicos nacionales. El uso de la API está sujeto a los <a href="legal/terminos.html">Términos de la API</a>.</div>
+        <div class="note" lang="en">Forecasts are for guidance only and do not replace official warnings from national weather services. Use of the API is subject to the <a href="legal/terminos.html">API Terms</a>.</div>
+        <div class="note" lang="pt">As previsões são apenas orientativas e não substituem os avisos oficiais dos serviços meteorológicos nacionais. O uso da API está sujeito aos <a href="legal/terminos.html">Termos da API</a>.</div>
+        <div class="note" lang="fr">Les prévisions sont fournies à titre indicatif et ne remplacent pas les alertes officielles des services météorologiques nationaux. L'utilisation de l'API est soumise aux <a href="legal/terminos.html">Conditions de l'API</a>.</div>
+        <div class="note" lang="it">Le previsioni sono indicative e non sostituiscono gli avvisi ufficiali dei servizi meteorologici nazionali. L'uso dell'API è soggetto ai <a href="legal/terminos.html">Termini dell'API</a>.</div>
+        <div class="note" lang="nl">De voorspellingen zijn indicatief en vervangen geen officiële waarschuwingen van nationale weerdiensten. Het gebruik van de API valt onder de <a href="legal/terminos.html">API-voorwaarden</a>.</div>
+      </article>
+    </main>
+
+    <footer class="foot">
+      <div class="foot-glow" aria-hidden="true"></div>
+      <div class="foot-in">
+        <img class="foot-logo" src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" />
+        <ul class="foot-links" lang="es">
+          <li><a href="legal/privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="index.html" aria-current="page">API</a></li>
+          <li><a href="precios.html">Precios API</a></li>
+          <li><a href="legal/terminos.html">Términos de la API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contacto</a></li>
+          <li><a href="https://b1tmet.com">Acerca de</a></li>
+        </ul>
+        <ul class="foot-links" lang="en">
+          <li><a href="legal/privacidad.html">Privacy Policy</a></li>
+          <li><a href="index.html" aria-current="page">API</a></li>
+          <li><a href="precios.html">API Pricing</a></li>
+          <li><a href="legal/terminos.html">API Terms</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">About</a></li>
+        </ul>
+        <ul class="foot-links" lang="pt">
+          <li><a href="legal/privacidad.html">Aviso de privacidade</a></li>
+          <li><a href="index.html" aria-current="page">API</a></li>
+          <li><a href="precios.html">Preços da API</a></li>
+          <li><a href="legal/terminos.html">Termos da API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contato</a></li>
+          <li><a href="https://b1tmet.com">Sobre</a></li>
+        </ul>
+        <ul class="foot-links" lang="fr">
+          <li><a href="legal/privacidad.html">Politique de confidentialité</a></li>
+          <li><a href="index.html" aria-current="page">API</a></li>
+          <li><a href="precios.html">Tarifs de l'API</a></li>
+          <li><a href="legal/terminos.html">Conditions de l'API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">À propos</a></li>
+        </ul>
+        <ul class="foot-links" lang="it">
+          <li><a href="legal/privacidad.html">Informativa sulla privacy</a></li>
+          <li><a href="index.html" aria-current="page">API</a></li>
+          <li><a href="precios.html">Prezzi API</a></li>
+          <li><a href="legal/terminos.html">Termini dell'API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contatti</a></li>
+          <li><a href="https://b1tmet.com">Chi siamo</a></li>
+        </ul>
+        <ul class="foot-links" lang="nl">
+          <li><a href="legal/privacidad.html">Privacybeleid</a></li>
+          <li><a href="index.html" aria-current="page">API</a></li>
+          <li><a href="precios.html">API-prijzen</a></li>
+          <li><a href="legal/terminos.html">API-voorwaarden</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">Over ons</a></li>
+        </ul>
+        <p class="foot-legal" lang="en">Map: coastlines from Natural Earth (public domain).</p>
+        <p class="foot-legal" lang="pt">Mapa: litorais do Natural Earth (domínio público).</p>
+        <p class="foot-legal" lang="fr">Carte : côtes de Natural Earth (domaine public).</p>
+        <p class="foot-legal" lang="it">Mappa: coste di Natural Earth (pubblico dominio).</p>
+        <p class="foot-legal" lang="nl">Kaart: kustlijnen van Natural Earth (publiek domein).</p>
+        <div class="foot-copy"><span>© 2026 B1TMET Technologies</span><span class="wm">Bitmet</span></div>
+      </div>
+    </footer>
+
+
+    <script src="assets/lang.js"></script>
+    <script src="assets/marca.js"></script>
+    <script>
+      (function () {
+        var T = {
+          es: { checking: "Comprobando el servicio…", ok: "API operativa", degraded: "Servicio degradado", unknown: "No se pudo comprobar el estado",
+          best: "Planes de pago · todas las mallas", d01: "Plan Free (d01)",
+                n: { caribe: "Caribe", mexico: "México", panama: "Panamá", centro_america: "Centroamérica", cuba: "Cuba", dominica: "Dominica", dominicana: "República Dominicana" } },
+          en: { checking: "Checking service…", ok: "API operational", degraded: "Service degraded", unknown: "Could not check status", best: "Paid plans · all grids", d01: "Free plan (d01)",
+                n: { caribe: "Caribbean", mexico: "Mexico", panama: "Panama", centro_america: "Central America", cuba: "Cuba", dominica: "Dominica", dominicana: "Dominican Republic" } },
+          pt: { checking: "Verificando o serviço…", ok: "API operacional", degraded: "Serviço degradado", unknown: "Não foi possível verificar o status", best: "Planos pagos · todas as grades", d01: "Plano Free (d01)",
+                n: { caribe: "Caribe", mexico: "México", panama: "Panamá", centro_america: "América Central", cuba: "Cuba", dominica: "Dominica", dominicana: "República Dominicana" } },
+          fr: { checking: "Vérification du service…", ok: "API opérationnelle", degraded: "Service dégradé", unknown: "Impossible de vérifier l'état", best: "Offres payantes · toutes les grilles", d01: "Offre Free (d01)",
+                n: { caribe: "Caraïbes", mexico: "Mexique", panama: "Panama", centro_america: "Amérique centrale", cuba: "Cuba", dominica: "Dominique", dominicana: "République dominicaine" } },
+          it: { checking: "Verifica del servizio…", ok: "API operativa", degraded: "Servizio degradato", unknown: "Impossibile verificare lo stato", best: "Piani a pagamento · tutte le griglie", d01: "Piano Free (d01)",
+                n: { caribe: "Caraibi", mexico: "Messico", panama: "Panama", centro_america: "America centrale", cuba: "Cuba", dominica: "Dominica", dominicana: "Repubblica Dominicana" } },
+          nl: { checking: "Dienst controleren…", ok: "API operationeel", degraded: "Dienst verstoord", unknown: "Status kon niet worden gecontroleerd", best: "Betaalde abonnementen · alle roosters", d01: "Free-abonnement (d01)",
+                n: { caribe: "Caribisch gebied", mexico: "Mexico", panama: "Panama", centro_america: "Midden-Amerika", cuba: "Cuba", dominica: "Dominica", dominicana: "Dominicaanse Republiek" } }
+        };
+        // Mallas de cada dominio: [sur, oeste, norte, este, km, malla]  (src/utils/domainBounds.js)
+        // null = malla sin límites: cuenta en la leyenda pero no se dibuja
+        var D = [
+          { k: "mexico",         c: "#e76f51", g: [[2.67, -133.77, 43.15, -71.57, 25, "d01"], [8.90, -124.25, 36.99, -80.02, 5, "d02"]] },
+          { k: "caribe",         c: "#2a9d8f", g: [[-2.45, -102.84, 34.59, -46.77, 9, "d01"]] },
+          { k: "centro_america", c: "#8e7dff", g: [[-7.20, -113.45, 31.52, -57.76, 27, "d01"], [1.93, -100.80, 24.77, -70.41, 9, "d02"]] },
+          { k: "dominica",       c: "#e9b949", g: [[-0.41, -86.10, 27.81, -26.61, 27, "d01"], [6.71, -68.01, 22.71, -40.96, 9, "d02"]] },
+          { k: "dominicana",     c: "#d264b6", g: [[6.62, -96.00, 30.74, -48.20, 27, "d01"], [11.86, -85.81, 26.07, -57.36, 9, "d02"]] },
+          { k: "cuba",           c: "#4f86f7", g: [[13.65, -99.28, 32.04, -62.83, 27, "d01"], [17.64, -88.27, 26.60, -70.93, 9, "d02"]] },
+          { k: "panama",         c: "#3fbf5f", g: [[-5.22, -97.23, 22.91, -62.79, 27, "d01"], [3.05, -87.47, 15.09, -72.55, 9, "d02"], [6.53, -83.48, 10.56, -76.62, 3, "d03"]] }
+        ];
+        var NS = "http://www.w3.org/2000/svg";
+        var gDoms = document.getElementById("doms"), legend = document.getElementById("legend");
+        var view = "best", pinned = null, state = "checking";
+        var lang = function () { var l = document.documentElement.getAttribute("data-lang"); return T[l] ? l : "en"; };
+        var X = function (lon) { return (lon + 135) * 10; }, Y = function (lat) { return (45 - lat) * 10; };
+
+        // Selector de punto: qué malla corresponde en cada plan
+        var PK = {
+          es: { hint: "Haz clic en cualquier punto del mapa para ver qué malla le corresponde en cada plan.", free: "Plan Free", paid: "Starter y Pro", out: "fuera de cobertura",
+                gain: "Con un plan de pago, este punto pasa de {a} km a {b} km.", same: "Este punto tiene la misma resolución en todos los planes; los de pago añaden pronóstico hasta 72 h y uso comercial.",
+                btn: "Ver el pronóstico de este punto", loading: "Calculando el pronóstico…", eRate: "Has hecho muchas consultas de prueba. Vuelve a intentarlo en un rato.", eUnav: "La demo no está disponible ahora mismo. Inténtalo más tarde.", eErr: "No se pudo obtener el pronóstico. Inténtalo de nuevo.", temp: "Temperatura a 2 m (°C)", rain: "Lluvia en 3 h (mm)", wind: "Viento a 10 m (m/s)", note: "Muestra gratuita: próximas 24 h, punto redondeado a 0,1°. Hora local de tu dispositivo. Corrida {run}." },
+          en: { hint: "Click anywhere on the map to see which grid each plan uses there.", free: "Free plan", paid: "Starter and Pro", out: "outside coverage",
+                gain: "With a paid plan, this point goes from {a} km to {b} km.", same: "This point has the same resolution on every plan; paid plans add forecasts up to 72 h and commercial use.",
+                btn: "Show the forecast for this point", loading: "Computing the forecast…", eRate: "You have made many test requests. Try again in a while.", eUnav: "The demo is not available right now. Try again later.", eErr: "Could not get the forecast. Please try again.", temp: "2 m temperature (°C)", rain: "3 h precipitation (mm)", wind: "10 m wind (m/s)", note: "Free sample: next 24 h, point rounded to 0.1°. Local time of your device. Run {run}." },
+          pt: { hint: "Clique em qualquer ponto do mapa para ver que grade cada plano usa ali.", free: "Plano Free", paid: "Starter e Pro", out: "fora da cobertura",
+                gain: "Com um plano pago, este ponto passa de {a} km para {b} km.", same: "Este ponto tem a mesma resolução em todos os planos; os pagos acrescentam previsão até 72 h e uso comercial.",
+                btn: "Ver a previsão deste ponto", loading: "Calculando a previsão…", eRate: "Você fez muitas consultas de teste. Tente novamente daqui a pouco.", eUnav: "A demo não está disponível agora. Tente mais tarde.", eErr: "Não foi possível obter a previsão. Tente novamente.", temp: "Temperatura a 2 m (°C)", rain: "Chuva em 3 h (mm)", wind: "Vento a 10 m (m/s)", note: "Amostra gratuita: próximas 24 h, ponto arredondado a 0,1°. Hora local do seu dispositivo. Rodada {run}." },
+          fr: { hint: "Cliquez n'importe où sur la carte pour voir quelle grille chaque offre utilise à cet endroit.", free: "Offre Free", paid: "Starter et Pro", out: "hors couverture",
+                gain: "Avec une offre payante, ce point passe de {a} km à {b} km.", same: "Ce point a la même résolution dans toutes les offres ; les offres payantes ajoutent la prévision jusqu'à 72 h et l'usage commercial.",
+                btn: "Voir la prévision pour ce point", loading: "Calcul de la prévision…", eRate: "Vous avez fait beaucoup de requêtes d'essai. Réessayez dans un moment.", eUnav: "La démo n'est pas disponible pour le moment. Réessayez plus tard.", eErr: "Impossible d'obtenir la prévision. Réessayez.", temp: "Température à 2 m (°C)", rain: "Pluie en 3 h (mm)", wind: "Vent à 10 m (m/s)", note: "Échantillon gratuit : prochaines 24 h, point arrondi à 0,1°. Heure locale de votre appareil. Exécution {run}." },
+          it: { hint: "Fai clic in un punto qualsiasi della mappa per vedere quale griglia usa ogni piano.", free: "Piano Free", paid: "Starter e Pro", out: "fuori copertura",
+                gain: "Con un piano a pagamento, questo punto passa da {a} km a {b} km.", same: "Questo punto ha la stessa risoluzione in tutti i piani; quelli a pagamento aggiungono previsioni fino a 72 h e l'uso commerciale.",
+                btn: "Vedi la previsione per questo punto", loading: "Calcolo della previsione…", eRate: "Hai fatto molte richieste di prova. Riprova tra poco.", eUnav: "La demo non è disponibile in questo momento. Riprova più tardi.", eErr: "Impossibile ottenere la previsione. Riprova.", temp: "Temperatura a 2 m (°C)", rain: "Pioggia in 3 h (mm)", wind: "Vento a 10 m (m/s)", note: "Campione gratuito: prossime 24 h, punto arrotondato a 0,1°. Ora locale del tuo dispositivo. Esecuzione {run}." },
+          nl: { hint: "Klik ergens op de kaart om te zien welk rooster elk abonnement daar gebruikt.", free: "Free-abonnement", paid: "Starter en Pro", out: "buiten dekking",
+                gain: "Met een betaald abonnement gaat dit punt van {a} km naar {b} km.", same: "Dit punt heeft in elk abonnement dezelfde resolutie; betaalde abonnementen voegen verwachtingen tot 72 uur en commercieel gebruik toe.",
+                btn: "Toon de verwachting voor dit punt", loading: "Verwachting wordt berekend…", eRate: "Je hebt veel testverzoeken gedaan. Probeer het straks opnieuw.", eUnav: "De demo is nu niet beschikbaar. Probeer het later opnieuw.", eErr: "Kon de verwachting niet ophalen. Probeer het opnieuw.", temp: "Temperatuur op 2 m (°C)", rain: "Neerslag in 3 uur (mm)", wind: "Wind op 10 m (m/s)", note: "Gratis voorbeeld: komende 24 uur, punt afgerond op 0,1°. Lokale tijd van je apparaat. Run {run}." }
+        };
+        // Servida desde el backend local (http://localhost:8081/api.html): la demo usa ese mismo servidor
+        var API = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(location.origin) ? location.origin : "https://thredds.b1tmet.com";
+        var pick = null, pickEl = document.getElementById("pick"), gPin = document.getElementById("pin"), svgMap = document.getElementById("map");
+
+        // Misma regla que la API (domain=auto): primero el grid más anidado (d03 > d02 > d01);
+        // a igual grid, el dominio con el centro más cercano al punto. Free: solo d01.
+        function hav(a1, o1, a2, o2) {               // km, como haversineKm de la API
+          var r = Math.PI / 180, dA = (a2 - a1) * r, dO = (o2 - o1) * r;
+          var x = Math.pow(Math.sin(dA / 2), 2) + Math.cos(a1 * r) * Math.cos(a2 * r) * Math.pow(Math.sin(dO / 2), 2);
+          return 6371 * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+        }
+        function choose(lat, lon, freeOnly) {
+          var best = null;
+          D.forEach(function (d) {
+            d.g.forEach(function (g) {
+              if (g[0] === null || (freeOnly && g[5] !== "d01")) return;
+              if (lat < g[0] || lat > g[2] || lon < g[1] || lon > g[3]) return;
+              var lvl = +g[5].slice(1), cy = (g[0] + g[2]) / 2, cx = (g[1] + g[3]) / 2;
+              var dist = hav(lat, lon, cy, cx);
+              if (!best || lvl > best.lvl || (lvl === best.lvl && dist < best.dist)) best = { d: d, g: g, lvl: lvl, dist: dist };
+            });
+          });
+          return best;
+        }
+        function fmt(v, pos, neg) { return Math.abs(v).toFixed(2) + "°" + (v >= 0 ? pos : neg); }
+        function drawPick() {
+          var t = T[lang()], p = PK[lang()];
+          pickEl.textContent = "";
+          if (!pick) { var h = document.createElement("p"); h.className = "pick-hint"; h.textContent = p.hint; pickEl.appendChild(h); return; }
+          var fr = choose(pick.lat, pick.lon, true), pd = choose(pick.lat, pick.lon, false);
+          var head = document.createElement("div"); head.className = "pick-head";
+          head.textContent = fmt(pick.lat, "N", "S") + ", " + fmt(pick.lon, "E", "W");
+          pickEl.appendChild(head);
+          [[p.free, fr, ""], [p.paid, pd, " paid"]].forEach(function (r) {
+            var row = document.createElement("div"); row.className = "pick-row" + r[2];
+            var a = document.createElement("span"); a.className = "pick-plan"; a.textContent = r[0];
+            var b = document.createElement("b");
+            if (r[1]) {
+              var sw = document.createElement("i"); sw.style.background = r[1].d.c; b.appendChild(sw);
+              b.appendChild(document.createTextNode(t.n[r[1].d.k] + " · " + r[1].g[5] + " · " + r[1].g[4] + " km"));
+            } else b.textContent = p.out;
+            row.appendChild(a); row.appendChild(b); pickEl.appendChild(row);
+          });
+          if (pd) {
+            var note = document.createElement("p"); note.className = "pick-note";
+            note.textContent = fr && pd.g[4] < fr.g[4] ? p.gain.replace("{a}", fr.g[4]).replace("{b}", pd.g[4]) : (fr ? p.same : "");
+            if (note.textContent) pickEl.appendChild(note);
+            var demo = document.createElement("div"); demo.className = "demo";
+            if (pick.demo) demo.appendChild(chart(pick.demo, t, p));
+            else if (pick.err) { var e = document.createElement("p"); e.className = "demo-msg err"; e.textContent = p[pick.err]; demo.appendChild(e); }
+            if (!pick.demo) {
+              var bt = document.createElement("button"); bt.type = "button"; bt.className = "btn demo-btn";
+              bt.textContent = pick.loading ? p.loading : p.btn; bt.disabled = !!pick.loading;
+              if (pick.loading) bt.classList.add("busy");
+              bt.addEventListener("click", loadDemo);
+              demo.appendChild(bt);
+            }
+            pickEl.appendChild(demo);
+            var pre = document.createElement("pre"); pre.className = "code";
+            var code = document.createElement("code");
+            code.textContent = 'curl "https://thredds.b1tmet.com/v1/forecast/point?lat=' + pick.lat.toFixed(2) + '&lon=' + pick.lon.toFixed(2) + '&hours=24" \\\n  -H "Authorization: Bearer $B1TMET_KEY"';
+            pre.appendChild(code); pickEl.appendChild(pre);
+            if (window.b1tCopy) window.b1tCopy(pickEl);
+          }
+        }
+
+        // ---------- Demo: pronóstico real del punto (Free frente a pago) ----------
+        function loadDemo() {
+          var my = pick;
+          my.loading = true; my.err = null; drawPick();
+          var ctl = window.AbortController ? new AbortController() : null;
+          var to = setTimeout(function () { if (ctl) ctl.abort(); }, 60000);
+          fetch(API + "/v1/demo/point?lat=" + my.lat.toFixed(2) + "&lon=" + my.lon.toFixed(2), { signal: ctl ? ctl.signal : undefined })
+            .then(function (r) {
+              if (r.ok) return r.json();
+              my.err = r.status === 429 ? "eRate" : (r.status === 503 ? "eUnav" : "eErr");
+              return null;
+            })
+            .catch(function () { my.err = "eErr"; return null; })
+            .then(function (j) {
+              clearTimeout(to);
+              my.loading = false;
+              if (j && j.paid) my.demo = j;
+              if (pick === my) drawPick();
+            });
+        }
+
+        function chart(d, t, p) {
+          var wrap = document.createElement("div"); wrap.className = "chart";
+          var series = [["free", d.free], ["paid", d.paid]].filter(function (x) { return x[1]; });
+          var leg = document.createElement("div"); leg.className = "ch-legend";
+          series.forEach(function (x) {
+            var s = document.createElement("span"); s.className = "ch-" + x[0];
+            var i = document.createElement("i"); s.appendChild(i);
+            s.appendChild(document.createTextNode((x[0] === "free" ? p.free : p.paid) + " · " + t.n[x[1].domain] + " " + x[1].grid + " · " + x[1].resolution_km + " km"));
+            leg.appendChild(s);
+          });
+          wrap.appendChild(leg);
+
+          var W = 600, L = 34, R = 8, PH = 74, GAP = 30, TOP = 18;
+          var panels = [["temperature_2m", p.temp, "line"], ["precipitation_3h", p.rain, "bar"], ["wind_speed_10m", p.wind, "line"]];
+          var H = TOP + panels.length * (PH + GAP) + 4;
+          var svg = document.createElementNS(NS, "svg");
+          svg.setAttribute("viewBox", "0 0 " + W + " " + H); svg.setAttribute("class", "ch-svg");
+          svg.setAttribute("role", "img"); svg.setAttribute("aria-label", p.temp + ", " + p.rain + ", " + p.wind);
+          var n = d.paid.data.length, x = function (i) { return L + (W - L - R) * (n > 1 ? i / (n - 1) : 0); };
+          function el(tag, attrs, txt) {
+            var e = document.createElementNS(NS, tag);
+            for (var k in attrs) e.setAttribute(k, attrs[k]);
+            if (txt !== undefined) e.textContent = txt;
+            svg.appendChild(e); return e;
+          }
+          panels.forEach(function (pn, k) {
+            var y0 = TOP + k * (PH + GAP), key = pn[0];
+            var vals = [];
+            series.forEach(function (sr) { sr[1].data.forEach(function (r) { if (r[key] !== null) vals.push(r[key]); }); });
+            if (!vals.length) return;
+            var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+            if (pn[2] === "bar") { lo = 0; hi = Math.max(hi, 1); }
+            else { var pad = Math.max(.5, (hi - lo) * .15); lo = Math.floor(lo - pad); hi = Math.ceil(hi + pad); }
+            if (key === "wind_speed_10m") lo = Math.max(0, lo);          // el viento no baja de 0
+            var y = function (v) { return y0 + PH - (v - lo) / (hi - lo) * PH; };
+            el("text", { x: L, y: y0 - 6, "class": "ch-title" }, pn[1]);
+            el("line", { x1: L, x2: W - R, y1: y0 + PH, y2: y0 + PH, "class": "ch-axis" });
+            el("line", { x1: L, x2: W - R, y1: y0, y2: y0, "class": "ch-grid" });
+            el("text", { x: L - 6, y: y0 + 4, "class": "ch-tick", "text-anchor": "end" }, String(+hi.toFixed(1)));
+            el("text", { x: L - 6, y: y0 + PH, "class": "ch-tick", "text-anchor": "end" }, String(+lo.toFixed(1)));
+            series.forEach(function (sr, si) {
+              var rows = sr[1].data;
+              if (pn[2] === "bar") {
+                var bw = Math.max(3, (W - L - R) / (n - 1) / (series.length + 1.5));
+                rows.forEach(function (r, i) {
+                  if (r[key] === null || r[key] <= 0) return;
+                  var bx = x(i) + (si - series.length / 2) * bw;
+                  el("rect", { x: bx, y: y(r[key]), width: bw - 1, height: y0 + PH - y(r[key]), rx: 1.5, "class": "ch-bar ch-" + sr[0] });
+                });
+              } else {
+                var dd = "";
+                rows.forEach(function (r, i) { if (r[key] !== null) dd += (dd ? "L" : "M") + x(i).toFixed(1) + " " + y(r[key]).toFixed(1); });
+                var pa = { d: dd, "class": "ch-line ch-" + sr[0] };
+                if (sr[0] === "paid") pa.pathLength = 1;       // solo la de pago se dibuja animada
+                el("path", pa);
+              }
+            });
+          });
+          // horas locales bajo el último panel
+          var yl = TOP + panels.length * (PH + GAP) - GAP + 16;
+          d.paid.data.forEach(function (r, i) {
+            if (i % 2) return;
+            var dt = new Date(r.time);
+            if (isNaN(dt)) return;
+            el("text", { x: x(i), y: yl, "class": "ch-tick", "text-anchor": i === 0 ? "start" : (i === n - 1 ? "end" : "middle") }, ("0" + dt.getHours()).slice(-2) + "h");
+          });
+          // Valores al pasar el ratón (o tocar): línea vertical y ficha con las dos series
+          var cur = el("line", { x1: 0, x2: 0, y1: TOP - 4, y2: TOP + panels.length * (PH + GAP) - GAP, "class": "ch-cursor" });
+          var hit = el("rect", { x: L, y: 0, width: W - L - R, height: H, "class": "ch-hit" });
+          var tip = document.createElement("div"); tip.className = "ch-tip"; tip.hidden = true;
+          wrap.appendChild(svg); wrap.appendChild(tip);
+          var fmtV = { temperature_2m: function (v) { return v.toFixed(1) + " °C"; },
+                       precipitation_3h: function (v) { return v.toFixed(1) + " mm"; },
+                       wind_speed_10m: function (v) { return v.toFixed(1) + " m/s"; } };
+          function showAt(clientX) {
+            var m = svg.getScreenCTM(); if (!m) return;
+            var pt = svg.createSVGPoint(); pt.x = clientX; pt.y = 0;
+            var sx = pt.matrixTransform(m.inverse()).x;
+            var i = Math.max(0, Math.min(n - 1, Math.round((sx - L) / (W - L - R) * (n - 1))));
+            cur.setAttribute("x1", x(i)); cur.setAttribute("x2", x(i)); cur.classList.add("on");
+            var dt = new Date(d.paid.data[i].time);
+            var html = '<b>' + (isNaN(dt) ? "" : dt.toLocaleString(document.documentElement.lang || undefined, { weekday: "short", hour: "2-digit", minute: "2-digit" })) + '</b>';
+            html += '<table><tr><th></th>' + series.map(function (sr) { return '<th class="ch-' + sr[0] + '">' + sr[1].resolution_km + ' km</th>'; }).join("") + '</tr>';
+            panels.forEach(function (pn) {
+              html += '<tr><td>' + pn[1].replace(/\s*\(.*\)$/, "") + '</td>' + series.map(function (sr) {
+                var r = sr[1].data[i], v = r ? r[pn[0]] : null;
+                return '<td class="ch-' + sr[0] + '">' + (v === null || v === undefined ? "—" : fmtV[pn[0]](v)) + '</td>';
+              }).join("") + '</tr>';
+            });
+            tip.innerHTML = html + '</table>';
+            tip.hidden = false;
+            // a la derecha del cursor; si no cabe, a la izquierda
+            var box = wrap.getBoundingClientRect(), cx = x(i) * m.a + m.e - box.left;
+            var tw = tip.offsetWidth, left = cx + 14;
+            if (left + tw > box.width - 6) left = cx - tw - 14;
+            tip.style.left = Math.max(6, left) + "px";
+          }
+          function hide() { tip.hidden = true; cur.classList.remove("on"); }
+          hit.addEventListener("pointermove", function (e) { showAt(e.clientX); });
+          hit.addEventListener("pointerdown", function (e) { showAt(e.clientX); });
+          hit.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") hide(); });
+          var note = document.createElement("p"); note.className = "muted ch-note";
+          var ri = d.paid.run_init ? String(d.paid.run_init).slice(0, 13).replace("T", " ") + " UTC" : "—";
+          note.textContent = p.note.replace("{run}", ri);
+          wrap.appendChild(note);
+          return wrap;
+        }
+        svgMap.addEventListener("click", function (ev) {
+          var m = svgMap.getScreenCTM(); if (!m) return;
+          var pt = svgMap.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+          var q = pt.matrixTransform(m.inverse());
+          pick = { lat: 45 - q.y / 10, lon: q.x / 10 - 135 };
+          gPin.textContent = "";
+          var ring = document.createElementNS(NS, "circle"); ring.setAttribute("cx", q.x); ring.setAttribute("cy", q.y); ring.setAttribute("r", 14); ring.setAttribute("class", "pin-ring");
+          var dot = document.createElementNS(NS, "circle"); dot.setAttribute("cx", q.x); dot.setAttribute("cy", q.y); dot.setAttribute("r", 5); dot.setAttribute("class", "pin-dot");
+          gPin.appendChild(ring); gPin.appendChild(dot);
+          var pd = choose(pick.lat, pick.lon, view === "d01");
+          pinned = pd ? pd.d.k : null;
+          render();
+        });
+
+        function highlight(k) {
+          gDoms.querySelectorAll(".dom").forEach(function (r) {
+            r.classList.toggle("on", r.dataset.k === k);
+            r.classList.toggle("dim", !!k && r.dataset.k !== k);
+          });
+          legend.querySelectorAll("li").forEach(function (li) { li.classList.toggle("on", li.dataset.k === k); });
+        }
+
+        function render() {
+          var t = T[lang()];
+          document.getElementById("tab-best").textContent = t.best;
+          document.getElementById("tab-d01").textContent = t.d01;
+          document.querySelectorAll(".map-tabs button").forEach(function (b) { b.classList.toggle("active", b.dataset.view === view); });
+          // Free: solo d01. De pago: todas las mallas, anidadas
+          var items = [];
+          D.forEach(function (d) {
+            d.g.forEach(function (g, i) {
+              if (g[0] === null || (view === "d01" && g[5] !== "d01")) return;
+              items.push({ k: d.k, c: d.c, b: g, inner: i > 0 });
+            });
+          });
+          // las más grandes debajo
+          items.sort(function (a, b) { return (b.b[2] - b.b[0]) * (b.b[3] - b.b[1]) - (a.b[2] - a.b[0]) * (a.b[3] - a.b[1]); });
+          gDoms.textContent = "";
+          items.forEach(function (it, n) {
+            var r = document.createElementNS(NS, "rect"), b = it.b;
+            r.setAttribute("x", X(b[1])); r.setAttribute("y", Y(b[2]));
+            r.setAttribute("width", X(b[3]) - X(b[1])); r.setAttribute("height", Y(b[0]) - Y(b[2]));
+            r.setAttribute("pathLength", "1");
+            r.setAttribute("class", "dom" + (view === "best" && !it.inner && D.filter(function (d) { return d.k === it.k; })[0].g.length > 1 ? " outer" : ""));
+            r.setAttribute("fill", it.c); r.setAttribute("stroke", it.c);
+            r.style.animationDelay = (n * 0.06) + "s";
+            r.dataset.k = it.k;
+            r.addEventListener("mouseenter", function () { if (!pinned) highlight(it.k); });
+            r.addEventListener("mouseleave", function () { if (!pinned) highlight(null); });
+            gDoms.appendChild(r);
+          });
+          legend.textContent = "";
+          var finest = function (d) { return view === "d01" ? d.g[0][4] : Math.min.apply(null, d.g.map(function (g) { return g[4]; })); };
+          D.slice().sort(function (a, b) { return finest(a) - finest(b) || t.n[a.k].localeCompare(t.n[b.k]); }).forEach(function (d) {
+            var li = document.createElement("li");
+            li.dataset.k = d.k; li.tabIndex = 0;
+            li.innerHTML = '<span class="sw"></span><span class="nm"></span><span class="km"></span>';
+            li.querySelector(".sw").style.background = d.c;
+            li.querySelector(".nm").textContent = t.n[d.k];
+            li.querySelector(".km").textContent = view === "d01" ? "d01 · " + d.g[0][4] + " km"
+              : d.g.map(function (g) { return g[4]; }).join(" · ") + " km";
+            li.addEventListener("mouseenter", function () { if (!pinned) highlight(d.k); });
+            li.addEventListener("mouseleave", function () { if (!pinned) highlight(null); });
+            li.addEventListener("click", function () { pinned = pinned === d.k ? null : d.k; highlight(pinned); });
+            legend.appendChild(li);
+          });
+          highlight(pinned);
+          document.getElementById("status-text").textContent = t[state];
+          drawPick();
+        }
+
+        document.querySelectorAll(".map-tabs button").forEach(function (b) {
+          b.addEventListener("click", function () { view = b.dataset.view; render(); });
+        });
+        new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang"] });
+        render();
+
+        // ---------- Cifras ----------
+        var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var stats = document.getElementById("stats");
+        // Marcas del eje de 72 h: una cada 3 h (25 instantes)
+        var ticks = stats.querySelector(".ticks");
+        for (var i = 0; i <= 24; i++) {
+          var tk = document.createElementNS(NS, "path");
+          tk.setAttribute("d", "M" + (4 + i * 56 / 24).toFixed(2) + " 30V" + (i % 8 === 0 ? 35 : 33));
+          tk.style.animationDelay = (i * 0.04) + "s";
+          ticks.appendChild(tk);
+        }
+        // Reloj UTC: la aguja marca la hora UTC actual sobre las 4 corridas
+        var hand = stats.querySelector(".hand");
+        function clock() {
+          var d = new Date(), h = d.getUTCHours() + d.getUTCMinutes() / 60;
+          hand.setAttribute("transform", "rotate(" + (h * 15) + " 32 20)");
+        }
+        clock(); setInterval(clock, 60000);
+
+        function countUp(el) {
+          var unit = el.dataset.unit || "", seq = el.dataset.seq;
+          if (reduce) return;
+          if (seq) {                                   // 27 → 9 → 3 km
+            var v = seq.split(","), k = 0;
+            el.textContent = v[0] + unit;
+            var iv = setInterval(function () { k++; el.textContent = v[k] + unit; if (k >= v.length - 1) clearInterval(iv); }, 450);
+            return;
+          }
+          var to = +el.dataset.to, t0 = null;
+          function step(ts) {
+            if (!t0) t0 = ts;
+            var p = Math.min(1, (ts - t0) / 1100), e = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(to * e) + unit;
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }
+        if ("IntersectionObserver" in window) {
+          var io = new IntersectionObserver(function (es) {
+            if (!es[0].isIntersecting) return;
+            io.disconnect();
+            stats.classList.add("go");
+            stats.querySelectorAll("b").forEach(countUp);
+          }, { threshold: 0.4 });
+          io.observe(stats);
+        } else stats.classList.add("go");
+
+        // Las dos primeras llevan al mapa: 3 km fija Panamá (malla d03); 7 dominios los muestra todos
+        stats.querySelectorAll("[data-act]").forEach(function (a) {
+          a.addEventListener("click", function () {
+            view = "best"; pinned = a.dataset.act === "res" ? "panama" : null; render();
+          });
+        });
+        // La documentación existe en español e inglés
+        function docLinks() {
+          var l = document.documentElement.getAttribute("data-lang") === "es" ? "es" : "en";
+          stats.querySelectorAll("[data-doc]").forEach(function (a) { a.href = "docs.html#" + l + "-" + a.dataset.doc; });
+        }
+        docLinks();
+        new MutationObserver(docLinks).observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang"] });
+
+        // Estado en vivo (no necesita clave ni consume cuota)
+        function setState(s) { state = s; document.getElementById("status").dataset.state = s; render(); }
+        // var ctl = window.AbortController ? new AbortController() : null;
+        // var to = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+        // fetch("https://thredds.b1tmet.com/v1/status", { cache: "no-store", signal: ctl ? ctl.signal : undefined })
+        //   .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+        //   .then(function (j) { setState(j.status === "ok" ? "ok" : "degraded"); })
+        //   .catch(function () { setState("down"); })
+        //   .finally(function () { clearTimeout(to); });
+
+        // 15 s por intento y un reintento: en redes con DNS lento la primera consulta puede no resolver
+        function check(retries) {
+          var ctl = window.AbortController ? new AbortController() : null;
+          var to = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
+          fetch("https://thredds.b1tmet.com/v1/status", { cache: "no-store", signal: ctl ? ctl.signal : undefined })
+            .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+            .then(function (j) { clearTimeout(to); setState(j.status === "ok" ? "ok" : "degraded"); })
+            .catch(function () { clearTimeout(to); if (retries > 0) check(retries - 1); else setState("unknown"); });
+        }
+        check(1);        
+
+        // Pestañas de código (misma preferencia que la documentación)
+        var KEY = "b1t-code", def = "curl";
+        try { def = localStorage.getItem(KEY) || def; } catch (e) {}
+        function show(tab) {
+          document.querySelectorAll(".tabs [data-tab]").forEach(function (b) { b.classList.toggle("active", b.dataset.tab === tab); });
+          document.querySelectorAll(".tabs [data-panel]").forEach(function (p) { p.classList.toggle("active", p.dataset.panel === tab); });
+        }
+        document.querySelectorAll(".tabs [data-tab]").forEach(function (b) {
+          b.addEventListener("click", function () { show(b.dataset.tab); try { localStorage.setItem(KEY, b.dataset.tab); } catch (e) {} });
+        });
+        show(def);
+      })();
+    </script>
+    <script>
+      // Relieve por región: selector de región y pestañas por malla. Ciclo continuo de la malla gruesa
+      // a la fina (más tiempo en la fina) mientras se ve; pausa con el ratón encima o fuera de pantalla;
+      // se detiene al tocar una pestaña de malla. Las imágenes se cargan al elegir la región.
+      (function () {
+        var box = document.getElementById("relieve");
+        if (!box) return;
+        // [malla, km, puntos sobre tierra en la ventana, (sin uso)]
+        var R = {"panama":{"w":1200,"h":712,"g":[["d01",27,229,1110],["d02",9,1624,2170],["d03",3,13188,2781]]},"cuba":{"w":1200,"h":441,"g":[["d01",27,202,431],["d02",9,1555,539]]},"mexico":{"w":1200,"h":777,"g":[["d01",25,5281,2529],["d02",5,125678,4233]]},"centro_america":{"w":1200,"h":868,"g":[["d01",27,1096,2452],["d02",9,8739,2722]]},"dominicana":{"w":1200,"h":557,"g":[["d01",27,155,1773],["d02",9,1153,2106]]},"dominica":{"w":822,"h":900,"g":[["d01",27,39,110],["d02",9,198,392]]}};
+        var NAME = {
+          es: { panama: "Panamá", cuba: "Cuba", mexico: "México", centro_america: "Centroamérica", dominicana: "Rep. Dominicana", dominica: "Dominica" },
+          en: { panama: "Panama", cuba: "Cuba", mexico: "Mexico", centro_america: "Central America", dominicana: "Dominican Rep.", dominica: "Dominica" },
+          pt: { panama: "Panamá", cuba: "Cuba", mexico: "México", centro_america: "América Central", dominicana: "Rep. Dominicana", dominica: "Dominica" },
+          fr: { panama: "Panama", cuba: "Cuba", mexico: "Mexique", centro_america: "Amérique centrale", dominicana: "Rép. dominicaine", dominica: "Dominique" },
+          it: { panama: "Panama", cuba: "Cuba", mexico: "Messico", centro_america: "America centrale", dominicana: "Rep. Dominicana", dominica: "Dominica" },
+          nl: { panama: "Panama", cuba: "Cuba", mexico: "Mexico", centro_america: "Midden-Amerika", dominicana: "Dominicaanse Rep.", dominica: "Dominica" }
+        };
+        var TX = {
+          es: { st: "{n} puntos sobre tierra", x: " · {x} veces más que el plan Free", note: "Relieve y línea de costa tal como los usa el modelo en cada malla.", alt: "Relieve de {r} en la malla de {k} km" },
+          en: { st: "{n} land points", x: " · {x}× the Free plan", note: "Terrain and coastline as the model uses them on each grid.", alt: "{r} terrain on the {k} km grid" },
+          pt: { st: "{n} pontos em terra", x: " · {x} vezes mais que o plano Free", note: "Relevo e linha de costa tal como o modelo os usa em cada grade.", alt: "Relevo de {r} na grade de {k} km" },
+          fr: { st: "{n} points sur terre", x: " · {x} fois plus que l’offre Free", note: "Relief et trait de côte tels que le modèle les utilise sur chaque grille.", alt: "Relief de {r} sur la grille de {k} km" },
+          it: { st: "{n} punti su terra", x: " · {x} volte più del piano Free", note: "Rilievo e linea di costa come li usa il modello in ogni griglia.", alt: "Rilievo di {r} nella griglia di {k} km" },
+          nl: { st: "{n} landpunten", x: " · {x}× zoveel als het Free-abonnement", note: "Reliëf en kustlijn zoals het model ze op elk rooster gebruikt.", alt: "Reliëf van {r} op het rooster van {k} km" }
+        };
+        var regEl = box.querySelector(".tr-regions"), tabEl = box.querySelector(".tr-tabs"),
+            view = box.querySelector(".tr-view"), info = box.querySelector(".tr-info"), noteEl = box.querySelector(".tr-note");
+        var region = "panama", cur = null, user = false, visible = false, hover = false, timer = null, imgs = {};
+        var DWELL = 1800, DWELL_FINE = 3600;
+        var lang = function () { var l = document.documentElement.getAttribute("data-lang"); return TX[l] ? l : "en"; };
+        var nf = function (n) { try { return new Intl.NumberFormat(lang()).format(n); } catch (e) { return String(n); } };
+        var grids = function () { return R[region].g; };
+
+        function img(r, g) {
+          var k = r + g;
+          if (!imgs[k]) {
+            var im = document.createElement("img");
+            im.src = "assets/terrain-" + r.replace("_", "-") + "-" + g + ".webp";
+            im.width = R[r].w; im.height = R[r].h; im.decoding = "async"; im.alt = "";
+            im.dataset.k = k;
+            view.insertBefore(im, info);
+            imgs[k] = im;
+          }
+          return imgs[k];
+        }
+        function paint() {
+          var l = lang(), t = TX[l], gs = grids();
+          regEl.textContent = "";
+          Object.keys(R).forEach(function (r) {
+            var b = document.createElement("button"); b.type = "button"; b.textContent = NAME[l][r];
+            if (r === region) b.classList.add("active");
+            b.addEventListener("click", function () { if (r !== region) setRegion(r); });
+            regEl.appendChild(b);
+          });
+          tabEl.textContent = "";
+          gs.forEach(function (x) {
+            var b = document.createElement("button"); b.type = "button"; b.setAttribute("role", "tab"); b.dataset.g = x[0];
+            b.innerHTML = "<b>" + x[1] + " km</b><small>" + (x[0] === "d01" ? "Free" : "Starter · Pro") + "</small>";
+            var on = x[0] === cur; b.classList.toggle("active", on); b.setAttribute("aria-selected", on ? "true" : "false");
+            b.addEventListener("click", function () { user = true; stop(); show(x[0]); });
+            tabEl.appendChild(b);
+          });
+          var x = gs.filter(function (y) { return y[0] === cur; })[0];
+          var base = gs[0][2];                                  // puntos sobre tierra de la malla Free (d01)
+          info.textContent = !x ? "" : t.st.replace("{n}", nf(x[2])) +
+            (x[0] !== "d01" && base ? t.x.replace("{x}", nf(Math.round(x[2] / base))) : "");
+          noteEl.textContent = t.note;
+          Object.keys(imgs).forEach(function (k) { var im = imgs[k]; var g = k.slice(-3);
+            im.alt = t.alt.replace("{r}", NAME[l][k.slice(0, -3)]).replace("{k}", (R[k.slice(0, -3)].g.filter(function (y) { return y[0] === g; })[0] || [0, ""])[1]); });
+        }
+        function show(g) {
+          cur = g;
+          img(region, g);
+          Object.keys(imgs).forEach(function (k) { imgs[k].classList.toggle("active", k === region + g); });
+          paint();
+        }
+        function setRegion(r) {
+          region = r;
+          view.style.aspectRatio = R[r].w + " / " + R[r].h;
+          grids().forEach(function (x) { img(r, x[0]); });          // precarga las mallas de la región
+          show(user ? grids()[grids().length - 1][0] : grids()[0][0]);
+          next();
+        }
+        function stop() { clearTimeout(timer); timer = null; }
+        function next() {
+          stop();
+          if (user || !visible || hover || document.hidden || reduce) return;
+          var gs = grids().map(function (x) { return x[0]; }), i = gs.indexOf(cur);
+          timer = setTimeout(function () { show(gs[(i + 1) % gs.length]); next(); }, i === gs.length - 1 ? DWELL_FINE : DWELL);
+        }
+        var reduce = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+        view.style.aspectRatio = R[region].w + " / " + R[region].h;
+        grids().forEach(function (x) { img(region, x[0]); });
+        show(reduce ? grids()[grids().length - 1][0] : grids()[0][0]);
+        new MutationObserver(paint).observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang"] });
+        view.addEventListener("mouseenter", function () { hover = true; stop(); });
+        view.addEventListener("mouseleave", function () { hover = false; next(); });
+        document.addEventListener("visibilitychange", next);
+        if ("IntersectionObserver" in window) {
+          new IntersectionObserver(function (es) { visible = es[0].isIntersecting; next(); }, { threshold: 0.5 }).observe(view);
+        }
+      })();
+    </script>
+  </body>
+</html>

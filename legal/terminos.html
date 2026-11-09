@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Términos de la API · API Terms — B1TMET</title>
+    <meta name="description" content="Términos de la API de pronóstico B1TMET / B1TMET Forecast API Terms" />
+    <meta name="theme-color" content="#17062b" />
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="preload" href="../assets/fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../assets/marca.css" />
+    <script>
+      (function () {
+        var S = ["es", "en", "pt", "fr", "it", "nl"], l = null, d = document.documentElement;
+        d.className += " js";
+        var hr = new Date().getHours();
+        d.setAttribute("data-tod", hr >= 5 && hr < 8 ? "dawn" : hr >= 8 && hr < 17 ? "day" : hr >= 17 && hr < 20 ? "dusk" : "night");
+        try { var th = localStorage.getItem("b1t-theme"); if (th === "dark" || th === "light") d.setAttribute("data-theme", th); } catch (e) {}
+        try { l = new URLSearchParams(location.search).get("lang"); } catch (e) {}
+        if (S.indexOf(l) >= 0) { try { localStorage.setItem("b1t-lang", l); } catch (e) {} }
+        else { try { l = localStorage.getItem("b1t-lang"); } catch (e) {} }
+        if (S.indexOf(l) < 0) {
+          l = "en";
+          var list = navigator.languages || [navigator.language || "en"];
+          for (var i = 0; i < list.length; i++) {
+            var c = String(list[i] || "").slice(0, 2).toLowerCase();
+            if (S.indexOf(c) >= 0) { l = c; break; }
+          }
+        }
+        d.setAttribute("data-lang", l);
+        d.lang = l;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="brand" href="../index.html"><img src="../assets/logo-h-light.png" alt="B1TMET" width="138" height="40" /><small>API</small></a>
+      <nav class="top-nav" aria-label="API">
+        <a href="../index.html"><span lang="es">Inicio</span><span lang="en">Overview</span><span lang="pt">Início</span><span lang="fr">Aperçu</span><span lang="it">Panoramica</span><span lang="nl">Overzicht</span></a>
+        <a href="../docs.html"><span lang="es">Documentación</span><span lang="en">Documentation</span><span lang="pt">Documentação</span><span lang="fr">Documentation</span><span lang="it">Documentazione</span><span lang="nl">Documentatie</span></a>
+        <a href="../precios.html"><span lang="es">Precios</span><span lang="en">Pricing</span><span lang="pt">Preços</span><span lang="fr">Tarifs</span><span lang="it">Prezzi</span><span lang="nl">Prijzen</span></a>
+        <a href="../verificacion.html"><span lang="es">Verificación</span><span lang="en">Verification</span><span lang="pt">Verificação</span><span lang="fr">Vérification</span><span lang="it">Verifica</span><span lang="nl">Verificatie</span></a>
+      </nav>
+      <button class="theme" type="button" aria-label="Tema">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+      </button>
+      <label class="langsel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z"/></svg>
+        <select id="langsel" aria-label="Idioma / Language">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="nl">Nederlands</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="hero">
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gPlane" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#385BD6" stop-opacity=".95" />
+              <stop offset="1" stop-color="#385BD6" stop-opacity=".55" />
+            </linearGradient>
+          </defs>
+          <g class="rings r2"><circle cx="110" cy="40" r="60" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="122" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="184" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="246" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="308" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="370" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="432" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="494" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="556" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="618" fill="#385BD6" fill-opacity=".06" /></g>
+          <polygon class="plane" points="560,860 1500,120 1500,860" fill="url(#gPlane)" />
+          <g class="rings r1"><circle cx="1270" cy="700" r="70" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="140" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="210" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="280" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="350" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="420" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="490" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="560" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="630" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="700" fill="#A2B2F4" fill-opacity=".07" /></g>
+        </svg>
+      </div>
+      <svg class="ribbon" viewBox="0 0 660 320" aria-hidden="true">
+        <defs>
+          <linearGradient id="gRib" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="640" y2="0">
+            <stop offset="0" stop-color="#385BD6" />
+            <stop offset=".55" stop-color="#385BD6" stop-opacity=".75" />
+            <stop offset="1" stop-color="#17062B" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g>
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".22" transform="translate(30 18)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".4" transform="translate(20 12)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".65" transform="translate(10 6)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" />
+        </g>
+      </svg>
+      <canvas class="wind" aria-hidden="true"></canvas>
+      <div class="hero-in">
+        <p class="eyebrow">B1TMET Pro</p>
+        <h1 lang="es">Términos de la API</h1>
+        <h1 lang="en">API Terms</h1>
+        <h1 lang="pt">Termos da API</h1>
+        <h1 lang="fr">Conditions de l'API</h1>
+        <h1 lang="it">Termini dell'API</h1>
+        <h1 lang="nl">API-voorwaarden</h1>
+        <p class="date" lang="es">Última actualización: 1 de noviembre de 2026</p>
+        <p class="date" lang="en">Last updated: November 1, 2026</p>
+        <p class="date" lang="pt">Última atualização: 1 de novembro de 2026</p>
+        <p class="date" lang="fr">Dernière mise à jour : 1er novembre 2026</p>
+        <p class="date" lang="it">Ultimo aggiornamento: 1 novembre 2026</p>
+        <p class="date" lang="nl">Laatst bijgewerkt: 1 november 2026</p>
+      </div>
+      <div class="edge back" aria-hidden="true"></div>
+      <div class="edge" aria-hidden="true"></div>
+    </section>
+
+    <nav class="toc-m" aria-label="Índice">
+      <details lang="es">
+        <summary>En esta página</summary>
+        <ol>
+          <li><a href="#es-s1"><b>01</b>Aceptación</a></li>
+          <li><a href="#es-s2"><b>02</b>Claves de API</a></li>
+          <li><a href="#es-s3"><b>03</b>Planes, límites y cambios</a></li>
+          <li><a href="#es-s4"><b>04</b>Plan Free</a></li>
+          <li><a href="#es-s5"><b>05</b>Planes de pago y cancelación</a></li>
+          <li><a href="#es-s6"><b>06</b>Reembolsos</a></li>
+          <li><a href="#es-s7"><b>07</b>Uso permitido</a></li>
+          <li><a href="#es-s8"><b>08</b>Usos prohibidos</a></li>
+          <li><a href="#es-s9"><b>09</b>Atribución</a></li>
+          <li><a href="#es-s10"><b>10</b>Naturaleza de los datos</a></li>
+          <li><a href="#es-s11"><b>11</b>Disponibilidad y versiones</a></li>
+          <li><a href="#es-s12"><b>12</b>Suspensión</a></li>
+          <li><a href="#es-s13"><b>13</b>Privacidad</a></li>
+          <li><a href="#es-s14"><b>14</b>Limitación de responsabilidad</a></li>
+          <li><a href="#es-s15"><b>15</b>Ley aplicable y contacto</a></li>
+        </ol>
+      </details>
+      <details lang="en">
+        <summary>On this page</summary>
+        <ol>
+          <li><a href="#en-s1"><b>01</b>Acceptance</a></li>
+          <li><a href="#en-s2"><b>02</b>API keys</a></li>
+          <li><a href="#en-s3"><b>03</b>Plans, limits and changes</a></li>
+          <li><a href="#en-s4"><b>04</b>Free plan</a></li>
+          <li><a href="#en-s5"><b>05</b>Paid plans and cancellation</a></li>
+          <li><a href="#en-s6"><b>06</b>Refunds</a></li>
+          <li><a href="#en-s7"><b>07</b>Permitted use</a></li>
+          <li><a href="#en-s8"><b>08</b>Prohibited uses</a></li>
+          <li><a href="#en-s9"><b>09</b>Attribution</a></li>
+          <li><a href="#en-s10"><b>10</b>Nature of the data</a></li>
+          <li><a href="#en-s11"><b>11</b>Availability and versions</a></li>
+          <li><a href="#en-s12"><b>12</b>Suspension</a></li>
+          <li><a href="#en-s13"><b>13</b>Privacy</a></li>
+          <li><a href="#en-s14"><b>14</b>Limitation of liability</a></li>
+          <li><a href="#en-s15"><b>15</b>Governing law and contact</a></li>
+        </ol>
+      </details>
+      <details lang="pt">
+        <summary>Nesta página</summary>
+        <ol>
+          <li><a href="#pt-s1"><b>01</b>Aceitação</a></li>
+          <li><a href="#pt-s2"><b>02</b>Chaves de API</a></li>
+          <li><a href="#pt-s3"><b>03</b>Planos, limites e alterações</a></li>
+          <li><a href="#pt-s4"><b>04</b>Plano Free</a></li>
+          <li><a href="#pt-s5"><b>05</b>Planos pagos e cancelamento</a></li>
+          <li><a href="#pt-s6"><b>06</b>Reembolsos</a></li>
+          <li><a href="#pt-s7"><b>07</b>Uso permitido</a></li>
+          <li><a href="#pt-s8"><b>08</b>Usos proibidos</a></li>
+          <li><a href="#pt-s9"><b>09</b>Atribuição</a></li>
+          <li><a href="#pt-s10"><b>10</b>Natureza dos dados</a></li>
+          <li><a href="#pt-s11"><b>11</b>Disponibilidade e versões</a></li>
+          <li><a href="#pt-s12"><b>12</b>Suspensão</a></li>
+          <li><a href="#pt-s13"><b>13</b>Privacidade</a></li>
+          <li><a href="#pt-s14"><b>14</b>Limitação de responsabilidade</a></li>
+          <li><a href="#pt-s15"><b>15</b>Lei aplicável e contato</a></li>
+        </ol>
+      </details>
+      <details lang="fr">
+        <summary>Sur cette page</summary>
+        <ol>
+          <li><a href="#fr-s1"><b>01</b>Acceptation</a></li>
+          <li><a href="#fr-s2"><b>02</b>Clés d'API</a></li>
+          <li><a href="#fr-s3"><b>03</b>Offres, limites et modifications</a></li>
+          <li><a href="#fr-s4"><b>04</b>Offre Free</a></li>
+          <li><a href="#fr-s5"><b>05</b>Offres payantes et résiliation</a></li>
+          <li><a href="#fr-s6"><b>06</b>Remboursements</a></li>
+          <li><a href="#fr-s7"><b>07</b>Utilisation autorisée</a></li>
+          <li><a href="#fr-s8"><b>08</b>Utilisations interdites</a></li>
+          <li><a href="#fr-s9"><b>09</b>Attribution</a></li>
+          <li><a href="#fr-s10"><b>10</b>Nature des données</a></li>
+          <li><a href="#fr-s11"><b>11</b>Disponibilité et versions</a></li>
+          <li><a href="#fr-s12"><b>12</b>Suspension</a></li>
+          <li><a href="#fr-s13"><b>13</b>Confidentialité</a></li>
+          <li><a href="#fr-s14"><b>14</b>Limitation de responsabilité</a></li>
+          <li><a href="#fr-s15"><b>15</b>Droit applicable et contact</a></li>
+        </ol>
+      </details>
+      <details lang="it">
+        <summary>In questa pagina</summary>
+        <ol>
+          <li><a href="#it-s1"><b>01</b>Accettazione</a></li>
+          <li><a href="#it-s2"><b>02</b>Chiavi API</a></li>
+          <li><a href="#it-s3"><b>03</b>Piani, limiti e modifiche</a></li>
+          <li><a href="#it-s4"><b>04</b>Piano Free</a></li>
+          <li><a href="#it-s5"><b>05</b>Piani a pagamento e disdetta</a></li>
+          <li><a href="#it-s6"><b>06</b>Rimborsi</a></li>
+          <li><a href="#it-s7"><b>07</b>Uso consentito</a></li>
+          <li><a href="#it-s8"><b>08</b>Usi vietati</a></li>
+          <li><a href="#it-s9"><b>09</b>Attribuzione</a></li>
+          <li><a href="#it-s10"><b>10</b>Natura dei dati</a></li>
+          <li><a href="#it-s11"><b>11</b>Disponibilità e versioni</a></li>
+          <li><a href="#it-s12"><b>12</b>Sospensione</a></li>
+          <li><a href="#it-s13"><b>13</b>Privacy</a></li>
+          <li><a href="#it-s14"><b>14</b>Limitazione di responsabilità</a></li>
+          <li><a href="#it-s15"><b>15</b>Legge applicabile e contatti</a></li>
+        </ol>
+      </details>
+      <details lang="nl">
+        <summary>Op deze pagina</summary>
+        <ol>
+          <li><a href="#nl-s1"><b>01</b>Aanvaarding</a></li>
+          <li><a href="#nl-s2"><b>02</b>API-sleutels</a></li>
+          <li><a href="#nl-s3"><b>03</b>Abonnementen, limieten en wijzigingen</a></li>
+          <li><a href="#nl-s4"><b>04</b>Free-abonnement</a></li>
+          <li><a href="#nl-s5"><b>05</b>Betaalde abonnementen en opzegging</a></li>
+          <li><a href="#nl-s6"><b>06</b>Terugbetalingen</a></li>
+          <li><a href="#nl-s7"><b>07</b>Toegestaan gebruik</a></li>
+          <li><a href="#nl-s8"><b>08</b>Verboden gebruik</a></li>
+          <li><a href="#nl-s9"><b>09</b>Bronvermelding</a></li>
+          <li><a href="#nl-s10"><b>10</b>Aard van de gegevens</a></li>
+          <li><a href="#nl-s11"><b>11</b>Beschikbaarheid en versies</a></li>
+          <li><a href="#nl-s12"><b>12</b>Opschorting</a></li>
+          <li><a href="#nl-s13"><b>13</b>Privacy</a></li>
+          <li><a href="#nl-s14"><b>14</b>Beperking van aansprakelijkheid</a></li>
+          <li><a href="#nl-s15"><b>15</b>Toepasselijk recht en contact</a></li>
+        </ol>
+      </details>
+    </nav>
+    <ol class="rail" lang="es" aria-label="En esta página">
+      <li><a href="#es-s1">01<span>Aceptación</span></a></li>
+      <li><a href="#es-s2">02<span>Claves de API</span></a></li>
+      <li><a href="#es-s3">03<span>Planes, límites y cambios</span></a></li>
+      <li><a href="#es-s4">04<span>Plan Free</span></a></li>
+      <li><a href="#es-s5">05<span>Planes de pago y cancelación</span></a></li>
+      <li><a href="#es-s6">06<span>Reembolsos</span></a></li>
+      <li><a href="#es-s7">07<span>Uso permitido</span></a></li>
+      <li><a href="#es-s8">08<span>Usos prohibidos</span></a></li>
+      <li><a href="#es-s9">09<span>Atribución</span></a></li>
+      <li><a href="#es-s10">10<span>Naturaleza de los datos</span></a></li>
+      <li><a href="#es-s11">11<span>Disponibilidad y versiones</span></a></li>
+      <li><a href="#es-s12">12<span>Suspensión</span></a></li>
+      <li><a href="#es-s13">13<span>Privacidad</span></a></li>
+      <li><a href="#es-s14">14<span>Limitación de responsabilidad</span></a></li>
+      <li><a href="#es-s15">15<span>Ley aplicable y contacto</span></a></li>
+    </ol>
+    <ol class="rail" lang="en" aria-label="On this page">
+      <li><a href="#en-s1">01<span>Acceptance</span></a></li>
+      <li><a href="#en-s2">02<span>API keys</span></a></li>
+      <li><a href="#en-s3">03<span>Plans, limits and changes</span></a></li>
+      <li><a href="#en-s4">04<span>Free plan</span></a></li>
+      <li><a href="#en-s5">05<span>Paid plans and cancellation</span></a></li>
+      <li><a href="#en-s6">06<span>Refunds</span></a></li>
+      <li><a href="#en-s7">07<span>Permitted use</span></a></li>
+      <li><a href="#en-s8">08<span>Prohibited uses</span></a></li>
+      <li><a href="#en-s9">09<span>Attribution</span></a></li>
+      <li><a href="#en-s10">10<span>Nature of the data</span></a></li>
+      <li><a href="#en-s11">11<span>Availability and versions</span></a></li>
+      <li><a href="#en-s12">12<span>Suspension</span></a></li>
+      <li><a href="#en-s13">13<span>Privacy</span></a></li>
+      <li><a href="#en-s14">14<span>Limitation of liability</span></a></li>
+      <li><a href="#en-s15">15<span>Governing law and contact</span></a></li>
+    </ol>
+    <ol class="rail" lang="pt" aria-label="Nesta página">
+      <li><a href="#pt-s1">01<span>Aceitação</span></a></li>
+      <li><a href="#pt-s2">02<span>Chaves de API</span></a></li>
+      <li><a href="#pt-s3">03<span>Planos, limites e alterações</span></a></li>
+      <li><a href="#pt-s4">04<span>Plano Free</span></a></li>
+      <li><a href="#pt-s5">05<span>Planos pagos e cancelamento</span></a></li>
+      <li><a href="#pt-s6">06<span>Reembolsos</span></a></li>
+      <li><a href="#pt-s7">07<span>Uso permitido</span></a></li>
+      <li><a href="#pt-s8">08<span>Usos proibidos</span></a></li>
+      <li><a href="#pt-s9">09<span>Atribuição</span></a></li>
+      <li><a href="#pt-s10">10<span>Natureza dos dados</span></a></li>
+      <li><a href="#pt-s11">11<span>Disponibilidade e versões</span></a></li>
+      <li><a href="#pt-s12">12<span>Suspensão</span></a></li>
+      <li><a href="#pt-s13">13<span>Privacidade</span></a></li>
+      <li><a href="#pt-s14">14<span>Limitação de responsabilidade</span></a></li>
+      <li><a href="#pt-s15">15<span>Lei aplicável e contato</span></a></li>
+    </ol>
+    <ol class="rail" lang="fr" aria-label="Sur cette page">
+      <li><a href="#fr-s1">01<span>Acceptation</span></a></li>
+      <li><a href="#fr-s2">02<span>Clés d'API</span></a></li>
+      <li><a href="#fr-s3">03<span>Offres, limites et modifications</span></a></li>
+      <li><a href="#fr-s4">04<span>Offre Free</span></a></li>
+      <li><a href="#fr-s5">05<span>Offres payantes et résiliation</span></a></li>
+      <li><a href="#fr-s6">06<span>Remboursements</span></a></li>
+      <li><a href="#fr-s7">07<span>Utilisation autorisée</span></a></li>
+      <li><a href="#fr-s8">08<span>Utilisations interdites</span></a></li>
+      <li><a href="#fr-s9">09<span>Attribution</span></a></li>
+      <li><a href="#fr-s10">10<span>Nature des données</span></a></li>
+      <li><a href="#fr-s11">11<span>Disponibilité et versions</span></a></li>
+      <li><a href="#fr-s12">12<span>Suspension</span></a></li>
+      <li><a href="#fr-s13">13<span>Confidentialité</span></a></li>
+      <li><a href="#fr-s14">14<span>Limitation de responsabilité</span></a></li>
+      <li><a href="#fr-s15">15<span>Droit applicable et contact</span></a></li>
+    </ol>
+    <ol class="rail" lang="it" aria-label="In questa pagina">
+      <li><a href="#it-s1">01<span>Accettazione</span></a></li>
+      <li><a href="#it-s2">02<span>Chiavi API</span></a></li>
+      <li><a href="#it-s3">03<span>Piani, limiti e modifiche</span></a></li>
+      <li><a href="#it-s4">04<span>Piano Free</span></a></li>
+      <li><a href="#it-s5">05<span>Piani a pagamento e disdetta</span></a></li>
+      <li><a href="#it-s6">06<span>Rimborsi</span></a></li>
+      <li><a href="#it-s7">07<span>Uso consentito</span></a></li>
+      <li><a href="#it-s8">08<span>Usi vietati</span></a></li>
+      <li><a href="#it-s9">09<span>Attribuzione</span></a></li>
+      <li><a href="#it-s10">10<span>Natura dei dati</span></a></li>
+      <li><a href="#it-s11">11<span>Disponibilità e versioni</span></a></li>
+      <li><a href="#it-s12">12<span>Sospensione</span></a></li>
+      <li><a href="#it-s13">13<span>Privacy</span></a></li>
+      <li><a href="#it-s14">14<span>Limitazione di responsabilità</span></a></li>
+      <li><a href="#it-s15">15<span>Legge applicabile e contatti</span></a></li>
+    </ol>
+    <ol class="rail" lang="nl" aria-label="Op deze pagina">
+      <li><a href="#nl-s1">01<span>Aanvaarding</span></a></li>
+      <li><a href="#nl-s2">02<span>API-sleutels</span></a></li>
+      <li><a href="#nl-s3">03<span>Abonnementen, limieten en wijzigingen</span></a></li>
+      <li><a href="#nl-s4">04<span>Free-abonnement</span></a></li>
+      <li><a href="#nl-s5">05<span>Betaalde abonnementen en opzegging</span></a></li>
+      <li><a href="#nl-s6">06<span>Terugbetalingen</span></a></li>
+      <li><a href="#nl-s7">07<span>Toegestaan gebruik</span></a></li>
+      <li><a href="#nl-s8">08<span>Verboden gebruik</span></a></li>
+      <li><a href="#nl-s9">09<span>Bronvermelding</span></a></li>
+      <li><a href="#nl-s10">10<span>Aard van de gegevens</span></a></li>
+      <li><a href="#nl-s11">11<span>Beschikbaarheid en versies</span></a></li>
+      <li><a href="#nl-s12">12<span>Opschorting</span></a></li>
+      <li><a href="#nl-s13">13<span>Privacy</span></a></li>
+      <li><a href="#nl-s14">14<span>Beperking van aansprakelijkheid</span></a></li>
+      <li><a href="#nl-s15">15<span>Toepasselijk recht en contact</span></a></li>
+    </ol>
+
+    <main class="doc">
+      <!-- ======================= ES ======================= -->
+      <article lang="es">
+        <section class="sec" id="es-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Aceptación</h2>
+              <p>Estos Términos de la API (los «Términos de la API») regulan el acceso a la API de pronóstico de B1TMET (la «API»), prestada por <strong>B1TMET Technologies</strong>, con domicilio en Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México. Se aplican junto con los <a href="https://b1tmet.github.io/legal/terminos.html">Términos de uso</a>; en todo lo relativo a la API, prevalecen estos Términos de la API. Al solicitar una clave o usar la API, los aceptas en tu nombre o en el de la organización que representas.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Claves de API</h2>
+              <ul><li>Cada clave es confidencial y solo puede usarla tu organización. Eres responsable de todo el uso que se haga con ella.</li><li>La clave se muestra una sola vez al obtenerla; no la guardamos y no podemos recuperarla. Si la pierdes o sospechas que se ha filtrado, puedes sustituirla por una nueva en <a href="../claves.html">Gestionar claves</a> (la anterior se revoca al instante) o pedírnoslo.</li><li>Si sospechas que una clave se ha filtrado, avísanos: la revocaremos y te daremos otra.</li><li>Podemos revocar una clave filtrada o usada de forma abusiva.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Planes, límites y cambios</h2>
+              <p>Los límites, el horizonte de pronóstico, las resoluciones y el precio de cada plan se publican en la página de <a href="../precios.html">Precios</a>. Los límites se aplican por cliente y los comparten todas sus claves. Avisaremos con al menos <strong>30 días</strong> de antelación de cualquier subida de precio o reducción de límites de un plan de pago; el cambio se aplicará a partir del siguiente periodo de facturación.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Plan Free</h2>
+              <p>El plan Free es solo para evaluación y no puede usarse en productos o servicios comerciales. La clave se obtiene en la <a href="../alta.html">página de alta</a> verificando tu correo, con una clave Free por correo. Es válida durante 30 días y puede renovarse desde la misma página en sus 3 últimos días de validez o después de que caduque; al renovarla, la anterior se revoca. Podemos modificar o retirar el plan Free en cualquier momento.</p>
+                      <p><strong>Demostración en la web.</strong> La <a href="../index.html">página de la API</a> incluye una demostración gratuita y sin clave con el pronóstico de las próximas 24 horas para el punto que elijas. Sirve solo para evaluar el servicio desde el navegador: no está permitido consultarla de forma automatizada ni usar sus datos en productos o servicios. Podemos limitarla, bloquear su uso o retirarla en cualquier momento.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Planes de pago y cancelación</h2>
+              <p>Los planes de pago son suscripciones mensuales que se pagan por adelantado a través de <strong>Stripe</strong>. La clave se muestra en pantalla al completar el pago. Puedes cambiar de plan (con prorrateo), actualizar la tarjeta o cancelar en cualquier momento desde el portal de cliente de Stripe (enlace en el correo de bienvenida) o escribiendo a <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>. Si cancelas, tu clave seguirá activa hasta el final del periodo pagado y la suscripción no se renovará. Si un cobro falla, Stripe lo reintentará durante unos días y te avisará por correo; si todos los reintentos fallan, la suscripción se cancela y la clave deja de funcionar.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Reembolsos</h2>
+              <p>No se reembolsan periodos parciales. Siempre reembolsaremos:</p>
+                      <ul><li>Un cobro duplicado o erróneo.</li><li>La parte proporcional del mes si la API deja de estar disponible durante más de <strong>72 horas seguidas</strong> por causas que nos sean imputables.</li></ul>
+                      <p>Solicítalo por correo indicando tu plan y la fecha del cobro. El reembolso se hace al mismo medio de pago a través de Stripe. Nada en esta sección limita los derechos que la ley te reconozca.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Uso permitido</h2>
+              <p>Con un plan de pago puedes integrar los datos de la API en tus productos y servicios, incluidos los comerciales, y mostrarlos a tus usuarios finales. También puedes usarlos como dato de entrada de tus propios análisis o modelos internos (por ejemplo, riego, logística o energía).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Usos prohibidos</h2>
+              <p>Salvo acuerdo escrito con nosotros, no está permitido:</p>
+                      <ul><li>Revender, sublicenciar o redistribuir los datos en bruto o de forma masiva, ni ofrecerlos como servicio de datos o como API.</li><li>Usar los datos para entrenar o ajustar modelos, incluidos los de inteligencia artificial, que generen pronósticos, ni para crear un servicio de pronóstico que compita con B1TMET.</li><li>Compartir claves fuera de tu organización, usar varias cuentas o claves para superar los límites o eludirlos de cualquier otro modo.</li><li>Usar la API con fines ilícitos o de forma que perjudique a nuestra infraestructura o a otros clientes.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Atribución</h2>
+              <p>En los planes <strong>Free</strong> y <strong>Starter</strong>, cuando muestres los datos públicamente debes indicar de forma visible «Pronóstico: B1TMET», con un enlace a <a href="https://b1tmet.com">b1tmet.com</a> si se trata de una web o una app. En los planes Pro y Enterprise la atribución es opcional.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Naturaleza de los datos</h2>
+              <div class="note">Los pronósticos proceden de modelos numéricos, son <strong>orientativos</strong> y pueden contener errores o retrasos. <strong>No sustituyen</strong> los avisos oficiales de los servicios meteorológicos nacionales ni de protección civil. No los uses como única fuente para decisiones de las que dependa la seguridad de personas o bienes.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Disponibilidad y versiones</h2>
+              <p>Hacemos lo razonable para que la API funcione de forma continua, pero no garantizamos un nivel de disponibilidad salvo en un acuerdo Enterprise. Puede haber interrupciones por mantenimiento. La versión <code>v1</code> es estable y solo recibe cambios compatibles. Los cambios incompatibles se publicarán en una versión nueva, y la anterior se mantendrá al menos <strong>12 meses</strong> desde su anuncio.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s12">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">12</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">12. </span>Suspensión</h2>
+              <p>Podemos suspender o revocar el acceso a la API por impago, por incumplimiento de estos términos o por un uso que ponga en riesgo el servicio, con aviso previo cuando sea posible.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s13">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">13</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">13. </span>Privacidad</h2>
+              <p>Tratamos los datos de los clientes de la API según el <a href="privacidad.html">Aviso de privacidad</a>. Las coordenadas que envías se usan solo para calcular el pronóstico: no se registran en los logs y solo se conservan unas horas en caché. Si envías coordenadas de tus propios usuarios, eres responsable de informarles y de contar con la base legal necesaria.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s14">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">14</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">14. </span>Limitación de responsabilidad</h2>
+              <p>En la medida en que la ley lo permita, nuestra responsabilidad total por la API se limita al importe que nos hayas pagado en los <strong>3 meses</strong> anteriores al hecho que la origine. No respondemos de daños indirectos ni de pérdidas derivadas del uso de la información meteorológica. Esto no limita la responsabilidad que no pueda excluirse conforme a la ley.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s15">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">15</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">15. </span>Ley aplicable y contacto</h2>
+              <p>Estos Términos de la API se rigen por las leyes de los Estados Unidos Mexicanos. Para cualquier controversia, las partes se someten a los tribunales competentes de la Ciudad de México, sin perjuicio de los derechos que te correspondan como consumidor. Contacto: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= EN ======================= -->
+      <article lang="en">
+        <section class="sec" id="en-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Acceptance</h2>
+              <p>These API Terms govern access to the B1TMET forecast API (the "API"), provided by <strong>B1TMET Technologies</strong>, located at Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México. They apply together with the <a href="https://b1tmet.github.io/legal/terminos.html">Terms of Use</a>; for everything related to the API, these API Terms prevail. By requesting a key or using the API, you accept them on your own behalf or on behalf of the organization you represent.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>API keys</h2>
+              <ul><li>Each key is confidential and may only be used by your organization. You are responsible for all use made with it.</li><li>The key is shown only once when you obtain it; we do not store it and cannot recover it. If you lose it or suspect it has leaked, you can replace it with a new one in <a href="../claves.html">Manage keys</a> (the old one is revoked immediately) or ask us to.</li><li>If you suspect a key has leaked, let us know: we will revoke it and issue a new one.</li><li>We may revoke a key that has leaked or is being used abusively.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Plans, limits and changes</h2>
+              <p>The limits, forecast horizon, resolutions and price of each plan are published on the <a href="../precios.html">Pricing</a> page. Limits apply per customer and are shared by all of its keys. We will give at least <strong>30 days'</strong> notice of any price increase or reduction in the limits of a paid plan; the change will apply from the next billing period.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Free plan</h2>
+              <p>The Free plan is for evaluation only and may not be used in commercial products or services. Its key is obtained on the <a href="../alta.html">sign-up page</a> by verifying your email, with one Free key per email. It is valid for 30 days and can be renewed from the same page during its last 3 days of validity or after it expires; when renewed, the previous key is revoked. We may modify or withdraw the Free plan at any time.</p>
+                      <p><strong>Website demo.</strong> The <a href="../index.html">API page</a> includes a free demo, with no key required, showing the forecast for the next 24 hours at the point you choose. It is intended only for evaluating the service in a browser: you may not query it in an automated way or use its data in products or services. We may limit it, block its use or withdraw it at any time.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Paid plans and cancellation</h2>
+              <p>Paid plans are monthly subscriptions paid in advance through <strong>Stripe</strong>. Your key is shown on screen when payment completes. You can change plan (prorated), update your card or cancel at any time from the Stripe customer portal (link in the welcome email) or by writing to <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>. If you cancel, your key will remain active until the end of the paid period and the subscription will not renew. If a charge fails, Stripe will retry it for a few days and notify you by email; if all retries fail, the subscription is canceled and the key stops working.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Refunds</h2>
+              <p>Partial periods are not refunded. We will always refund:</p>
+                      <ul><li>A duplicate or erroneous charge.</li><li>The proportional part of the month if the API is unavailable for more than <strong>72 consecutive hours</strong> for reasons attributable to us.</li></ul>
+                      <p>Request it by email stating your plan and the charge date. Refunds are issued to the same payment method through Stripe. Nothing in this section limits the rights granted to you by law.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Permitted use</h2>
+              <p>With a paid plan you may integrate API data into your products and services, including commercial ones, and display it to your end users. You may also use it as input for your own internal analyses or models (for example, irrigation, logistics or energy).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Prohibited uses</h2>
+              <p>Unless agreed with us in writing, you may not:</p>
+                      <ul><li>Resell, sublicense or redistribute the data in raw form or in bulk, or offer it as a data service or as an API.</li><li>Use the data to train or fine-tune models, including artificial intelligence models, that generate forecasts, or to build a forecast service that competes with B1TMET.</li><li>Share keys outside your organization, use multiple accounts or keys to exceed the limits, or circumvent them in any other way.</li><li>Use the API for unlawful purposes or in a way that harms our infrastructure or other customers.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Attribution</h2>
+              <p>On the <strong>Free</strong> and <strong>Starter</strong> plans, when you display the data publicly you must visibly state "Forecast: B1TMET", with a link to <a href="https://b1tmet.com">b1tmet.com</a> if it is a website or an app. On the Pro and Enterprise plans attribution is optional.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Nature of the data</h2>
+              <div class="note">Forecasts come from numerical models, are for <strong>guidance only</strong> and may contain errors or delays. They <strong>do not replace</strong> official warnings from national weather services or civil protection agencies. Do not use them as your only source for decisions on which the safety of people or property depends.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Availability and versions</h2>
+              <p>We make reasonable efforts to keep the API running continuously, but we do not guarantee any level of availability except under an Enterprise agreement. There may be interruptions for maintenance. Version <code>v1</code> is stable and only receives compatible changes. Incompatible changes will be released in a new version, and the previous one will be maintained for at least <strong>12 months</strong> from its announcement.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s12">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">12</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">12. </span>Suspension</h2>
+              <p>We may suspend or revoke access to the API for non-payment, breach of these terms or use that puts the service at risk, with prior notice where possible.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s13">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">13</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">13. </span>Privacy</h2>
+              <p>We process API customers' data as described in the <a href="privacidad.html">Privacy Policy</a>. The coordinates you send are used only to compute the forecast: they are not recorded in logs and are only kept in cache for a few hours. If you send your own users' coordinates, you are responsible for informing them and for having the necessary legal basis.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s14">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">14</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">14. </span>Limitation of liability</h2>
+              <p>To the extent permitted by law, our total liability for the API is limited to the amount you paid us in the <strong>3 months</strong> preceding the event giving rise to it. We are not liable for indirect damages or for losses arising from the use of the weather information. This does not limit any liability that cannot be excluded by law.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s15">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">15</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">15. </span>Governing law and contact</h2>
+              <p>These API Terms are governed by the laws of the United Mexican States. For any dispute, the parties submit to the competent courts of Mexico City, without prejudice to your rights as a consumer. Contact: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= PT ======================= -->
+      <article lang="pt">
+        <section class="sec" id="pt-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Aceitação</h2>
+              <p>Estes Termos da API regulam o acesso à API de previsão da B1TMET (a «API»), prestada pela <strong>B1TMET Technologies</strong>, com domicílio em Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México. Aplicam-se em conjunto com os <a href="https://b1tmet.github.io/legal/terminos.html">Termos de uso</a>; em tudo o que se refere à API, prevalecem estes Termos da API. Ao solicitar uma chave ou usar a API, você os aceita em seu próprio nome ou em nome da organização que representa.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Chaves de API</h2>
+              <ul><li>Cada chave é confidencial e só pode ser usada pela sua organização. Você é responsável por todo o uso feito com ela.</li><li>A chave é exibida uma única vez ao obtê-la; não a guardamos e não podemos recuperá-la. Se você a perder ou suspeitar que vazou, pode substituí-la por uma nova em <a href="../claves.html">Gerenciar chaves</a> (a anterior é revogada na hora) ou pedir para nós.</li><li>Se suspeitar que uma chave vazou, avise-nos: nós a revogaremos e enviaremos outra.</li><li>Podemos revogar uma chave que tenha vazado ou que esteja sendo usada de forma abusiva.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Planos, limites e alterações</h2>
+              <p>Os limites, o horizonte de previsão, as resoluções e o preço de cada plano são publicados na página de <a href="../precios.html">Preços</a>. Os limites se aplicam por cliente e são compartilhados por todas as suas chaves. Avisaremos com pelo menos <strong>30 dias</strong> de antecedência sobre qualquer aumento de preço ou redução de limites de um plano pago; a alteração será aplicada a partir do período de faturamento seguinte.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Plano Free</h2>
+              <p>O plano Free é apenas para avaliação e não pode ser usado em produtos ou serviços comerciais. A chave é obtida na <a href="../alta.html">página de cadastro</a> verificando o seu e-mail, com uma chave Free por e-mail. É válida por 30 dias e pode ser renovada na mesma página nos 3 últimos dias de validade ou depois de expirar; ao renová-la, a anterior é revogada. Podemos modificar ou retirar o plano Free a qualquer momento.</p>
+                      <p><strong>Demonstração no site.</strong> A <a href="../index.html">página da API</a> inclui uma demonstração gratuita e sem chave com a previsão das próximas 24 horas para o ponto que escolher. Serve apenas para avaliar o serviço no navegador: não é permitido consultá-la de forma automatizada nem usar os seus dados em produtos ou serviços. Podemos limitá-la, bloquear o seu uso ou retirá-la a qualquer momento.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Planos pagos e cancelamento</h2>
+              <p>Os planos pagos são assinaturas mensais pagas antecipadamente por meio da <strong>Stripe</strong>. A chave é exibida na tela ao concluir o pagamento. Você pode mudar de plano (com rateio), atualizar o cartão ou cancelar a qualquer momento no portal do cliente da Stripe (link no e-mail de boas-vindas) ou escrevendo para <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>. Se cancelar, sua chave continuará ativa até o fim do período pago e a assinatura não será renovada. Se uma cobrança falhar, a Stripe tentará novamente durante alguns dias e avisará você por e-mail; se todas as tentativas falharem, a assinatura é cancelada e a chave deixa de funcionar.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Reembolsos</h2>
+              <p>Períodos parciais não são reembolsados. Sempre reembolsaremos:</p>
+                      <ul><li>Uma cobrança duplicada ou indevida.</li><li>A parte proporcional do mês se a API ficar indisponível por mais de <strong>72 horas seguidas</strong> por motivos que nos sejam imputáveis.</li></ul>
+                      <p>Solicite por e-mail indicando seu plano e a data da cobrança. O reembolso é feito no mesmo meio de pagamento por meio da Stripe. Nada nesta seção limita os direitos que a lei lhe garante.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Uso permitido</h2>
+              <p>Com um plano pago, você pode integrar os dados da API em seus produtos e serviços, incluindo os comerciais, e exibi-los aos seus usuários finais. Também pode usá-los como dado de entrada de suas próprias análises ou modelos internos (por exemplo, irrigação, logística ou energia).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Usos proibidos</h2>
+              <p>Salvo acordo por escrito conosco, não é permitido:</p>
+                      <ul><li>Revender, sublicenciar ou redistribuir os dados brutos ou em massa, nem oferecê-los como serviço de dados ou como API.</li><li>Usar os dados para treinar ou ajustar modelos, incluindo os de inteligência artificial, que gerem previsões, nem para criar um serviço de previsão que concorra com a B1TMET.</li><li>Compartilhar chaves fora da sua organização, usar várias contas ou chaves para ultrapassar os limites ou contorná-los de qualquer outra forma.</li><li>Usar a API para fins ilícitos ou de forma que prejudique nossa infraestrutura ou outros clientes.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Atribuição</h2>
+              <p>Nos planos <strong>Free</strong> e <strong>Starter</strong>, ao exibir os dados publicamente, você deve indicar de forma visível «Previsão: B1TMET», com um link para <a href="https://b1tmet.com">b1tmet.com</a> se for um site ou um app. Nos planos Pro e Enterprise a atribuição é opcional.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Natureza dos dados</h2>
+              <div class="note">As previsões provêm de modelos numéricos, são <strong>orientativas</strong> e podem conter erros ou atrasos. <strong>Não substituem</strong> os avisos oficiais dos serviços meteorológicos nacionais nem da defesa civil. Não as use como única fonte para decisões das quais dependa a segurança de pessoas ou bens.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Disponibilidade e versões</h2>
+              <p>Fazemos o razoável para que a API funcione de forma contínua, mas não garantimos um nível de disponibilidade, salvo em um acordo Enterprise. Pode haver interrupções para manutenção. A versão <code>v1</code> é estável e só recebe alterações compatíveis. As alterações incompatíveis serão publicadas em uma nova versão, e a anterior será mantida por pelo menos <strong>12 meses</strong> a partir do seu anúncio.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s12">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">12</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">12. </span>Suspensão</h2>
+              <p>Podemos suspender ou revogar o acesso à API por falta de pagamento, por descumprimento destes termos ou por um uso que coloque o serviço em risco, com aviso prévio quando possível.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s13">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">13</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">13. </span>Privacidade</h2>
+              <p>Tratamos os dados dos clientes da API conforme o <a href="privacidad.html">Aviso de privacidade</a>. As coordenadas que você envia são usadas apenas para calcular a previsão: não são registradas nos logs e ficam em cache apenas por algumas horas. Se você enviar coordenadas dos seus próprios usuários, é responsável por informá-los e por contar com a base legal necessária.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s14">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">14</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">14. </span>Limitação de responsabilidade</h2>
+              <p>Na medida em que a lei o permita, nossa responsabilidade total pela API se limita ao valor que você nos pagou nos <strong>3 meses</strong> anteriores ao fato que a originar. Não respondemos por danos indiretos nem por perdas decorrentes do uso da informação meteorológica. Isso não limita a responsabilidade que não possa ser excluída nos termos da lei.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s15">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">15</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">15. </span>Lei aplicável e contato</h2>
+              <p>Estes Termos da API são regidos pelas leis dos Estados Unidos Mexicanos. Para qualquer controvérsia, as partes submetem-se aos tribunais competentes da Cidade do México, sem prejuízo dos direitos que lhe correspondam como consumidor. Contato: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= FR ======================= -->
+      <article lang="fr">
+        <section class="sec" id="fr-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Acceptation</h2>
+              <p>Les présentes Conditions de l'API régissent l'accès à l'API de prévision de B1TMET (l'« API »), fournie par <strong>B1TMET Technologies</strong>, domiciliée à l'adresse suivante : Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México. Elles s'appliquent conjointement avec les <a href="https://b1tmet.github.io/legal/terminos.html">Conditions d'utilisation</a> ; pour tout ce qui concerne l'API, les présentes Conditions de l'API prévalent. En demandant une clé ou en utilisant l'API, vous les acceptez en votre nom ou au nom de l'organisation que vous représentez.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Clés d'API</h2>
+              <ul><li>Chaque clé est confidentielle et ne peut être utilisée que par votre organisation. Vous êtes responsable de toute utilisation qui en est faite.</li><li>La clé n'est affichée qu'une seule fois lors de son obtention ; nous ne la conservons pas et ne pouvons pas la récupérer. Si vous la perdez ou soupçonnez une fuite, vous pouvez la remplacer par une nouvelle dans <a href="../claves.html">Gérer les clés</a> (l'ancienne est révoquée immédiatement) ou nous le demander.</li><li>Si vous soupçonnez la fuite d'une clé, prévenez-nous : nous la révoquerons et vous en fournirons une nouvelle.</li><li>Nous pouvons révoquer une clé qui a fuité ou qui est utilisée de manière abusive.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Offres, limites et modifications</h2>
+              <p>Les limites, l'horizon de prévision, les résolutions et le prix de chaque offre sont publiés sur la page <a href="../precios.html">Tarifs</a>. Les limites s'appliquent par client et sont partagées par toutes ses clés. Nous vous informerons au moins <strong>30 jours</strong> à l'avance de toute hausse de prix ou réduction des limites d'une offre payante ; la modification s'appliquera à partir de la période de facturation suivante.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Offre Free</h2>
+              <p>L'offre Free est réservée à l'évaluation et ne peut pas être utilisée dans des produits ou services commerciaux. Sa clé s'obtient sur la <a href="../alta.html">page d'inscription</a> en vérifiant votre e-mail, à raison d'une clé Free par adresse. Elle est valable 30 jours et peut être renouvelée depuis la même page pendant ses 3 derniers jours de validité ou après son expiration ; lors du renouvellement, l'ancienne clé est révoquée. Nous pouvons modifier ou retirer l'offre Free à tout moment.</p>
+                      <p><strong>Démonstration sur le site.</strong> La <a href="../index.html">page de l'API</a> comprend une démonstration gratuite et sans clé qui affiche la prévision des 24 prochaines heures pour le point de votre choix. Elle sert uniquement à évaluer le service depuis un navigateur : il est interdit de l'interroger de manière automatisée ou d'utiliser ses données dans des produits ou services. Nous pouvons la limiter, en bloquer l'utilisation ou la retirer à tout moment.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Offres payantes et résiliation</h2>
+              <p>Les offres payantes sont des abonnements mensuels payés à l'avance via <strong>Stripe</strong>. Votre clé s'affiche à l'écran une fois le paiement effectué. Vous pouvez changer d'offre (au prorata), mettre à jour votre carte ou résilier à tout moment depuis le portail client de Stripe (lien dans l'e-mail de bienvenue) ou en écrivant à <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>. En cas de résiliation, votre clé restera active jusqu'à la fin de la période payée et l'abonnement ne sera pas renouvelé. Si un paiement échoue, Stripe le retentera pendant quelques jours et vous préviendra par e-mail ; si toutes les tentatives échouent, l'abonnement est résilié et la clé cesse de fonctionner.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Remboursements</h2>
+              <p>Les périodes partielles ne sont pas remboursées. Nous rembourserons toujours :</p>
+                      <ul><li>Un débit en double ou erroné.</li><li>La part proportionnelle du mois si l'API est indisponible pendant plus de <strong>72 heures consécutives</strong> pour des raisons qui nous sont imputables.</li></ul>
+                      <p>Faites-en la demande par e-mail en indiquant votre offre et la date du débit. Le remboursement est effectué sur le même moyen de paiement via Stripe. Rien dans cette section ne limite les droits que vous confère la loi.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Utilisation autorisée</h2>
+              <p>Avec une offre payante, vous pouvez intégrer les données de l'API dans vos produits et services, y compris commerciaux, et les afficher à vos utilisateurs finaux. Vous pouvez également les utiliser comme données d'entrée de vos propres analyses ou modèles internes (par exemple, irrigation, logistique ou énergie).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Utilisations interdites</h2>
+              <p>Sauf accord écrit de notre part, il est interdit de :</p>
+                      <ul><li>Revendre, sous-licencier ou redistribuer les données brutes ou en masse, ou les proposer comme service de données ou comme API.</li><li>Utiliser les données pour entraîner ou affiner des modèles, y compris d'intelligence artificielle, qui génèrent des prévisions, ou pour créer un service de prévision concurrent de B1TMET.</li><li>Partager des clés en dehors de votre organisation, utiliser plusieurs comptes ou clés pour dépasser les limites ou les contourner de toute autre manière.</li><li>Utiliser l'API à des fins illicites ou d'une manière qui nuit à notre infrastructure ou à d'autres clients.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Attribution</h2>
+              <p>Avec les offres <strong>Free</strong> et <strong>Starter</strong>, lorsque vous affichez les données publiquement, vous devez indiquer de façon visible « Prévision : B1TMET », avec un lien vers <a href="https://b1tmet.com">b1tmet.com</a> s'il s'agit d'un site web ou d'une application. Avec les offres Pro et Enterprise, l'attribution est facultative.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Nature des données</h2>
+              <div class="note">Les prévisions proviennent de modèles numériques, sont fournies <strong>à titre indicatif</strong> et peuvent contenir des erreurs ou des retards. Elles <strong>ne remplacent pas</strong> les alertes officielles des services météorologiques nationaux ni de la protection civile. Ne les utilisez pas comme seule source pour des décisions dont dépend la sécurité des personnes ou des biens.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Disponibilité et versions</h2>
+              <p>Nous faisons des efforts raisonnables pour que l'API fonctionne en continu, mais nous ne garantissons aucun niveau de disponibilité, sauf dans le cadre d'un accord Enterprise. Des interruptions pour maintenance sont possibles. La version <code>v1</code> est stable et ne reçoit que des modifications compatibles. Les modifications incompatibles seront publiées dans une nouvelle version, et la précédente sera maintenue au moins <strong>12 mois</strong> à compter de son annonce.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s12">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">12</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">12. </span>Suspension</h2>
+              <p>Nous pouvons suspendre ou révoquer l'accès à l'API en cas de non-paiement, de manquement aux présentes conditions ou d'une utilisation qui met le service en danger, avec un préavis lorsque c'est possible.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s13">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">13</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">13. </span>Confidentialité</h2>
+              <p>Nous traitons les données des clients de l'API conformément à la <a href="privacidad.html">Politique de confidentialité</a>. Les coordonnées que vous envoyez servent uniquement à calculer la prévision : elles ne sont pas enregistrées dans les journaux et ne sont conservées en cache que quelques heures. Si vous envoyez les coordonnées de vos propres utilisateurs, il vous appartient de les en informer et de disposer de la base légale nécessaire.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s14">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">14</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">14. </span>Limitation de responsabilité</h2>
+              <p>Dans la mesure permise par la loi, notre responsabilité totale au titre de l'API est limitée au montant que vous nous avez payé au cours des <strong>3 mois</strong> précédant le fait qui l'a engendrée. Nous ne sommes pas responsables des dommages indirects ni des pertes résultant de l'utilisation des informations météorologiques. Cela ne limite pas la responsabilité qui ne peut être exclue en vertu de la loi.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s15">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">15</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">15. </span>Droit applicable et contact</h2>
+              <p>Les présentes Conditions de l'API sont régies par les lois des États-Unis du Mexique. Pour tout litige, les parties se soumettent aux tribunaux compétents de Mexico, sans préjudice de vos droits en tant que consommateur. Contact : <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= IT ======================= -->
+      <article lang="it">
+        <section class="sec" id="it-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Accettazione</h2>
+              <p>I presenti Termini dell'API regolano l'accesso all'API di previsione di B1TMET (l'«API»), fornita da <strong>B1TMET Technologies</strong>, con sede in Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México. Si applicano insieme ai <a href="https://b1tmet.github.io/legal/terminos.html">Termini di utilizzo</a>; per tutto ciò che riguarda l'API, prevalgono i presenti Termini dell'API. Richiedendo una chiave o usando l'API, li accetti a nome tuo o dell'organizzazione che rappresenti.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Chiavi API</h2>
+              <ul><li>Ogni chiave è riservata e può essere usata solo dalla tua organizzazione. Sei responsabile di qualsiasi uso fatto con essa.</li><li>La chiave viene mostrata una sola volta quando la ottieni; non la conserviamo e non possiamo recuperarla. Se la perdi o sospetti che sia stata divulgata, puoi sostituirla con una nuova in <a href="../claves.html">Gestisci le chiavi</a> (la precedente viene revocata subito) o chiedercelo.</li><li>Se sospetti che una chiave sia stata divulgata, avvisaci: la revocheremo e te ne forniremo un'altra.</li><li>Possiamo revocare una chiave divulgata o usata in modo abusivo.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Piani, limiti e modifiche</h2>
+              <p>I limiti, l'orizzonte di previsione, le risoluzioni e il prezzo di ciascun piano sono pubblicati nella pagina <a href="../precios.html">Prezzi</a>. I limiti si applicano per cliente e sono condivisi da tutte le sue chiavi. Daremo un preavviso di almeno <strong>30 giorni</strong> per qualsiasi aumento di prezzo o riduzione dei limiti di un piano a pagamento; la modifica si applicherà dal periodo di fatturazione successivo.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Piano Free</h2>
+              <p>Il piano Free è solo per la valutazione e non può essere usato in prodotti o servizi commerciali. La chiave si ottiene nella <a href="../alta.html">pagina di registrazione</a> verificando l'e-mail, con una chiave Free per indirizzo. È valida 30 giorni e può essere rinnovata dalla stessa pagina negli ultimi 3 giorni di validità o dopo la scadenza; con il rinnovo, la precedente viene revocata. Possiamo modificare o ritirare il piano Free in qualsiasi momento.</p>
+                      <p><strong>Demo sul sito.</strong> La <a href="../index.html">pagina dell'API</a> include una demo gratuita e senza chiave con la previsione delle prossime 24 ore per il punto che scegli. Serve solo a valutare il servizio dal browser: non è consentito interrogarla in modo automatizzato né usarne i dati in prodotti o servizi. Possiamo limitarla, bloccarne l'uso o ritirarla in qualsiasi momento.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Piani a pagamento e disdetta</h2>
+              <p>I piani a pagamento sono abbonamenti mensili pagati in anticipo tramite <strong>Stripe</strong>. La chiave viene mostrata sullo schermo al termine del pagamento. Puoi cambiare piano (con calcolo pro rata), aggiornare la carta o disdire in qualsiasi momento dal portale clienti di Stripe (link nell'e-mail di benvenuto) o scrivendo a <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>. Se disdici, la tua chiave resterà attiva fino alla fine del periodo pagato e l'abbonamento non verrà rinnovato. Se un addebito non va a buon fine, Stripe lo ritenterà per alcuni giorni e ti avviserà via e-mail; se tutti i tentativi falliscono, l'abbonamento viene annullato e la chiave smette di funzionare.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Rimborsi</h2>
+              <p>I periodi parziali non vengono rimborsati. Rimborseremo sempre:</p>
+                      <ul><li>Un addebito duplicato o errato.</li><li>La parte proporzionale del mese se l'API resta non disponibile per più di <strong>72 ore consecutive</strong> per cause a noi imputabili.</li></ul>
+                      <p>Richiedilo via e-mail indicando il tuo piano e la data dell'addebito. Il rimborso viene effettuato sullo stesso metodo di pagamento tramite Stripe. Nulla in questa sezione limita i diritti che la legge ti riconosce.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Uso consentito</h2>
+              <p>Con un piano a pagamento puoi integrare i dati dell'API nei tuoi prodotti e servizi, anche commerciali, e mostrarli ai tuoi utenti finali. Puoi anche usarli come dati di ingresso per le tue analisi o i tuoi modelli interni (ad esempio irrigazione, logistica o energia).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Usi vietati</h2>
+              <p>Salvo accordo scritto con noi, non è consentito:</p>
+                      <ul><li>Rivendere, concedere in sublicenza o ridistribuire i dati grezzi o in massa, né offrirli come servizio di dati o come API.</li><li>Usare i dati per addestrare o perfezionare modelli, compresi quelli di intelligenza artificiale, che generano previsioni, né per creare un servizio di previsione in concorrenza con B1TMET.</li><li>Condividere chiavi al di fuori della tua organizzazione, usare più account o chiavi per superare i limiti o aggirarli in qualsiasi altro modo.</li><li>Usare l'API per scopi illeciti o in modo da danneggiare la nostra infrastruttura o altri clienti.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Attribuzione</h2>
+              <p>Nei piani <strong>Free</strong> e <strong>Starter</strong>, quando mostri i dati pubblicamente devi indicare in modo visibile «Previsione: B1TMET», con un link a <a href="https://b1tmet.com">b1tmet.com</a> se si tratta di un sito web o di un'app. Nei piani Pro ed Enterprise l'attribuzione è facoltativa.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Natura dei dati</h2>
+              <div class="note">Le previsioni provengono da modelli numerici, sono <strong>indicative</strong> e possono contenere errori o ritardi. <strong>Non sostituiscono</strong> gli avvisi ufficiali dei servizi meteorologici nazionali né della protezione civile. Non usarle come unica fonte per decisioni da cui dipende la sicurezza di persone o beni.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Disponibilità e versioni</h2>
+              <p>Facciamo quanto ragionevolmente possibile perché l'API funzioni in modo continuo, ma non garantiamo alcun livello di disponibilità, salvo in un accordo Enterprise. Possono verificarsi interruzioni per manutenzione. La versione <code>v1</code> è stabile e riceve solo modifiche compatibili. Le modifiche incompatibili saranno pubblicate in una nuova versione e la precedente sarà mantenuta per almeno <strong>12 mesi</strong> dal suo annuncio.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s12">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">12</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">12. </span>Sospensione</h2>
+              <p>Possiamo sospendere o revocare l'accesso all'API per mancato pagamento, per violazione dei presenti termini o per un uso che metta a rischio il servizio, con preavviso quando possibile.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s13">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">13</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">13. </span>Privacy</h2>
+              <p>Trattiamo i dati dei clienti dell'API secondo l'<a href="privacidad.html">Informativa sulla privacy</a>. Le coordinate che invii vengono usate solo per calcolare la previsione: non vengono registrate nei log e restano in cache solo per alcune ore. Se invii coordinate dei tuoi utenti, sei responsabile di informarli e di disporre della base giuridica necessaria.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s14">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">14</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">14. </span>Limitazione di responsabilità</h2>
+              <p>Nei limiti consentiti dalla legge, la nostra responsabilità complessiva per l'API è limitata all'importo che ci hai pagato nei <strong>3 mesi</strong> precedenti il fatto che l'ha originata. Non rispondiamo di danni indiretti né di perdite derivanti dall'uso delle informazioni meteorologiche. Ciò non limita la responsabilità che non può essere esclusa per legge.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s15">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">15</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">15. </span>Legge applicabile e contatti</h2>
+              <p>I presenti Termini dell'API sono regolati dalle leggi degli Stati Uniti Messicani. Per qualsiasi controversia, le parti si sottopongono ai tribunali competenti di Città del Messico, fatti salvi i diritti che ti spettano come consumatore. Contatto: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= NL ======================= -->
+      <article lang="nl">
+        <section class="sec" id="nl-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Aanvaarding</h2>
+              <p>Deze API-voorwaarden regelen de toegang tot de voorspellings-API van B1TMET (de "API"), geleverd door <strong>B1TMET Technologies</strong>, gevestigd te Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México. Ze gelden samen met de <a href="https://b1tmet.github.io/legal/terminos.html">Gebruiksvoorwaarden</a>; voor alles wat met de API te maken heeft, gaan deze API-voorwaarden voor. Door een sleutel aan te vragen of de API te gebruiken, aanvaard je ze namens jezelf of namens de organisatie die je vertegenwoordigt.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>API-sleutels</h2>
+              <ul><li>Elke sleutel is vertrouwelijk en mag alleen door je eigen organisatie worden gebruikt. Je bent verantwoordelijk voor al het gebruik ervan.</li><li>De sleutel wordt maar één keer getoond wanneer je hem ontvangt; we bewaren hem niet en kunnen hem niet terughalen. Ben je hem kwijt of vermoed je dat hij is uitgelekt, dan kun je hem via <a href="../claves.html">Sleutels beheren</a> vervangen door een nieuwe (de oude wordt meteen ingetrokken) of het ons vragen.</li><li>Vermoed je dat een sleutel is uitgelekt, laat het ons weten: we trekken hem in en geven je een nieuwe.</li><li>We kunnen een sleutel intrekken die is uitgelekt of die misbruikt wordt.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Abonnementen, limieten en wijzigingen</h2>
+              <p>De limieten, voorspellingshorizon, resoluties en prijs van elk abonnement staan op de pagina <a href="../precios.html">Prijzen</a>. De limieten gelden per klant en worden gedeeld door al zijn sleutels. We kondigen elke prijsverhoging of verlaging van de limieten van een betaald abonnement minstens <strong>30 dagen</strong> vooraf aan; de wijziging geldt vanaf de volgende factuurperiode.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Free-abonnement</h2>
+              <p>Het Free-abonnement is alleen bedoeld voor evaluatie en mag niet in commerciële producten of diensten worden gebruikt. De sleutel vraag je aan op de <a href="../alta.html">aanmeldpagina</a> door je e-mailadres te bevestigen, met één Free-sleutel per e-mailadres. Hij is 30 dagen geldig en kan via dezelfde pagina worden verlengd in de laatste 3 dagen van zijn geldigheid of nadat hij is verlopen; bij verlenging wordt de vorige ingetrokken. We kunnen het Free-abonnement op elk moment wijzigen of intrekken.</p>
+                      <p><strong>Demo op de website.</strong> De <a href="../index.html">API-pagina</a> bevat een gratis demo zonder sleutel met de verwachting voor de komende 24 uur op het punt dat je kiest. Deze is alleen bedoeld om de dienst in de browser te evalueren: het is niet toegestaan de demo geautomatiseerd te bevragen of de gegevens ervan in producten of diensten te gebruiken. We kunnen de demo beperken, het gebruik ervan blokkeren of hem op elk moment intrekken.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Betaalde abonnementen en opzegging</h2>
+              <p>Betaalde abonnementen zijn maandelijkse abonnementen die vooraf via <strong>Stripe</strong> worden betaald. Je sleutel verschijnt op het scherm zodra de betaling is voltooid. Je kunt op elk moment van abonnement wisselen (naar rato), je kaart bijwerken of opzeggen via het klantenportaal van Stripe (link in de welkomstmail) of door te schrijven naar <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>. Als je opzegt, blijft je sleutel actief tot het einde van de betaalde periode en wordt het abonnement niet verlengd. Mislukt een betaling, dan probeert Stripe het enkele dagen opnieuw en krijg je een e-mail; mislukken alle pogingen, dan wordt het abonnement beëindigd en werkt de sleutel niet meer.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Terugbetalingen</h2>
+              <p>Gedeeltelijke periodes worden niet terugbetaald. We betalen altijd terug:</p>
+                      <ul><li>Een dubbele of onterechte afschrijving.</li><li>Het evenredige deel van de maand als de API langer dan <strong>72 uur achter elkaar</strong> niet beschikbaar is door oorzaken die aan ons te wijten zijn.</li></ul>
+                      <p>Vraag het aan per e-mail met vermelding van je abonnement en de datum van de afschrijving. Het bedrag wordt via Stripe teruggestort op hetzelfde betaalmiddel. Niets in dit artikel beperkt de rechten die de wet je geeft.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Toegestaan gebruik</h2>
+              <p>Met een betaald abonnement mag je de gegevens van de API in je producten en diensten integreren, ook commerciële, en ze aan je eindgebruikers tonen. Je mag ze ook gebruiken als invoer voor je eigen interne analyses of modellen (bijvoorbeeld irrigatie, logistiek of energie).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Verboden gebruik</h2>
+              <p>Tenzij schriftelijk met ons overeengekomen, is het niet toegestaan om:</p>
+                      <ul><li>De gegevens in ruwe vorm of op grote schaal door te verkopen, in sublicentie te geven of te herverspreiden, of ze aan te bieden als gegevensdienst of als API.</li><li>De gegevens te gebruiken om modellen, waaronder AI-modellen, te trainen of te verfijnen die voorspellingen genereren, of om een voorspellingsdienst op te zetten die concurreert met B1TMET.</li><li>Sleutels buiten je organisatie te delen, meerdere accounts of sleutels te gebruiken om de limieten te overschrijden of ze op een andere manier te omzeilen.</li><li>De API te gebruiken voor onwettige doeleinden of op een manier die onze infrastructuur of andere klanten schaadt.</li></ul>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Bronvermelding</h2>
+              <p>Bij de abonnementen <strong>Free</strong> en <strong>Starter</strong> moet je, wanneer je de gegevens openbaar toont, zichtbaar vermelden "Voorspelling: B1TMET", met een link naar <a href="https://b1tmet.com">b1tmet.com</a> als het om een website of app gaat. Bij Pro en Enterprise is bronvermelding optioneel.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Aard van de gegevens</h2>
+              <div class="note">De voorspellingen zijn afkomstig van numerieke modellen, zijn <strong>indicatief</strong> en kunnen fouten of vertragingen bevatten. Ze <strong>vervangen geen</strong> officiële waarschuwingen van nationale weerdiensten of de civiele bescherming. Gebruik ze niet als enige bron voor beslissingen waarvan de veiligheid van personen of goederen afhangt.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Beschikbaarheid en versies</h2>
+              <p>We doen redelijke inspanningen om de API ononderbroken te laten werken, maar garanderen geen beschikbaarheidsniveau, behalve in een Enterprise-overeenkomst. Er kunnen onderbrekingen voor onderhoud zijn. Versie <code>v1</code> is stabiel en krijgt alleen compatibele wijzigingen. Incompatibele wijzigingen verschijnen in een nieuwe versie, en de vorige blijft minstens <strong>12 maanden</strong> na de aankondiging beschikbaar.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s12">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">12</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">12. </span>Opschorting</h2>
+              <p>We kunnen de toegang tot de API opschorten of intrekken bij niet-betaling, bij schending van deze voorwaarden of bij gebruik dat de dienst in gevaar brengt, indien mogelijk met voorafgaande kennisgeving.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s13">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">13</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">13. </span>Privacy</h2>
+              <p>We verwerken de gegevens van API-klanten zoals beschreven in het <a href="privacidad.html">Privacybeleid</a>. De coördinaten die je stuurt, worden alleen gebruikt om de voorspelling te berekenen: ze worden niet in logboeken vastgelegd en slechts enkele uren in de cache bewaard. Als je coördinaten van je eigen gebruikers stuurt, ben je zelf verantwoordelijk om hen te informeren en over de nodige rechtsgrond te beschikken.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s14">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">14</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">14. </span>Beperking van aansprakelijkheid</h2>
+              <p>Voor zover de wet dat toestaat, is onze totale aansprakelijkheid voor de API beperkt tot het bedrag dat je ons hebt betaald in de <strong>3 maanden</strong> voorafgaand aan de gebeurtenis die haar veroorzaakt. We zijn niet aansprakelijk voor indirecte schade of voor verliezen als gevolg van het gebruik van de weersinformatie. Dit beperkt geen aansprakelijkheid die volgens de wet niet kan worden uitgesloten.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s15">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">15</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">15. </span>Toepasselijk recht en contact</h2>
+              <p>Op deze API-voorwaarden is het recht van de Verenigde Mexicaanse Staten van toepassing. Geschillen worden voorgelegd aan de bevoegde rechtbanken van Mexico-Stad, onverminderd je rechten als consument. Contact: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a>.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+    </main>
+
+    <footer class="foot">
+      <div class="foot-glow" aria-hidden="true"></div>
+      <div class="foot-in">
+        <img class="foot-logo" src="../assets/logo-h-light.png" alt="B1TMET" width="138" height="40" />
+        <ul class="foot-links" lang="es">
+          <li><a href="../legal/privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">Precios API</a></li>
+          <li><a href="../legal/terminos.html">Términos de la API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contacto</a></li>
+          <li><a href="https://b1tmet.com">Acerca de</a></li>
+        </ul>
+        <ul class="foot-links" lang="en">
+          <li><a href="../legal/privacidad.html">Privacy Policy</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">API Pricing</a></li>
+          <li><a href="../legal/terminos.html">API Terms</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">About</a></li>
+        </ul>
+        <ul class="foot-links" lang="pt">
+          <li><a href="../legal/privacidad.html">Aviso de privacidade</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">Preços da API</a></li>
+          <li><a href="../legal/terminos.html">Termos da API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contato</a></li>
+          <li><a href="https://b1tmet.com">Sobre</a></li>
+        </ul>
+        <ul class="foot-links" lang="fr">
+          <li><a href="../legal/privacidad.html">Politique de confidentialité</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">Tarifs de l'API</a></li>
+          <li><a href="../legal/terminos.html">Conditions de l'API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">À propos</a></li>
+        </ul>
+        <ul class="foot-links" lang="it">
+          <li><a href="../legal/privacidad.html">Informativa sulla privacy</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">Prezzi API</a></li>
+          <li><a href="../legal/terminos.html">Termini dell'API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contatti</a></li>
+          <li><a href="https://b1tmet.com">Chi siamo</a></li>
+        </ul>
+        <ul class="foot-links" lang="nl">
+          <li><a href="../legal/privacidad.html">Privacybeleid</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">API-prijzen</a></li>
+          <li><a href="../legal/terminos.html">API-voorwaarden</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">Over ons</a></li>
+        </ul>
+        <p class="foot-legal" lang="es">Los pronósticos de B1TMET son orientativos y no sustituyen los avisos oficiales de los servicios meteorológicos nacionales. Mapas: © colaboradores de OpenStreetMap, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="en">B1TMET forecasts are for guidance only and do not replace official warnings from national weather services. Maps: © OpenStreetMap contributors, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="pt">As previsões da B1TMET são apenas orientativas e não substituem os avisos oficiais dos serviços meteorológicos nacionais. Mapas: © colaboradores do OpenStreetMap, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="fr">Les prévisions de B1TMET sont fournies à titre indicatif et ne remplacent pas les alertes officielles des services météorologiques nationaux. Cartes : © contributeurs d'OpenStreetMap, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="it">Le previsioni di B1TMET sono indicative e non sostituiscono gli avvisi ufficiali dei servizi meteorologici nazionali. Mappe: © collaboratori di OpenStreetMap, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="nl">De voorspellingen van B1TMET zijn indicatief en vervangen geen officiële waarschuwingen van nationale weerdiensten. Kaarten: © OpenStreetMap-bijdragers, © CARTO, © OpenTopoMap.</p>
+        <div class="foot-copy"><span>© 2026 B1TMET Technologies</span><span class="wm">Bitmet</span></div>
+      </div>
+    </footer>
+
+    <script src="../assets/lang.js"></script>
+    <script src="../assets/marca.js"></script>
+  </body>
+</html>

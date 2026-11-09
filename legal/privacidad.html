@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aviso de privacidad de la API · API Privacy Policy — B1TMET</title>
+    <meta name="description" content="Aviso de privacidad de la API de B1TMET / B1TMET API Privacy Policy" />
+    <meta name="theme-color" content="#17062b" />
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="preload" href="../assets/fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="../assets/marca.css" />
+    <script>
+      (function () {
+        var S = ["es", "en", "pt", "fr", "it", "nl"], l = null, d = document.documentElement;
+        d.className += " js";
+        var hr = new Date().getHours();
+        d.setAttribute("data-tod", hr >= 5 && hr < 8 ? "dawn" : hr >= 8 && hr < 17 ? "day" : hr >= 17 && hr < 20 ? "dusk" : "night");
+        try { var th = localStorage.getItem("b1t-theme"); if (th === "dark" || th === "light") d.setAttribute("data-theme", th); } catch (e) {}
+        try { l = new URLSearchParams(location.search).get("lang"); } catch (e) {}
+        if (S.indexOf(l) >= 0) { try { localStorage.setItem("b1t-lang", l); } catch (e) {} }
+        else { try { l = localStorage.getItem("b1t-lang"); } catch (e) {} }
+        if (S.indexOf(l) < 0) {
+          l = "en";
+          var list = navigator.languages || [navigator.language || "en"];
+          for (var i = 0; i < list.length; i++) {
+            var c = String(list[i] || "").slice(0, 2).toLowerCase();
+            if (S.indexOf(c) >= 0) { l = c; break; }
+          }
+        }
+        d.setAttribute("data-lang", l);
+        d.lang = l;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="brand" href="../index.html"><img src="../assets/logo-h-light.png" alt="B1TMET" width="138" height="40" /><small>API</small></a>
+      <nav class="top-nav" aria-label="API">
+        <a href="../index.html"><span lang="es">Inicio</span><span lang="en">Overview</span><span lang="pt">Início</span><span lang="fr">Aperçu</span><span lang="it">Panoramica</span><span lang="nl">Overzicht</span></a>
+        <a href="../docs.html"><span lang="es">Documentación</span><span lang="en">Documentation</span><span lang="pt">Documentação</span><span lang="fr">Documentation</span><span lang="it">Documentazione</span><span lang="nl">Documentatie</span></a>
+        <a href="../precios.html"><span lang="es">Precios</span><span lang="en">Pricing</span><span lang="pt">Preços</span><span lang="fr">Tarifs</span><span lang="it">Prezzi</span><span lang="nl">Prijzen</span></a>
+        <a href="../verificacion.html"><span lang="es">Verificación</span><span lang="en">Verification</span><span lang="pt">Verificação</span><span lang="fr">Vérification</span><span lang="it">Verifica</span><span lang="nl">Verificatie</span></a>
+      </nav>
+      <button class="theme" type="button" aria-label="Tema">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+      </button>
+      <label class="langsel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z"/></svg>
+        <select id="langsel" aria-label="Idioma / Language">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="nl">Nederlands</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="hero">
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gPlane" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#385BD6" stop-opacity=".95" />
+              <stop offset="1" stop-color="#385BD6" stop-opacity=".55" />
+            </linearGradient>
+          </defs>
+          <g class="rings r2"><circle cx="110" cy="40" r="60" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="122" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="184" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="246" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="308" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="370" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="432" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="494" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="556" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="618" fill="#385BD6" fill-opacity=".06" /></g>
+          <polygon class="plane" points="560,860 1500,120 1500,860" fill="url(#gPlane)" />
+          <g class="rings r1"><circle cx="1270" cy="700" r="70" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="140" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="210" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="280" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="350" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="420" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="490" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="560" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="630" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="700" fill="#A2B2F4" fill-opacity=".07" /></g>
+        </svg>
+      </div>
+      <svg class="ribbon" viewBox="0 0 660 320" aria-hidden="true">
+        <defs>
+          <linearGradient id="gRib" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="640" y2="0">
+            <stop offset="0" stop-color="#385BD6" />
+            <stop offset=".55" stop-color="#385BD6" stop-opacity=".75" />
+            <stop offset="1" stop-color="#17062B" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g>
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".22" transform="translate(30 18)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".4" transform="translate(20 12)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".65" transform="translate(10 6)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" />
+        </g>
+      </svg>
+      <canvas class="wind" aria-hidden="true"></canvas>
+      <div class="hero-in">
+        <p class="eyebrow">B1TMET API</p>
+        <h1 lang="es">Aviso de privacidad de la API</h1>
+        <h1 lang="en">API Privacy Policy</h1>
+        <h1 lang="pt">Aviso de privacidade da API</h1>
+        <h1 lang="fr">Politique de confidentialité de l'API</h1>
+        <h1 lang="it">Informativa sulla privacy dell'API</h1>
+        <h1 lang="nl">Privacybeleid van de API</h1>
+        <p class="date" lang="es">Última actualización: 9 de noviembre de 2026</p>
+        <p class="date" lang="en">Last updated: November 9, 2026</p>
+        <p class="date" lang="pt">Última atualização: 9 de novembro de 2026</p>
+        <p class="date" lang="fr">Dernière mise à jour : 9 novembre 2026</p>
+        <p class="date" lang="it">Ultimo aggiornamento: 9 novembre 2026</p>
+        <p class="date" lang="nl">Laatst bijgewerkt: 9 november 2026</p>
+        <ul class="chips" lang="es"><li>Sin publicidad</li><li>No vendemos tus datos</li><li>Sin analítica ni seguimiento</li></ul>
+        <ul class="chips" lang="en"><li>No ads</li><li>We don't sell your data</li><li>No analytics or tracking</li></ul>
+        <ul class="chips" lang="pt"><li>Sem publicidade</li><li>Não vendemos seus dados</li><li>Sem análise nem rastreamento</li></ul>
+        <ul class="chips" lang="fr"><li>Sans publicité</li><li>Nous ne vendons pas vos données</li><li>Sans analyse ni pistage</li></ul>
+        <ul class="chips" lang="it"><li>Nessuna pubblicità</li><li>Non vendiamo i tuoi dati</li><li>Nessuna analisi né tracciamento</li></ul>
+        <ul class="chips" lang="nl"><li>Geen advertenties</li><li>We verkopen je gegevens niet</li><li>Geen analyse of tracking</li></ul>
+      </div>
+      <div class="edge back" aria-hidden="true"></div>
+      <div class="edge" aria-hidden="true"></div>
+    </section>
+
+    <nav class="toc-m" aria-label="Índice">
+      <details lang="es">
+        <summary>En esta página</summary>
+        <ol>
+          <li><a href="#es-s1"><b>01</b>Responsable</a></li>
+          <li><a href="#es-s2"><b>02</b>Datos personales que tratamos</a></li>
+          <li><a href="#es-s3"><b>03</b>Finalidades</a></li>
+          <li><a href="#es-s4"><b>04</b>Ubicación</a></li>
+          <li><a href="#es-s5"><b>05</b>Con quién compartimos datos</a></li>
+          <li><a href="#es-s6"><b>06</b>Cuánto tiempo los conservamos</a></li>
+          <li><a href="#es-s7"><b>07</b>Seguridad</a></li>
+          <li><a href="#es-s8"><b>08</b>Tus derechos (ARCO) y revocación</a></li>
+          <li><a href="#es-s9"><b>09</b>Darte de baja</a></li>
+          <li><a href="#es-s10"><b>10</b>Menores de edad</a></li>
+          <li><a href="#es-s11"><b>11</b>Cambios a este aviso</a></li>
+        </ol>
+      </details>
+      <details lang="en">
+        <summary>On this page</summary>
+        <ol>
+          <li><a href="#en-s1"><b>01</b>Data controller</a></li>
+          <li><a href="#en-s2"><b>02</b>Personal data we process</a></li>
+          <li><a href="#en-s3"><b>03</b>Purposes</a></li>
+          <li><a href="#en-s4"><b>04</b>Location</a></li>
+          <li><a href="#en-s5"><b>05</b>Who we share data with</a></li>
+          <li><a href="#en-s6"><b>06</b>How long we keep it</a></li>
+          <li><a href="#en-s7"><b>07</b>Security</a></li>
+          <li><a href="#en-s8"><b>08</b>Your rights and consent withdrawal</a></li>
+          <li><a href="#en-s9"><b>09</b>Closing your account</a></li>
+          <li><a href="#en-s10"><b>10</b>Minors</a></li>
+          <li><a href="#en-s11"><b>11</b>Changes to this policy</a></li>
+        </ol>
+      </details>
+      <details lang="pt">
+        <summary>Nesta página</summary>
+        <ol>
+          <li><a href="#pt-s1"><b>01</b>Responsável</a></li>
+          <li><a href="#pt-s2"><b>02</b>Dados pessoais que tratamos</a></li>
+          <li><a href="#pt-s3"><b>03</b>Finalidades</a></li>
+          <li><a href="#pt-s4"><b>04</b>Localização</a></li>
+          <li><a href="#pt-s5"><b>05</b>Com quem compartilhamos dados</a></li>
+          <li><a href="#pt-s6"><b>06</b>Por quanto tempo os guardamos</a></li>
+          <li><a href="#pt-s7"><b>07</b>Segurança</a></li>
+          <li><a href="#pt-s8"><b>08</b>Seus direitos e revogação do consentimento</a></li>
+          <li><a href="#pt-s9"><b>09</b>Cancelar sua conta</a></li>
+          <li><a href="#pt-s10"><b>10</b>Menores de idade</a></li>
+          <li><a href="#pt-s11"><b>11</b>Alterações neste aviso</a></li>
+        </ol>
+      </details>
+      <details lang="fr">
+        <summary>Sur cette page</summary>
+        <ol>
+          <li><a href="#fr-s1"><b>01</b>Responsable du traitement</a></li>
+          <li><a href="#fr-s2"><b>02</b>Données personnelles que nous traitons</a></li>
+          <li><a href="#fr-s3"><b>03</b>Finalités</a></li>
+          <li><a href="#fr-s4"><b>04</b>Localisation</a></li>
+          <li><a href="#fr-s5"><b>05</b>Avec qui nous partageons des données</a></li>
+          <li><a href="#fr-s6"><b>06</b>Durée de conservation</a></li>
+          <li><a href="#fr-s7"><b>07</b>Sécurité</a></li>
+          <li><a href="#fr-s8"><b>08</b>Vos droits et retrait du consentement</a></li>
+          <li><a href="#fr-s9"><b>09</b>Résilier votre compte</a></li>
+          <li><a href="#fr-s10"><b>10</b>Mineurs</a></li>
+          <li><a href="#fr-s11"><b>11</b>Modifications de cette politique</a></li>
+        </ol>
+      </details>
+      <details lang="it">
+        <summary>In questa pagina</summary>
+        <ol>
+          <li><a href="#it-s1"><b>01</b>Titolare del trattamento</a></li>
+          <li><a href="#it-s2"><b>02</b>Dati personali che trattiamo</a></li>
+          <li><a href="#it-s3"><b>03</b>Finalità</a></li>
+          <li><a href="#it-s4"><b>04</b>Posizione</a></li>
+          <li><a href="#it-s5"><b>05</b>Con chi condividiamo i dati</a></li>
+          <li><a href="#it-s6"><b>06</b>Per quanto tempo li conserviamo</a></li>
+          <li><a href="#it-s7"><b>07</b>Sicurezza</a></li>
+          <li><a href="#it-s8"><b>08</b>I tuoi diritti e la revoca del consenso</a></li>
+          <li><a href="#it-s9"><b>09</b>Chiudere il tuo account</a></li>
+          <li><a href="#it-s10"><b>10</b>Minori</a></li>
+          <li><a href="#it-s11"><b>11</b>Modifiche alla presente informativa</a></li>
+        </ol>
+      </details>
+      <details lang="nl">
+        <summary>Op deze pagina</summary>
+        <ol>
+          <li><a href="#nl-s1"><b>01</b>Verwerkingsverantwoordelijke</a></li>
+          <li><a href="#nl-s2"><b>02</b>Persoonsgegevens die we verwerken</a></li>
+          <li><a href="#nl-s3"><b>03</b>Doeleinden</a></li>
+          <li><a href="#nl-s4"><b>04</b>Locatie</a></li>
+          <li><a href="#nl-s5"><b>05</b>Met wie we gegevens delen</a></li>
+          <li><a href="#nl-s6"><b>06</b>Hoe lang we ze bewaren</a></li>
+          <li><a href="#nl-s7"><b>07</b>Beveiliging</a></li>
+          <li><a href="#nl-s8"><b>08</b>Je rechten en intrekking van toestemming</a></li>
+          <li><a href="#nl-s9"><b>09</b>Je account opzeggen</a></li>
+          <li><a href="#nl-s10"><b>10</b>Minderjarigen</a></li>
+          <li><a href="#nl-s11"><b>11</b>Wijzigingen in dit beleid</a></li>
+        </ol>
+      </details>
+    </nav>
+    <ol class="rail" lang="es" aria-label="En esta página">
+      <li><a href="#es-s1">01<span>Responsable</span></a></li>
+      <li><a href="#es-s2">02<span>Datos personales que tratamos</span></a></li>
+      <li><a href="#es-s3">03<span>Finalidades</span></a></li>
+      <li><a href="#es-s4">04<span>Ubicación</span></a></li>
+      <li><a href="#es-s5">05<span>Con quién compartimos datos</span></a></li>
+      <li><a href="#es-s6">06<span>Cuánto tiempo los conservamos</span></a></li>
+      <li><a href="#es-s7">07<span>Seguridad</span></a></li>
+      <li><a href="#es-s8">08<span>Tus derechos (ARCO) y revocación</span></a></li>
+      <li><a href="#es-s9">09<span>Darte de baja</span></a></li>
+      <li><a href="#es-s10">10<span>Menores de edad</span></a></li>
+      <li><a href="#es-s11">11<span>Cambios a este aviso</span></a></li>
+    </ol>
+    <ol class="rail" lang="en" aria-label="On this page">
+      <li><a href="#en-s1">01<span>Data controller</span></a></li>
+      <li><a href="#en-s2">02<span>Personal data we process</span></a></li>
+      <li><a href="#en-s3">03<span>Purposes</span></a></li>
+      <li><a href="#en-s4">04<span>Location</span></a></li>
+      <li><a href="#en-s5">05<span>Who we share data with</span></a></li>
+      <li><a href="#en-s6">06<span>How long we keep it</span></a></li>
+      <li><a href="#en-s7">07<span>Security</span></a></li>
+      <li><a href="#en-s8">08<span>Your rights and consent withdrawal</span></a></li>
+      <li><a href="#en-s9">09<span>Closing your account</span></a></li>
+      <li><a href="#en-s10">10<span>Minors</span></a></li>
+      <li><a href="#en-s11">11<span>Changes to this policy</span></a></li>
+    </ol>
+    <ol class="rail" lang="pt" aria-label="Nesta página">
+      <li><a href="#pt-s1">01<span>Responsável</span></a></li>
+      <li><a href="#pt-s2">02<span>Dados pessoais que tratamos</span></a></li>
+      <li><a href="#pt-s3">03<span>Finalidades</span></a></li>
+      <li><a href="#pt-s4">04<span>Localização</span></a></li>
+      <li><a href="#pt-s5">05<span>Com quem compartilhamos dados</span></a></li>
+      <li><a href="#pt-s6">06<span>Por quanto tempo os guardamos</span></a></li>
+      <li><a href="#pt-s7">07<span>Segurança</span></a></li>
+      <li><a href="#pt-s8">08<span>Seus direitos e revogação do consentimento</span></a></li>
+      <li><a href="#pt-s9">09<span>Cancelar sua conta</span></a></li>
+      <li><a href="#pt-s10">10<span>Menores de idade</span></a></li>
+      <li><a href="#pt-s11">11<span>Alterações neste aviso</span></a></li>
+    </ol>
+    <ol class="rail" lang="fr" aria-label="Sur cette page">
+      <li><a href="#fr-s1">01<span>Responsable du traitement</span></a></li>
+      <li><a href="#fr-s2">02<span>Données personnelles que nous traitons</span></a></li>
+      <li><a href="#fr-s3">03<span>Finalités</span></a></li>
+      <li><a href="#fr-s4">04<span>Localisation</span></a></li>
+      <li><a href="#fr-s5">05<span>Avec qui nous partageons des données</span></a></li>
+      <li><a href="#fr-s6">06<span>Durée de conservation</span></a></li>
+      <li><a href="#fr-s7">07<span>Sécurité</span></a></li>
+      <li><a href="#fr-s8">08<span>Vos droits et retrait du consentement</span></a></li>
+      <li><a href="#fr-s9">09<span>Résilier votre compte</span></a></li>
+      <li><a href="#fr-s10">10<span>Mineurs</span></a></li>
+      <li><a href="#fr-s11">11<span>Modifications de cette politique</span></a></li>
+    </ol>
+    <ol class="rail" lang="it" aria-label="In questa pagina">
+      <li><a href="#it-s1">01<span>Titolare del trattamento</span></a></li>
+      <li><a href="#it-s2">02<span>Dati personali che trattiamo</span></a></li>
+      <li><a href="#it-s3">03<span>Finalità</span></a></li>
+      <li><a href="#it-s4">04<span>Posizione</span></a></li>
+      <li><a href="#it-s5">05<span>Con chi condividiamo i dati</span></a></li>
+      <li><a href="#it-s6">06<span>Per quanto tempo li conserviamo</span></a></li>
+      <li><a href="#it-s7">07<span>Sicurezza</span></a></li>
+      <li><a href="#it-s8">08<span>I tuoi diritti e la revoca del consenso</span></a></li>
+      <li><a href="#it-s9">09<span>Chiudere il tuo account</span></a></li>
+      <li><a href="#it-s10">10<span>Minori</span></a></li>
+      <li><a href="#it-s11">11<span>Modifiche alla presente informativa</span></a></li>
+    </ol>
+    <ol class="rail" lang="nl" aria-label="Op deze pagina">
+      <li><a href="#nl-s1">01<span>Verwerkingsverantwoordelijke</span></a></li>
+      <li><a href="#nl-s2">02<span>Persoonsgegevens die we verwerken</span></a></li>
+      <li><a href="#nl-s3">03<span>Doeleinden</span></a></li>
+      <li><a href="#nl-s4">04<span>Locatie</span></a></li>
+      <li><a href="#nl-s5">05<span>Met wie we gegevens delen</span></a></li>
+      <li><a href="#nl-s6">06<span>Hoe lang we ze bewaren</span></a></li>
+      <li><a href="#nl-s7">07<span>Beveiliging</span></a></li>
+      <li><a href="#nl-s8">08<span>Je rechten en intrekking van toestemming</span></a></li>
+      <li><a href="#nl-s9">09<span>Je account opzeggen</span></a></li>
+      <li><a href="#nl-s10">10<span>Minderjarigen</span></a></li>
+      <li><a href="#nl-s11">11<span>Wijzigingen in dit beleid</span></a></li>
+    </ol>
+
+    <main class="doc">
+      <!-- ======================= ES ======================= -->
+      <article lang="es">
+        <section class="sec" id="es-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Responsable</h2>
+              <p><strong>B1TMET Technologies</strong>, con domicilio en Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México, es responsable del tratamiento de los datos personales que se recaban a través de la API de pronóstico de B1TMET (la «API») y de sus páginas de alta y gestión de claves.</p>
+                      <p>Contacto para privacidad: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a></p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Datos personales que tratamos</h2>
+              <p>No tratamos datos personales sensibles.</p>
+                      <div class="tbl"><table><tr><th>Dato</th><th>Cuándo se obtiene</th></tr><tr><td>Dirección IP</td><td>En cada conexión con nuestros servidores</td></tr><tr><td>Clientes de la API: nombre o razón social, correo de contacto y plan</td><td>Al solicitar una clave o contratar un plan</td></tr><tr><td>Clave de API (solo guardamos un hash irreversible y un prefijo visible)</td><td>Al emitir la clave</td></tr><tr><td>Uso de la API por clave y día: número de peticiones, endpoint y dominio, sin coordenadas ni IP</td><td>Al usar la API</td></tr><tr><td>Identificador de cliente de Stripe</td><td>Si contratas un plan de pago de la API</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Finalidades</h2>
+              <p>Todas las finalidades son <strong>necesarias</strong> para prestar el servicio que solicitas:</p>
+                      <ul><li>Prestar la API a sus clientes: emitir y gestionar claves, aplicar los límites de cada plan, facturar y prevenir abusos. Esto incluye verificar tu correo en el alta del plan Free y enviarte los correos de verificación y de bienvenida de la API.</li><li>Proteger el servicio frente a abusos y accesos no autorizados.</li></ul>
+                      <div class="note"><strong>No</strong> usamos tus datos para publicidad, <strong>no</strong> los vendemos, <strong>no</strong> usamos herramientas de analítica ni de seguimiento, y <strong>no</strong> usamos inteligencia artificial para tratar tus datos.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Ubicación</h2>
+                      <p>Las coordenadas que recibe la API se usan solo para calcular el pronóstico: no se registran en los logs, no se asocian a la clave en ningún historial y solo se conservan unas horas en caché. Si un cliente de la API nos envía coordenadas de sus propios usuarios, es ese cliente quien responde ante ellos.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Con quién compartimos datos</h2>
+              <p>Solo con proveedores que nos ayudan a prestar el servicio:</p>
+                      <div class="tbl"><table><tr><th>Proveedor</th><th>Para qué</th><th>Datos</th></tr><tr><td>IONOS</td><td>Servidor de la aplicación</td><td>IP, peticiones técnicas</td></tr><tr><td>Hostinger</td><td>Base de datos y correo electrónico</td><td>Datos de cuenta, correo</td></tr><tr><td>Stripe</td><td>Pagos de los planes de la API</td><td>Datos de pago (no los almacenamos), nombre y correo de la suscripción</td></tr></table></div>
+                      <p>Algunos de estos proveedores procesan datos fuera de México. No compartimos tus datos con nadie más, salvo que una autoridad competente lo requiera conforme a la ley.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Cuánto tiempo los conservamos</h2>
+              <div class="tbl"><table><tr><th>Dato</th><th>Plazo</th></tr><tr><td>Registros técnicos con IP</td><td>14 días</td></tr><tr><td>Caché de pronósticos</td><td>Horas</td></tr><tr><td>Registros de pago (Stripe)</td><td>Lo que exijan las obligaciones fiscales y contables</td></tr><tr><td>Datos de clientes de la API</td><td>Mientras dure la relación; después, lo que exijan las obligaciones fiscales y contables</td></tr><tr><td>Uso agregado de la API</td><td>24 meses</td></tr><tr><td>Enlace del alta Free de la API (correo y token; el token solo como hash)</td><td>24 horas</td></tr><tr><td>Contadores antiabuso del alta Free (por IP y por hash del correo)</td><td>Hasta 2 días</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Seguridad</h2>
+              <p>Las comunicaciones con nuestros servidores van cifradas (HTTPS). Las claves de API se guardan solo como hash irreversible: no podemos recuperarlas, solo emitir una nueva. Los enlaces de alta y de gestión de claves son de un solo uso y caducan. Limitamos las peticiones y los intentos de acceso para prevenir abusos.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Tus derechos (ARCO) y revocación</h2>
+              <p>Puedes <strong>acceder</strong> a tus datos, <strong>rectificarlos</strong>, <strong>cancelarlos</strong> u <strong>oponerte</strong> a su tratamiento, así como <strong>revocar tu consentimiento</strong>, escribiendo a <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a> con:</p>
+                      <ul><li>Tu nombre y el correo asociado a tu cuenta.</li><li>El derecho que deseas ejercer y una descripción clara de tu solicitud.</li></ul>
+                      <p>Responderemos en los plazos que establece la ley. Si consideras que tus derechos no han sido atendidos, puedes acudir a la <strong>Secretaría Anticorrupción y Buen Gobierno</strong>. Si resides en la Unión Europea, también puedes dirigirte a la autoridad de protección de datos de tu país.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Darte de baja</h2>
+              <p>Escríbenos para darte de baja. Revocamos tus claves y borramos tus datos, salvo los registros de facturación que exija la ley. Puedes cancelar un plan de pago desde el portal de cliente de Stripe (enlace en el correo de bienvenida).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Menores de edad</h2>
+              <p>La API está dirigida a empresas y profesionales <strong>mayores de 18 años</strong>. No recabamos conscientemente datos de menores.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="es-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Cambios a este aviso</h2>
+              <p>Publicaremos cualquier cambio en esta página, indicando la fecha de actualización. Si un cambio afecta de forma relevante al tratamiento de tus datos, te lo informaremos por correo electrónico.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= EN ======================= -->
+      <article lang="en">
+        <section class="sec" id="en-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Data controller</h2>
+              <p><strong>B1TMET Technologies</strong>, located at Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México, is responsible for the processing of personal data collected through the B1TMET forecast API (the "API") and its sign-up and key management pages.</p>
+                      <p>Privacy contact: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a></p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Personal data we process</h2>
+              <p>We do not process sensitive personal data.</p>
+                      <div class="tbl"><table><tr><th>Data</th><th>When it is collected</th></tr><tr><td>IP address</td><td>On every connection to our servers</td></tr><tr><td>API customers: name or company name, contact email and plan</td><td>When you request a key or subscribe to a plan</td></tr><tr><td>API key (we only store an irreversible hash and a visible prefix)</td><td>When the key is issued</td></tr><tr><td>API usage per key and day: number of requests, endpoint and domain, without coordinates or IP</td><td>While using the API</td></tr><tr><td>Stripe customer identifier</td><td>If you subscribe to a paid API plan</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Purposes</h2>
+              <p>All purposes are <strong>necessary</strong> to provide the service you request:</p>
+                      <ul><li>Providing the API to its customers: issuing and managing keys, enforcing each plan's limits, billing and preventing abuse. This includes verifying your email when you sign up for the Free plan and sending you the API verification and welcome emails.</li><li>Protecting the service against abuse and unauthorized access.</li></ul>
+                      <div class="note">We do <strong>not</strong> use your data for advertising, we do <strong>not</strong> sell it, we do <strong>not</strong> use analytics or tracking tools, and we do <strong>not</strong> use artificial intelligence to process your data.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Location</h2>
+                      <p>Coordinates received by the API are used only to compute the forecast: they are not recorded in logs, are not linked to the key in any history and are only kept in cache for a few hours. If an API customer sends us its own users' coordinates, that customer is responsible to them.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Who we share data with</h2>
+              <p>Only with providers that help us deliver the service:</p>
+                      <div class="tbl"><table><tr><th>Provider</th><th>Purpose</th><th>Data</th></tr><tr><td>IONOS</td><td>Application server</td><td>IP, technical requests</td></tr><tr><td>Hostinger</td><td>Database and email</td><td>Account data, email</td></tr><tr><td>Stripe</td><td>Payments for API plans</td><td>Payment data (we do not store it), subscription name and email</td></tr></table></div>
+                      <p>Some of these providers process data outside Mexico. We do not share your data with anyone else, unless required by a competent authority in accordance with the law.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>How long we keep it</h2>
+              <div class="tbl"><table><tr><th>Data</th><th>Period</th></tr><tr><td>Technical logs with IP</td><td>14 days</td></tr><tr><td>Forecast cache</td><td>Hours</td></tr><tr><td>Payment records (Stripe)</td><td>As required by tax and accounting obligations</td></tr><tr><td>API customer data</td><td>For the duration of the relationship; afterwards, as required by tax and accounting obligations</td></tr><tr><td>Aggregated API usage</td><td>24 months</td></tr><tr><td>API Free sign-up link (email and token; the token only as a hash)</td><td>24 hours</td></tr><tr><td>Free sign-up anti-abuse counters (per IP and per email hash)</td><td>Up to 2 days</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Security</h2>
+              <p>Communications with our servers are encrypted (HTTPS). API keys are stored only as an irreversible hash: we cannot recover them, only issue a new one. Sign-up and key management links are single-use and expire. We limit requests and access attempts to prevent abuse.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Your rights and consent withdrawal</h2>
+              <p>You can <strong>access</strong>, <strong>rectify</strong>, <strong>delete</strong> or <strong>object</strong> to the processing of your data, and <strong>withdraw your consent</strong>, by writing to <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a> with:</p>
+                      <ul><li>Your name and the email linked to your account.</li><li>The right you wish to exercise and a clear description of your request.</li></ul>
+                      <p>We will respond within the time limits set by law. If you believe your rights have not been respected, you may contact Mexico's <strong>Secretaría Anticorrupción y Buen Gobierno</strong>. If you live in the European Union, you may also contact your country's data protection authority.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Closing your account</h2>
+              <p>Write to us to close your account. We revoke your keys and delete your data, except billing records required by law. You can cancel a paid plan from the Stripe customer portal (link in the welcome email).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Minors</h2>
+              <p>The API is intended for businesses and professionals <strong>18 years of age or older</strong>. We do not knowingly collect data from minors.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="en-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Changes to this policy</h2>
+              <p>We will publish any changes on this page, stating the update date. If a change materially affects how your data is processed, we will inform you by email.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= PT ======================= -->
+      <article lang="pt">
+        <section class="sec" id="pt-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Responsável</h2>
+              <p>A <strong>B1TMET Technologies</strong>, com domicílio em Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México, é responsável pelo tratamento dos dados pessoais coletados por meio da API de previsão da B1TMET (a «API») e das suas páginas de cadastro e gestão de chaves.</p>
+                      <p>Contato para privacidade: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a></p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Dados pessoais que tratamos</h2>
+              <p>Não tratamos dados pessoais sensíveis.</p>
+                      <div class="tbl"><table><tr><th>Dado</th><th>Quando é obtido</th></tr><tr><td>Endereço IP</td><td>Em cada conexão com nossos servidores</td></tr><tr><td>Clientes da API: nome ou razão social, e-mail de contato e plano</td><td>Ao solicitar uma chave ou contratar um plano</td></tr><tr><td>Chave de API (guardamos apenas um hash irreversível e um prefixo visível)</td><td>Ao emitir a chave</td></tr><tr><td>Uso da API por chave e por dia: número de requisições, endpoint e domínio, sem coordenadas nem IP</td><td>Ao usar a API</td></tr><tr><td>Identificador de cliente da Stripe</td><td>Se você contratar um plano pago da API</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Finalidades</h2>
+              <p>Todas as finalidades são <strong>necessárias</strong> para prestar o serviço que você solicita:</p>
+                      <ul><li>Prestar a API aos seus clientes: emitir e gerenciar chaves, aplicar os limites de cada plano, faturar e prevenir abusos. Isso inclui verificar o seu e-mail no cadastro do plano Free e enviar os e-mails de verificação e de boas-vindas da API.</li><li>Proteger o serviço contra abusos e acessos não autorizados.</li></ul>
+                      <div class="note"><strong>Não</strong> usamos seus dados para publicidade, <strong>não</strong> os vendemos, <strong>não</strong> usamos ferramentas de análise nem de rastreamento e <strong>não</strong> usamos inteligência artificial para tratar seus dados.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Localização</h2>
+                      <p>As coordenadas recebidas pela API são usadas apenas para calcular a previsão: não são registradas nos logs, não são associadas à chave em nenhum histórico e ficam em cache apenas por algumas horas. Se um cliente da API nos enviar coordenadas dos seus próprios usuários, é esse cliente quem responde perante eles.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Com quem compartilhamos dados</h2>
+              <p>Apenas com fornecedores que nos ajudam a prestar o serviço:</p>
+                      <div class="tbl"><table><tr><th>Fornecedor</th><th>Para quê</th><th>Dados</th></tr><tr><td>IONOS</td><td>Servidor do aplicativo</td><td>IP, solicitações técnicas</td></tr><tr><td>Hostinger</td><td>Banco de dados e e-mail</td><td>Dados da conta, e-mail</td></tr><tr><td>Stripe</td><td>Pagamentos dos planos da API</td><td>Dados de pagamento (não os armazenamos), nome e e-mail da assinatura</td></tr></table></div>
+                      <p>Alguns desses fornecedores tratam dados fora do México. Não compartilhamos seus dados com mais ninguém, salvo quando uma autoridade competente o exigir nos termos da lei.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Por quanto tempo os guardamos</h2>
+              <div class="tbl"><table><tr><th>Dado</th><th>Prazo</th></tr><tr><td>Registros técnicos com IP</td><td>14 dias</td></tr><tr><td>Cache de previsões</td><td>Horas</td></tr><tr><td>Registros de pagamento (Stripe)</td><td>O que exigirem as obrigações fiscais e contábeis</td></tr><tr><td>Dados de clientes da API</td><td>Enquanto durar a relação; depois, o que exigirem as obrigações fiscais e contábeis</td></tr><tr><td>Uso agregado da API</td><td>24 meses</td></tr><tr><td>Link de cadastro Free da API (e-mail e token; o token apenas como hash)</td><td>24 horas</td></tr><tr><td>Contadores antiabuso do cadastro Free (por IP e por hash do e-mail)</td><td>Até 2 dias</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Segurança</h2>
+              <p>As comunicações com nossos servidores são criptografadas (HTTPS). As chaves de API são armazenadas apenas como hash irreversível: não podemos recuperá-las, apenas emitir uma nova. Os links de cadastro e de gestão de chaves são de uso único e expiram. Limitamos as solicitações e as tentativas de acesso para evitar abusos.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Seus direitos e revogação do consentimento</h2>
+              <p>Você pode <strong>acessar</strong> seus dados, <strong>retificá-los</strong>, <strong>cancelá-los</strong> ou <strong>se opor</strong> ao seu tratamento, bem como <strong>revogar seu consentimento</strong>, escrevendo para <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a> com:</p>
+                      <ul><li>Seu nome e o e-mail associado à sua conta.</li><li>O direito que deseja exercer e uma descrição clara da sua solicitação.</li></ul>
+                      <p>Responderemos nos prazos estabelecidos pela lei. Se você considerar que seus direitos não foram atendidos, pode recorrer à <strong>Secretaría Anticorrupción y Buen Gobierno</strong> do México. Se você reside na União Europeia, também pode recorrer à autoridade de proteção de dados do seu país.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Cancelar sua conta</h2>
+              <p>Escreva para nós para cancelar sua conta. Revogamos suas chaves e apagamos seus dados, salvo os registros de faturamento exigidos por lei. Você pode cancelar um plano pago no portal do cliente da Stripe (link no e-mail de boas-vindas).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Menores de idade</h2>
+              <p>A API é destinada a empresas e profissionais com <strong>18 anos ou mais</strong>. Não coletamos intencionalmente dados de menores.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="pt-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Alterações neste aviso</h2>
+              <p>Publicaremos qualquer alteração nesta página, indicando a data de atualização. Se uma alteração afetar de forma relevante o tratamento dos seus dados, informaremos você por e-mail.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= FR ======================= -->
+      <article lang="fr">
+        <section class="sec" id="fr-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Responsable du traitement</h2>
+              <p><strong>B1TMET Technologies</strong>, domiciliée à l'adresse suivante : Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México, est responsable du traitement des données personnelles collectées via l'API de prévision de B1TMET (l'« API ») et ses pages d'inscription et de gestion des clés.</p>
+                      <p>Contact confidentialité : <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a></p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Données personnelles que nous traitons</h2>
+              <p>Nous ne traitons pas de données personnelles sensibles.</p>
+                      <div class="tbl"><table><tr><th>Donnée</th><th>Quand elle est collectée</th></tr><tr><td>Adresse IP</td><td>À chaque connexion à nos serveurs</td></tr><tr><td>Clients de l'API : nom ou raison sociale, e-mail de contact et offre</td><td>Lors de la demande d'une clé ou de la souscription d'une offre</td></tr><tr><td>Clé d'API (nous ne conservons qu'un hachage irréversible et un préfixe visible)</td><td>Lors de l'émission de la clé</td></tr><tr><td>Utilisation de l'API par clé et par jour : nombre de requêtes, endpoint et domaine, sans coordonnées ni IP</td><td>Lors de l'utilisation de l'API</td></tr><tr><td>Identifiant client Stripe</td><td>Si vous souscrivez une offre payante de l'API</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Finalités</h2>
+              <p>Toutes les finalités sont <strong>nécessaires</strong> pour fournir le service que vous demandez :</p>
+                      <ul><li>Fournir l'API à ses clients : émettre et gérer les clés, appliquer les limites de chaque offre, facturer et prévenir les abus. Cela comprend la vérification de votre e-mail lors de l'inscription à l'offre Free et l'envoi des e-mails de vérification et de bienvenue de l'API.</li><li>Protéger le service contre les abus et les accès non autorisés.</li></ul>
+                      <div class="note">Nous <strong>n'utilisons pas</strong> vos données à des fins publicitaires, nous <strong>ne les vendons pas</strong>, nous <strong>n'utilisons aucun</strong> outil d'analyse ni de suivi, et nous <strong>n'utilisons pas</strong> d'intelligence artificielle pour traiter vos données.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Localisation</h2>
+                      <p>Les coordonnées reçues par l'API servent uniquement à calculer la prévision : elles ne sont pas enregistrées dans les journaux, ne sont associées à la clé dans aucun historique et ne sont conservées en cache que quelques heures. Si un client de l'API nous envoie les coordonnées de ses propres utilisateurs, c'est ce client qui en répond envers eux.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Avec qui nous partageons des données</h2>
+              <p>Uniquement avec des prestataires qui nous aident à fournir le service :</p>
+                      <div class="tbl"><table><tr><th>Prestataire</th><th>Finalité</th><th>Données</th></tr><tr><td>IONOS</td><td>Serveur de l'application</td><td>IP, requêtes techniques</td></tr><tr><td>Hostinger</td><td>Base de données et e-mail</td><td>Données du compte, e-mail</td></tr><tr><td>Stripe</td><td>Paiement des offres de l'API</td><td>Données de paiement (nous ne les conservons pas), nom et e-mail de l'abonnement</td></tr></table></div>
+                      <p>Certains de ces prestataires traitent des données en dehors du Mexique. Nous ne partageons vos données avec personne d'autre, sauf si une autorité compétente l'exige conformément à la loi.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Durée de conservation</h2>
+              <div class="tbl"><table><tr><th>Donnée</th><th>Durée</th></tr><tr><td>Journaux techniques avec IP</td><td>14 jours</td></tr><tr><td>Cache des prévisions</td><td>Quelques heures</td></tr><tr><td>Registres de paiement (Stripe)</td><td>Selon les obligations fiscales et comptables</td></tr><tr><td>Données des clients de l'API</td><td>Pendant toute la durée de la relation ; ensuite, selon les obligations fiscales et comptables</td></tr><tr><td>Utilisation agrégée de l'API</td><td>24 mois</td></tr><tr><td>Lien d'inscription Free de l'API (e-mail et jeton ; le jeton uniquement sous forme de hachage)</td><td>24 heures</td></tr><tr><td>Compteurs anti-abus de l'inscription Free (par IP et par hachage de l'e-mail)</td><td>Jusqu'à 2 jours</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Sécurité</h2>
+              <p>Les communications avec nos serveurs sont chiffrées (HTTPS). Les clés d'API sont conservées uniquement sous forme de hachage irréversible : nous ne pouvons pas les récupérer, seulement en émettre une nouvelle. Les liens d'inscription et de gestion des clés sont à usage unique et expirent. Nous limitons les requêtes et les tentatives de connexion pour prévenir les abus.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Vos droits et retrait du consentement</h2>
+              <p>Vous pouvez <strong>accéder</strong> à vos données, les <strong>rectifier</strong>, les <strong>supprimer</strong> ou vous <strong>opposer</strong> à leur traitement, ainsi que <strong>retirer votre consentement</strong>, en écrivant à <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a> en indiquant :</p>
+                      <ul><li>Votre nom et l'adresse e-mail associée à votre compte.</li><li>Le droit que vous souhaitez exercer et une description claire de votre demande.</li></ul>
+                      <p>Nous répondrons dans les délais prévus par la loi. Si vous estimez que vos droits n'ont pas été respectés, vous pouvez vous adresser à la <strong>Secretaría Anticorrupción y Buen Gobierno</strong> du Mexique. Si vous résidez dans l'Union européenne, vous pouvez également saisir l'autorité de protection des données de votre pays.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Résilier votre compte</h2>
+              <p>Écrivez-nous pour résilier votre compte. Nous révoquons vos clés et supprimons vos données, à l'exception des registres de facturation exigés par la loi. Vous pouvez résilier une offre payante depuis le portail client de Stripe (lien dans l'e-mail de bienvenue).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Mineurs</h2>
+              <p>L'API est destinée aux entreprises et aux professionnels <strong>âgés de 18 ans ou plus</strong>. Nous ne collectons pas sciemment de données concernant des mineurs.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="fr-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Modifications de cette politique</h2>
+              <p>Nous publierons toute modification sur cette page en indiquant la date de mise à jour. Si une modification affecte de manière significative le traitement de vos données, nous vous en informerons par e-mail.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= IT ======================= -->
+      <article lang="it">
+        <section class="sec" id="it-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Titolare del trattamento</h2>
+              <p><strong>B1TMET Technologies</strong>, con sede in Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México, è titolare del trattamento dei dati personali raccolti tramite l'API di previsione di B1TMET (l'«API») e le sue pagine di registrazione e gestione delle chiavi.</p>
+                      <p>Contatto per la privacy: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a></p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Dati personali che trattiamo</h2>
+              <p>Non trattiamo dati personali sensibili.</p>
+                      <div class="tbl"><table><tr><th>Dato</th><th>Quando viene raccolto</th></tr><tr><td>Indirizzo IP</td><td>A ogni connessione ai nostri server</td></tr><tr><td>Clienti dell'API: nome o ragione sociale, e-mail di contatto e piano</td><td>Alla richiesta di una chiave o alla sottoscrizione di un piano</td></tr><tr><td>Chiave API (conserviamo solo un hash irreversibile e un prefisso visibile)</td><td>All'emissione della chiave</td></tr><tr><td>Uso dell'API per chiave e per giorno: numero di richieste, endpoint e dominio, senza coordinate né IP</td><td>Durante l'uso dell'API</td></tr><tr><td>Identificativo cliente Stripe</td><td>Se sottoscrivi un piano a pagamento dell'API</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Finalità</h2>
+              <p>Tutte le finalità sono <strong>necessarie</strong> per fornire il servizio che richiedi:</p>
+                      <ul><li>Fornire l'API ai suoi clienti: emettere e gestire le chiavi, applicare i limiti di ciascun piano, fatturare e prevenire abusi. Ciò include la verifica dell'e-mail nella registrazione al piano Free e l'invio delle e-mail di verifica e di benvenuto dell'API.</li><li>Proteggere il servizio da abusi e accessi non autorizzati.</li></ul>
+                      <div class="note"><strong>Non</strong> usiamo i tuoi dati per pubblicità, <strong>non</strong> li vendiamo, <strong>non</strong> usiamo strumenti di analisi o di tracciamento e <strong>non</strong> usiamo l'intelligenza artificiale per trattare i tuoi dati.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Posizione</h2>
+                      <p>Le coordinate ricevute dall'API vengono usate solo per calcolare la previsione: non vengono registrate nei log, non sono associate alla chiave in alcuno storico e restano in cache solo per alcune ore. Se un cliente dell'API ci invia coordinate dei propri utenti, è quel cliente a risponderne nei loro confronti.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Con chi condividiamo i dati</h2>
+              <p>Solo con fornitori che ci aiutano a prestare il servizio:</p>
+                      <div class="tbl"><table><tr><th>Fornitore</th><th>A cosa serve</th><th>Dati</th></tr><tr><td>IONOS</td><td>Server dell'applicazione</td><td>IP, richieste tecniche</td></tr><tr><td>Hostinger</td><td>Database ed e-mail</td><td>Dati dell'account, e-mail</td></tr><tr><td>Stripe</td><td>Pagamenti dei piani dell'API</td><td>Dati di pagamento (non li conserviamo), nome ed e-mail dell'abbonamento</td></tr></table></div>
+                      <p>Alcuni di questi fornitori trattano dati al di fuori del Messico. Non condividiamo i tuoi dati con nessun altro, salvo quando lo richieda un'autorità competente ai sensi di legge.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Per quanto tempo li conserviamo</h2>
+              <div class="tbl"><table><tr><th>Dato</th><th>Periodo</th></tr><tr><td>Log tecnici con IP</td><td>14 giorni</td></tr><tr><td>Cache delle previsioni</td><td>Alcune ore</td></tr><tr><td>Registrazioni dei pagamenti (Stripe)</td><td>Quanto richiesto dagli obblighi fiscali e contabili</td></tr><tr><td>Dati dei clienti dell'API</td><td>Per tutta la durata del rapporto; in seguito, quanto richiesto dagli obblighi fiscali e contabili</td></tr><tr><td>Uso aggregato dell'API</td><td>24 mesi</td></tr><tr><td>Link di registrazione Free dell'API (e-mail e token; il token solo come hash)</td><td>24 ore</td></tr><tr><td>Contatori anti-abuso della registrazione Free (per IP e per hash dell'e-mail)</td><td>Fino a 2 giorni</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Sicurezza</h2>
+              <p>Le comunicazioni con i nostri server sono cifrate (HTTPS). Le chiavi API sono conservate solo come hash irreversibile: non possiamo recuperarle, solo emetterne una nuova. I link di registrazione e di gestione delle chiavi sono monouso e scadono. Limitiamo le richieste e i tentativi di accesso per prevenire abusi.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>I tuoi diritti e la revoca del consenso</h2>
+              <p>Puoi <strong>accedere</strong> ai tuoi dati, <strong>rettificarli</strong>, <strong>cancellarli</strong> od <strong>opporti</strong> al loro trattamento, nonché <strong>revocare il tuo consenso</strong>, scrivendo a <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a> indicando:</p>
+                      <ul><li>Il tuo nome e l'e-mail associata al tuo account.</li><li>Il diritto che desideri esercitare e una descrizione chiara della tua richiesta.</li></ul>
+                      <p>Risponderemo entro i termini previsti dalla legge. Se ritieni che i tuoi diritti non siano stati rispettati, puoi rivolgerti alla <strong>Secretaría Anticorrupción y Buen Gobierno</strong> del Messico. Se risiedi nell'Unione europea, puoi rivolgerti anche all'autorità per la protezione dei dati del tuo Paese.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Chiudere il tuo account</h2>
+              <p>Scrivici per chiudere il tuo account. Revochiamo le tue chiavi ed eliminiamo i tuoi dati, salvo le registrazioni di fatturazione richieste dalla legge. Puoi disdire un piano a pagamento dal portale clienti di Stripe (link nell'e-mail di benvenuto).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Minori</h2>
+              <p>L'API è destinata ad aziende e professionisti di <strong>almeno 18 anni</strong>. Non raccogliamo consapevolmente dati di minori.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="it-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Modifiche alla presente informativa</h2>
+              <p>Pubblicheremo qualsiasi modifica in questa pagina, indicando la data di aggiornamento. Se una modifica incide in modo rilevante sul trattamento dei tuoi dati, te lo comunicheremo via e-mail.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- ======================= NL ======================= -->
+      <article lang="nl">
+        <section class="sec" id="nl-s1">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">01</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">1. </span>Verwerkingsverantwoordelijke</h2>
+              <p><strong>B1TMET Technologies</strong>, gevestigd te Copilco 300, Edificio 1, Depto. 104, Col. Copilco Universidad, Alcaldía Coyoacán, C.P. 04360, Ciudad de México, México, is verantwoordelijk voor de verwerking van persoonsgegevens die worden verzameld via de voorspellings-API van B1TMET (de "API") en de bijbehorende pagina's voor aanmelding en sleutelbeheer.</p>
+                      <p>Contact voor privacy: <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a></p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s2">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">02</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">2. </span>Persoonsgegevens die we verwerken</h2>
+              <p>We verwerken geen gevoelige persoonsgegevens.</p>
+                      <div class="tbl"><table><tr><th>Gegeven</th><th>Wanneer het wordt verzameld</th></tr><tr><td>IP-adres</td><td>Bij elke verbinding met onze servers</td></tr><tr><td>API-klanten: naam of bedrijfsnaam, contact-e-mailadres en abonnement</td><td>Bij het aanvragen van een sleutel of het afsluiten van een abonnement</td></tr><tr><td>API-sleutel (we bewaren alleen een onomkeerbare hash en een zichtbaar voorvoegsel)</td><td>Bij het uitgeven van de sleutel</td></tr><tr><td>API-gebruik per sleutel en per dag: aantal verzoeken, endpoint en domein, zonder coördinaten of IP</td><td>Tijdens het gebruik van de API</td></tr><tr><td>Stripe-klant-ID</td><td>Als je een betaald API-abonnement afsluit</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s3">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">03</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">3. </span>Doeleinden</h2>
+              <p>Alle doeleinden zijn <strong>noodzakelijk</strong> om de dienst te leveren die je vraagt:</p>
+                      <ul><li>De API aan haar klanten leveren: sleutels uitgeven en beheren, de limieten van elk abonnement toepassen, factureren en misbruik voorkomen. Dit omvat het verifiëren van je e-mailadres bij aanmelding voor het Free-abonnement en het versturen van de verificatie- en welkomstmails van de API.</li><li>De dienst beschermen tegen misbruik en onbevoegde toegang.</li></ul>
+                      <div class="note">We gebruiken je gegevens <strong>niet</strong> voor advertenties, we verkopen ze <strong>niet</strong>, we gebruiken <strong>geen</strong> analyse- of trackingtools en we gebruiken <strong>geen</strong> kunstmatige intelligentie om je gegevens te verwerken.</div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s4">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">04</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">4. </span>Locatie</h2>
+                      <p>Coördinaten die de API ontvangt, worden alleen gebruikt om de voorspelling te berekenen: ze worden niet in logboeken vastgelegd, niet in een geschiedenis aan de sleutel gekoppeld en slechts enkele uren in de cache bewaard. Als een API-klant ons coördinaten van zijn eigen gebruikers stuurt, is die klant daarvoor tegenover hen verantwoordelijk.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s5">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">05</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">5. </span>Met wie we gegevens delen</h2>
+              <p>Alleen met leveranciers die ons helpen de dienst te leveren:</p>
+                      <div class="tbl"><table><tr><th>Leverancier</th><th>Waarvoor</th><th>Gegevens</th></tr><tr><td>IONOS</td><td>Applicatieserver</td><td>IP, technische verzoeken</td></tr><tr><td>Hostinger</td><td>Database en e-mail</td><td>Accountgegevens, e-mail</td></tr><tr><td>Stripe</td><td>Betalingen voor API-abonnementen</td><td>Betaalgegevens (we slaan ze niet op), naam en e-mailadres van het abonnement</td></tr></table></div>
+                      <p>Sommige van deze leveranciers verwerken gegevens buiten Mexico. We delen je gegevens met niemand anders, tenzij een bevoegde autoriteit dat volgens de wet vereist.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s6">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">06</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">6. </span>Hoe lang we ze bewaren</h2>
+              <div class="tbl"><table><tr><th>Gegeven</th><th>Termijn</th></tr><tr><td>Technische logboeken met IP</td><td>14 dagen</td></tr><tr><td>Cache van voorspellingen</td><td>Enkele uren</td></tr><tr><td>Betalingsgegevens (Stripe)</td><td>Zolang fiscale en boekhoudkundige verplichtingen dat vereisen</td></tr><tr><td>Gegevens van API-klanten</td><td>Zolang de relatie duurt; daarna zolang fiscale en boekhoudkundige verplichtingen dat vereisen</td></tr><tr><td>Geaggregeerd API-gebruik</td><td>24 maanden</td></tr><tr><td>Aanmeldlink voor de Free-API (e-mailadres en token; de token alleen als hash)</td><td>24 uur</td></tr><tr><td>Antimisbruiktellers van de Free-aanmelding (per IP en per hash van het e-mailadres)</td><td>Tot 2 dagen</td></tr></table></div>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s7">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">07</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">7. </span>Beveiliging</h2>
+              <p>De communicatie met onze servers is versleuteld (HTTPS). API-sleutels worden alleen als onomkeerbare hash opgeslagen: we kunnen ze niet herstellen, alleen een nieuwe uitgeven. Links voor aanmelding en sleutelbeheer zijn eenmalig bruikbaar en verlopen. We beperken het aantal verzoeken en inlogpogingen om misbruik te voorkomen.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s8">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">08</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">8. </span>Je rechten en intrekking van toestemming</h2>
+              <p>Je kunt je gegevens <strong>inzien</strong>, laten <strong>corrigeren</strong> of <strong>verwijderen</strong>, <strong>bezwaar maken</strong> tegen de verwerking en je <strong>toestemming intrekken</strong> door te schrijven naar <a href="mailto:b1tmet@b1tmet.com">b1tmet@b1tmet.com</a> met:</p>
+                      <ul><li>Je naam en het e-mailadres dat aan je account is gekoppeld.</li><li>Het recht dat je wilt uitoefenen en een duidelijke omschrijving van je verzoek.</li></ul>
+                      <p>We antwoorden binnen de wettelijke termijnen. Als je vindt dat je rechten niet zijn gerespecteerd, kun je je wenden tot de Mexicaanse <strong>Secretaría Anticorrupción y Buen Gobierno</strong>. Als je in de Europese Unie woont, kun je ook terecht bij de gegevensbeschermingsautoriteit van je land.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s9">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">09</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">9. </span>Je account opzeggen</h2>
+              <p>Schrijf ons om je account op te zeggen. We trekken je sleutels in en verwijderen je gegevens, behalve factuurgegevens die de wet vereist. Een betaald abonnement kun je opzeggen via het klantenportaal van Stripe (link in de welkomstmail).</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s10">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">10</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">10. </span>Minderjarigen</h2>
+              <p>De API is bedoeld voor bedrijven en professionals van <strong>18 jaar of ouder</strong>. We verzamelen niet bewust gegevens van minderjarigen.</p>
+            </div>
+          </div>
+        </section>
+        <section class="sec" id="nl-s11">
+          <div class="sec-in">
+            <div class="sec-n rv" aria-hidden="true">11</div>
+            <div class="sec-b rv">
+              <h2><span class="vh">11. </span>Wijzigingen in dit beleid</h2>
+              <p>We publiceren elke wijziging op deze pagina met de datum van bijwerking. Als een wijziging de verwerking van je gegevens wezenlijk beïnvloedt, laten we je dat per e-mail weten.</p>
+            </div>
+          </div>
+        </section>
+      </article>
+
+    </main>
+
+    <footer class="foot">
+      <div class="foot-glow" aria-hidden="true"></div>
+      <div class="foot-in">
+        <img class="foot-logo" src="../assets/logo-h-light.png" alt="B1TMET" width="138" height="40" />
+        <ul class="foot-links" lang="es">
+          <li><a href="../legal/privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">Precios API</a></li>
+          <li><a href="../legal/terminos.html">Términos de la API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contacto</a></li>
+          <li><a href="https://b1tmet.com">Acerca de</a></li>
+        </ul>
+        <ul class="foot-links" lang="en">
+          <li><a href="../legal/privacidad.html">Privacy Policy</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">API Pricing</a></li>
+          <li><a href="../legal/terminos.html">API Terms</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">About</a></li>
+        </ul>
+        <ul class="foot-links" lang="pt">
+          <li><a href="../legal/privacidad.html">Aviso de privacidade</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">Preços da API</a></li>
+          <li><a href="../legal/terminos.html">Termos da API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contato</a></li>
+          <li><a href="https://b1tmet.com">Sobre</a></li>
+        </ul>
+        <ul class="foot-links" lang="fr">
+          <li><a href="../legal/privacidad.html">Politique de confidentialité</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">Tarifs de l'API</a></li>
+          <li><a href="../legal/terminos.html">Conditions de l'API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">À propos</a></li>
+        </ul>
+        <ul class="foot-links" lang="it">
+          <li><a href="../legal/privacidad.html">Informativa sulla privacy</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">Prezzi API</a></li>
+          <li><a href="../legal/terminos.html">Termini dell'API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contatti</a></li>
+          <li><a href="https://b1tmet.com">Chi siamo</a></li>
+        </ul>
+        <ul class="foot-links" lang="nl">
+          <li><a href="../legal/privacidad.html">Privacybeleid</a></li>
+          <li><a href="../index.html">API</a></li>
+          <li><a href="../precios.html">API-prijzen</a></li>
+          <li><a href="../legal/terminos.html">API-voorwaarden</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">Over ons</a></li>
+        </ul>
+        <p class="foot-legal" lang="es">Los pronósticos de B1TMET son orientativos y no sustituyen los avisos oficiales de los servicios meteorológicos nacionales. Mapas: © colaboradores de OpenStreetMap, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="en">B1TMET forecasts are for guidance only and do not replace official warnings from national weather services. Maps: © OpenStreetMap contributors, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="pt">As previsões da B1TMET são apenas orientativas e não substituem os avisos oficiais dos serviços meteorológicos nacionais. Mapas: © colaboradores do OpenStreetMap, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="fr">Les prévisions de B1TMET sont fournies à titre indicatif et ne remplacent pas les alertes officielles des services météorologiques nationaux. Cartes : © contributeurs d'OpenStreetMap, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="it">Le previsioni di B1TMET sono indicative e non sostituiscono gli avvisi ufficiali dei servizi meteorologici nazionali. Mappe: © collaboratori di OpenStreetMap, © CARTO, © OpenTopoMap.</p>
+        <p class="foot-legal" lang="nl">De voorspellingen van B1TMET zijn indicatief en vervangen geen officiële waarschuwingen van nationale weerdiensten. Kaarten: © OpenStreetMap-bijdragers, © CARTO, © OpenTopoMap.</p>
+        <div class="foot-copy"><span>© 2026 B1TMET Technologies</span><span class="wm">Bitmet</span></div>
+      </div>
+    </footer>
+
+    <script src="../assets/lang.js"></script>
+    <script src="../assets/marca.js"></script>
+  </body>
+</html>

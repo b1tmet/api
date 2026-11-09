@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Verificación del pronóstico · Forecast verification — B1TMET</title>
+    <meta name="description" content="Verificación del pronóstico WRF de B1TMET contra estaciones y boyas, junto a GFS, IFS, AIFS e ICON / B1TMET WRF forecast verification against stations and buoys, alongside GFS, IFS, AIFS and ICON" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#17062b" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="assets/verif.css" />
+    <link rel="preload" href="assets/fonts/montserrat-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="assets/marca.css" />
+    <link rel="stylesheet" href="assets/api-comp.css" />
+    <script>
+      (function () {
+        var d = document.documentElement;
+        d.className += " js";
+        var hr = new Date().getHours();
+        d.setAttribute("data-tod", hr >= 5 && hr < 8 ? "dawn" : hr >= 8 && hr < 17 ? "day" : hr >= 17 && hr < 20 ? "dusk" : "night");
+        try { var th = localStorage.getItem("b1t-theme"); if (th === "dark" || th === "light") d.setAttribute("data-theme", th); } catch (e) {}
+
+        var S = ["es", "en", "pt", "fr", "it", "nl"], l = null;
+        try { l = new URLSearchParams(location.search).get("lang"); } catch (e) {}
+        if (S.indexOf(l) >= 0) { try { localStorage.setItem("b1t-lang", l); } catch (e) {} }
+        else { try { l = localStorage.getItem("b1t-lang"); } catch (e) {} }
+        if (S.indexOf(l) < 0) {
+          l = "en";
+          var list = navigator.languages || [navigator.language || "en"];
+          for (var i = 0; i < list.length; i++) {
+            var c = String(list[i] || "").slice(0, 2).toLowerCase();
+            if (S.indexOf(c) >= 0) { l = c; break; }
+          }
+        }
+        document.documentElement.setAttribute("data-lang", l);
+        document.documentElement.lang = l;
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="top">
+      <a class="brand" href="index.html"><img src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" /><small>API</small></a>
+      <nav class="top-nav" aria-label="API">
+        <a href="index.html"><span lang="es">Inicio</span><span lang="en">Overview</span><span lang="pt">Início</span><span lang="fr">Aperçu</span><span lang="it">Panoramica</span><span lang="nl">Overzicht</span></a>
+        <a href="docs.html"><span lang="es">Documentación</span><span lang="en">Documentation</span><span lang="pt">Documentação</span><span lang="fr">Documentation</span><span lang="it">Documentazione</span><span lang="nl">Documentatie</span></a>
+        <a href="precios.html"><span lang="es">Precios</span><span lang="en">Pricing</span><span lang="pt">Preços</span><span lang="fr">Tarifs</span><span lang="it">Prezzi</span><span lang="nl">Prijzen</span></a>
+        <a href="verificacion.html" aria-current="page"><span lang="es">Verificación</span><span lang="en">Verification</span><span lang="pt">Verificação</span><span lang="fr">Vérification</span><span lang="it">Verifica</span><span lang="nl">Verificatie</span></a>
+      </nav>
+      <button class="theme" type="button" aria-label="Tema">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+      </button>
+      <label class="langsel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9s1.3-6.3 3.8-9z"/></svg>
+        <select id="langsel" aria-label="Idioma / Language">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+          <option value="fr">Français</option>
+          <option value="it">Italiano</option>
+          <option value="nl">Nederlands</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="hero hero-s">
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="gPlane" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#385BD6" stop-opacity=".95" />
+              <stop offset="1" stop-color="#385BD6" stop-opacity=".55" />
+            </linearGradient>
+          </defs>
+          <g class="rings r2"><circle cx="110" cy="40" r="60" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="122" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="184" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="246" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="308" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="370" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="432" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="494" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="556" fill="#385BD6" fill-opacity=".06" /><circle cx="110" cy="40" r="618" fill="#385BD6" fill-opacity=".06" /></g>
+          <polygon class="plane" points="560,860 1500,120 1500,860" fill="url(#gPlane)" />
+          <g class="rings r1"><circle cx="1270" cy="700" r="70" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="140" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="210" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="280" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="350" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="420" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="490" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="560" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="630" fill="#A2B2F4" fill-opacity=".07" /><circle cx="1270" cy="700" r="700" fill="#A2B2F4" fill-opacity=".07" /></g>
+        </svg>
+      </div>
+      <svg class="ribbon" viewBox="0 0 660 320" aria-hidden="true">
+        <defs>
+          <linearGradient id="gRib" gradientUnits="userSpaceOnUse" x1="40" y1="0" x2="640" y2="0">
+            <stop offset="0" stop-color="#385BD6" />
+            <stop offset=".55" stop-color="#385BD6" stop-opacity=".75" />
+            <stop offset="1" stop-color="#17062B" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g>
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".22" transform="translate(30 18)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".4" transform="translate(20 12)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" opacity=".65" transform="translate(10 6)" />
+          <path class="trail" d="M70 240 L180 120 L290 240 L400 120 L510 240 L620 120" stroke="url(#gRib)" stroke-width="58" />
+        </g>
+      </svg>
+      <canvas class="wind" aria-hidden="true"></canvas>
+      <div class="hero-in">
+        <p class="eyebrow">B1TMET API</p>
+        <h1 lang="es">Verificación del pronóstico</h1>
+        <h1 lang="en">Forecast verification</h1>
+        <h1 lang="pt">Verificação da previsão</h1>
+        <h1 lang="fr">Vérification des prévisions</h1>
+        <h1 lang="it">Verifica delle previsioni</h1>
+        <h1 lang="nl">Verificatie van de voorspellingen</h1>
+        <p class="sub" lang="es">Lo que pronosticó el modelo frente a lo que se midió después, con los modelos globales de referencia al lado y las mismas reglas para todos.</p>
+        <p class="sub" lang="en">What the model forecast against what was measured afterwards, with the reference global models alongside and the same rules for all.</p>
+        <p class="sub" lang="pt">O que o modelo previu frente ao que foi medido depois, com os modelos globais de referência ao lado e as mesmas regras para todos.</p>
+        <p class="sub" lang="fr">Ce que le modèle a prévu face à ce qui a été mesuré ensuite, avec les modèles globaux de référence à côté et les mêmes règles pour tous.</p>
+        <p class="sub" lang="it">Ciò che il modello ha previsto rispetto a ciò che è stato misurato poi, con i modelli globali di riferimento accanto e le stesse regole per tutti.</p>
+        <p class="sub" lang="nl">Wat het model voorspelde tegenover wat daarna werd gemeten, met de mondiale referentiemodellen ernaast en dezelfde regels voor iedereen.</p>
+      </div>
+      <div class="edge back" aria-hidden="true"></div>
+      <div class="edge" aria-hidden="true"></div>
+    </section>
+
+    <main class="app app-docs app-page">
+      <article class="card">
+        <div class="vf-state" id="vf-state" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg>
+          <h3 id="vf-state-h"></h3>
+          <p id="vf-state-p"></p>
+          <div class="vf-meters" id="vf-meters"></div>
+        </div>
+
+        <section lang="es"><h2>Cómo leer esta página</h2><p class="lead">Cada hora cruzamos el pronóstico con las mediciones de aeropuertos (METAR) y de boyas fondeadas de la NOAA en el Caribe, el Golfo de México y Centroamérica. Junto a WRF evaluamos GFS, IFS, AIFS e ICON con las mismas reglas. Publicamos lo que salga, también donde WRF no gana.</p></section>
+        <section lang="en"><h2>How to read this page</h2><p class="lead">Every hour we match the forecast with measurements from airports (METAR) and NOAA moored buoys across the Caribbean, the Gulf of Mexico and Central America. Next to WRF we score GFS, IFS, AIFS and ICON with the same rules. We publish whatever comes out, including where WRF does not win.</p></section>
+        <section lang="pt"><h2>Como ler esta página</h2><p class="lead">A cada hora cruzamos a previsão com as medições de aeroportos (METAR) e de boias fundeadas da NOAA no Caribe, no Golfo do México e na América Central. Ao lado do WRF avaliamos GFS, IFS, AIFS e ICON com as mesmas regras. Publicamos o que sair, também onde o WRF não ganha.</p></section>
+        <section lang="fr"><h2>Comment lire cette page</h2><p class="lead">Chaque heure, nous croisons la prévision avec les mesures des aéroports (METAR) et des bouées ancrées de la NOAA dans les Caraïbes, le golfe du Mexique et l'Amérique centrale. À côté de WRF, nous évaluons GFS, IFS, AIFS et ICON avec les mêmes règles. Nous publions ce qui en sort, y compris là où WRF ne gagne pas.</p></section>
+        <section lang="it"><h2>Come leggere questa pagina</h2><p class="lead">Ogni ora confrontiamo la previsione con le misure degli aeroporti (METAR) e delle boe ancorate della NOAA nei Caraibi, nel Golfo del Messico e in America centrale. Accanto a WRF valutiamo GFS, IFS, AIFS e ICON con le stesse regole. Pubblichiamo ciò che risulta, anche dove WRF non vince.</p></section>
+        <section lang="nl"><h2>Hoe u deze pagina leest</h2><p class="lead">Elk uur vergelijken we de voorspelling met metingen van luchthavens (METAR) en verankerde NOAA-boeien in het Caribisch gebied, de Golf van Mexico en Midden-Amerika. Naast WRF beoordelen we GFS, IFS, AIFS en ICON met dezelfde regels. We publiceren wat eruit komt, ook waar WRF niet wint.</p></section>
+
+        <div id="vf-app"><div class="vf-loading" id="vf-loading">…</div></div>
+
+        <details class="vf-method">
+          <summary><span lang="es">Método y fuentes</span><span lang="en">Method and sources</span><span lang="pt">Método e fontes</span><span lang="fr">Méthode et sources</span><span lang="it">Metodo e fonti</span><span lang="nl">Methode en bronnen</span></summary>
+          <div lang="es">
+            <ol>
+              <li>Cada pronóstico se compara con la observación más cercana a su hora válida, con un margen de ±30 minutos.</li>
+              <li>La temperatura se corrige por la diferencia de altura entre el punto de malla del modelo y la estación (6,5 °C por km). AIFS va sin corregir hasta disponer de su orografía.</li>
+              <li>Métricas: error medio absoluto (MAE), sesgo (pronóstico menos observación) y raíz del error cuadrático medio (RMSE). La dirección del viento solo se evalúa con viento observado de 2 m/s o más. Presión a nivel del mar: la del METAR o, si solo hay QNH, en estaciones por debajo de 100 m.</li>
+              <li>Muestra común: todos los modelos de un grupo se evalúan en las mismas estaciones, horas válidas y plazos, es decir, desde la misma hora de inicio. Como IFS, AIFS e ICON corren a las 00 y 12 UTC, solo entran esas corridas.</li>
+              <li>Intervalos de confianza del 95 % por remuestreo de días completos (bootstrap), porque las horas de un mismo día no son independientes.</li>
+              <li>Un resultado se publica cuando reúne al menos 30 días, 10 estaciones (5 en los grupos de un solo dominio) y 1000 pares. Un modelo solo se declara mejor o peor que WRF si el intervalo de la diferencia emparejada excluye el cero.</li>
+              <li>WRF Pro es la malla más fina que la API elige en cada estación; WRF Free, la de 27 km (25 km en México) del plan gratuito.</li>
+              <li>Las boyas miden el viento a unos 4 m de altura y los modelos lo dan a 10 m: es de esperar que los modelos lo sobrestimen algo en las boyas.</li>
+            </ol>
+            <p><b>Fuentes.</b> METAR: NOAA Aviation Weather Center. Boyas: NOAA National Data Buoy Center. GFS: NOAA/NCEP (dominio público). IFS y AIFS: © ECMWF, licencia CC BY 4.0. ICON: © Deutscher Wetterdienst, licencia CC BY 4.0. B1TMET interpola estos datos a las estaciones y calcula las métricas; ECMWF y DWD no las han revisado.</p>
+          </div>
+          <div lang="en">
+            <ol>
+              <li>Each forecast is compared with the observation closest to its valid time, within ±30 minutes.</li>
+              <li>Temperature is corrected for the height difference between the model grid point and the station (6.5 °C per km). AIFS is left uncorrected until its orography is available.</li>
+              <li>Metrics: mean absolute error (MAE), bias (forecast minus observation) and root mean square error (RMSE). Wind direction is scored only when the observed wind is 2 m/s or more. Sea-level pressure: the METAR value or, where only QNH is reported, stations below 100 m.</li>
+              <li>Common sample: all models in a group are scored at the same stations, valid times and lead times, i.e. from the same initial time. Since IFS, AIFS and ICON run at 00 and 12 UTC, only those runs count.</li>
+              <li>95% confidence intervals by resampling whole days (bootstrap), because hours within a day are not independent.</li>
+              <li>A result is published once it has at least 30 days, 10 stations (5 in single-domain groups) and 1000 pairs. A model is called better or worse than WRF only if the interval of the paired difference excludes zero.</li>
+              <li>WRF Pro is the finest grid the API picks at each station; WRF Free is the 27 km grid (25 km in Mexico) of the free plan.</li>
+              <li>Buoys measure wind at about 4 m and models give it at 10 m, so models are expected to overestimate it somewhat at buoys.</li>
+            </ol>
+            <p><b>Sources.</b> METAR: NOAA Aviation Weather Center. Buoys: NOAA National Data Buoy Center. GFS: NOAA/NCEP (public domain). IFS and AIFS: © ECMWF, licensed CC BY 4.0. ICON: © Deutscher Wetterdienst, licensed CC BY 4.0. B1TMET interpolates these data to the stations and computes the metrics; ECMWF and DWD have not reviewed them.</p>
+          </div>
+          <div lang="pt">
+            <ol>
+              <li>Cada previsão é comparada com a observação mais próxima da sua hora válida, com margem de ±30 minutos.</li>
+              <li>A temperatura é corrigida pela diferença de altitude entre o ponto de grade do modelo e a estação (6,5 °C por km). O AIFS fica sem correção até termos a sua orografia.</li>
+              <li>Métricas: erro médio absoluto (MAE), viés (previsão menos observação) e raiz do erro quadrático médio (RMSE). A direção do vento só é avaliada com vento observado de 2 m/s ou mais. Pressão ao nível do mar: a do METAR ou, se só houver QNH, em estações abaixo de 100 m.</li>
+              <li>Amostra comum: todos os modelos de um grupo são avaliados nas mesmas estações, horas válidas e prazos, ou seja, a partir da mesma hora de início. Como IFS, AIFS e ICON rodam às 00 e 12 UTC, só entram essas rodadas.</li>
+              <li>Intervalos de confiança de 95 % por reamostragem de dias inteiros (bootstrap), porque as horas de um mesmo dia não são independentes.</li>
+              <li>Um resultado é publicado quando reúne pelo menos 30 dias, 10 estações (5 nos grupos de um só domínio) e 1000 pares. Um modelo só é declarado melhor ou pior que o WRF se o intervalo da diferença pareada excluir o zero.</li>
+              <li>WRF Pro é a grade mais fina que a API escolhe em cada estação; WRF Free, a de 27 km (25 km no México) do plano gratuito.</li>
+              <li>As boias medem o vento a cerca de 4 m e os modelos o dão a 10 m: é de esperar que os modelos o superestimem um pouco nas boias.</li>
+            </ol>
+            <p><b>Fontes.</b> METAR: NOAA Aviation Weather Center. Boias: NOAA National Data Buoy Center. GFS: NOAA/NCEP (domínio público). IFS e AIFS: © ECMWF, licença CC BY 4.0. ICON: © Deutscher Wetterdienst, licença CC BY 4.0. A B1TMET interpola estes dados para as estações e calcula as métricas; o ECMWF e o DWD não as revisaram.</p>
+          </div>
+          <div lang="fr">
+            <ol>
+              <li>Chaque prévision est comparée à l'observation la plus proche de son heure de validité, à ±30 minutes près.</li>
+              <li>La température est corrigée de la différence d'altitude entre le point de grille du modèle et la station (6,5 °C par km). AIFS reste non corrigé tant que son orographie n'est pas disponible.</li>
+              <li>Mesures : erreur absolue moyenne (MAE), biais (prévision moins observation) et erreur quadratique moyenne (RMSE). La direction du vent n'est évaluée que si le vent observé atteint 2 m/s. Pression au niveau de la mer : celle du METAR ou, si seul le QNH est fourni, aux stations situées sous 100 m.</li>
+              <li>Échantillon commun : tous les modèles d'un groupe sont évalués aux mêmes stations, heures de validité et échéances, donc à partir de la même heure initiale. IFS, AIFS et ICON tournant à 00 et 12 UTC, seuls ces runs sont retenus.</li>
+              <li>Intervalles de confiance à 95 % par rééchantillonnage de journées entières (bootstrap), car les heures d'une même journée ne sont pas indépendantes.</li>
+              <li>Un résultat est publié lorsqu'il réunit au moins 30 jours, 10 stations (5 dans les groupes d'un seul domaine) et 1000 paires. Un modèle n'est déclaré meilleur ou moins bon que WRF que si l'intervalle de la différence appariée exclut zéro.</li>
+              <li>WRF Pro est la grille la plus fine que l'API choisit à chaque station ; WRF Free, celle de 27 km (25 km au Mexique) de l'offre gratuite.</li>
+              <li>Les bouées mesurent le vent à environ 4 m et les modèles le donnent à 10 m : il est normal que les modèles le surestiment un peu aux bouées.</li>
+            </ol>
+            <p><b>Sources.</b> METAR : NOAA Aviation Weather Center. Bouées : NOAA National Data Buoy Center. GFS : NOAA/NCEP (domaine public). IFS et AIFS : © ECMWF, licence CC BY 4.0. ICON : © Deutscher Wetterdienst, licence CC BY 4.0. B1TMET interpole ces données aux stations et calcule les mesures ; l'ECMWF et le DWD ne les ont pas vérifiées.</p>
+          </div>
+          <div lang="it">
+            <ol>
+              <li>Ogni previsione è confrontata con l'osservazione più vicina alla sua ora di validità, entro ±30 minuti.</li>
+              <li>La temperatura è corretta per la differenza di quota tra il punto di griglia del modello e la stazione (6,5 °C per km). AIFS resta non corretto finché non è disponibile la sua orografia.</li>
+              <li>Metriche: errore assoluto medio (MAE), bias (previsione meno osservazione) e scarto quadratico medio (RMSE). La direzione del vento è valutata solo con vento osservato di almeno 2 m/s. Pressione al livello del mare: quella del METAR o, se c'è solo il QNH, nelle stazioni sotto i 100 m.</li>
+              <li>Campione comune: tutti i modelli di un gruppo sono valutati nelle stesse stazioni, ore di validità e scadenze, cioè dalla stessa ora di inizio. Poiché IFS, AIFS e ICON girano alle 00 e alle 12 UTC, entrano solo quelle corse.</li>
+              <li>Intervalli di confidenza al 95 % ricampionando giorni interi (bootstrap), perché le ore di uno stesso giorno non sono indipendenti.</li>
+              <li>Un risultato si pubblica quando raggiunge almeno 30 giorni, 10 stazioni (5 nei gruppi di un solo dominio) e 1000 coppie. Un modello è dichiarato migliore o peggiore di WRF solo se l'intervallo della differenza appaiata esclude lo zero.</li>
+              <li>WRF Pro è la griglia più fine che l'API sceglie in ogni stazione; WRF Free, quella da 27 km (25 km in Messico) del piano gratuito.</li>
+              <li>Le boe misurano il vento a circa 4 m e i modelli lo forniscono a 10 m: è normale che i modelli lo sovrastimino un po' sulle boe.</li>
+            </ol>
+            <p><b>Fonti.</b> METAR: NOAA Aviation Weather Center. Boe: NOAA National Data Buoy Center. GFS: NOAA/NCEP (pubblico dominio). IFS e AIFS: © ECMWF, licenza CC BY 4.0. ICON: © Deutscher Wetterdienst, licenza CC BY 4.0. B1TMET interpola questi dati alle stazioni e calcola le metriche; ECMWF e DWD non le hanno verificate.</p>
+          </div>
+          <div lang="nl">
+            <ol>
+              <li>Elke voorspelling wordt vergeleken met de waarneming die het dichtst bij de geldigheidstijd ligt, binnen ±30 minuten.</li>
+              <li>De temperatuur wordt gecorrigeerd voor het hoogteverschil tussen het roosterpunt van het model en het station (6,5 °C per km). AIFS blijft ongecorrigeerd tot de orografie beschikbaar is.</li>
+              <li>Maten: gemiddelde absolute fout (MAE), bias (voorspelling min waarneming) en wortel van de gemiddelde kwadratische fout (RMSE). De windrichting wordt alleen beoordeeld bij waargenomen wind van 2 m/s of meer. Luchtdruk op zeeniveau: die van de METAR of, als alleen QNH wordt gemeld, bij stations onder 100 m.</li>
+              <li>Gemeenschappelijke steekproef: alle modellen in een groep worden beoordeeld op dezelfde stations, geldigheidstijden en vooruitzichttermijnen, dus vanaf dezelfde begintijd. Omdat IFS, AIFS en ICON om 00 en 12 UTC draaien, tellen alleen die runs mee.</li>
+              <li>Betrouwbaarheidsintervallen van 95% door hele dagen opnieuw te bemonsteren (bootstrap), omdat de uren van één dag niet onafhankelijk zijn.</li>
+              <li>Een resultaat wordt gepubliceerd zodra er minstens 30 dagen, 10 stations (5 in groepen van één domein) en 1000 paren zijn. Een model heet alleen beter of slechter dan WRF als het interval van het gepaarde verschil nul uitsluit.</li>
+              <li>WRF Pro is het fijnste rooster dat de API bij elk station kiest; WRF Free het rooster van 27 km (25 km in Mexico) van het gratis abonnement.</li>
+              <li>Boeien meten de wind op ongeveer 4 m en modellen geven hem op 10 m, dus modellen zullen hem bij boeien wat overschatten.</li>
+            </ol>
+            <p><b>Bronnen.</b> METAR: NOAA Aviation Weather Center. Boeien: NOAA National Data Buoy Center. GFS: NOAA/NCEP (publiek domein). IFS en AIFS: © ECMWF, licentie CC BY 4.0. ICON: © Deutscher Wetterdienst, licentie CC BY 4.0. B1TMET interpoleert deze gegevens naar de stations en berekent de maten; ECMWF en DWD hebben ze niet gecontroleerd.</p>
+          </div>
+        </details>
+      </article>
+    </main>
+
+    <footer class="foot">
+      <div class="foot-glow" aria-hidden="true"></div>
+      <div class="foot-in">
+        <img class="foot-logo" src="assets/logo-h-light.png" alt="B1TMET" width="138" height="40" />
+        <ul class="foot-links" lang="es">
+          <li><a href="legal/privacidad.html">Aviso de privacidad</a></li>
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Precios API</a></li>
+          <li><a href="legal/terminos.html">Términos de la API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contacto</a></li>
+          <li><a href="https://b1tmet.com">Acerca de</a></li>
+        </ul>
+        <ul class="foot-links" lang="en">
+          <li><a href="legal/privacidad.html">Privacy Policy</a></li>
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">API Pricing</a></li>
+          <li><a href="legal/terminos.html">API Terms</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">About</a></li>
+        </ul>
+        <ul class="foot-links" lang="pt">
+          <li><a href="legal/privacidad.html">Aviso de privacidade</a></li>
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Preços da API</a></li>
+          <li><a href="legal/terminos.html">Termos da API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contato</a></li>
+          <li><a href="https://b1tmet.com">Sobre</a></li>
+        </ul>
+        <ul class="foot-links" lang="fr">
+          <li><a href="legal/privacidad.html">Politique de confidentialité</a></li>
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Tarifs de l'API</a></li>
+          <li><a href="legal/terminos.html">Conditions de l'API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contact</a></li>
+          <li><a href="https://b1tmet.com">À propos</a></li>
+        </ul>
+        <ul class="foot-links" lang="it">
+          <li><a href="legal/privacidad.html">Informativa sulla privacy</a></li>
+          <li><a href="index.html">API</a></li>
+          <li><a href="precios.html">Prezzi API</a></li>
+          <li><a href="legal/terminos.html">Termini dell'API</a></li>
+          <li><a href="mailto:b1tmet@b1tmet.com">Contatti</a></li>
+          <li><a href="https://b1tmet.com">Chi siamo</a></li>
+        </ul>
+        <div class="foot-copy"><span>© 2026 B1TMET Technologies</span><span class="wm">Bitmet</span></div>
+      </div>
+    </footer>
+
+
+    <script src="assets/lang.js"></script>
+    <script src="assets/marca.js"></script>
+    <script src="assets/verif.js"></script>
+  </body>
+</html>
