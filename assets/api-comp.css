@@ -342,3 +342,65 @@ html:not([data-theme="light"]) .ch-tip .ch-paid {color: var(--secondary)}
 .tr-view img {object-fit: contain}
 .tr-info:empty {display: none}
 .tr-info {opacity: 1}
+
+/* ---- Mapa: que se vea que se puede pulsar ---- */
+/* Botón de la portada (baja al mapa con el punto de prueba elegido) */
+.hero-cta {margin: 18px 0 4px}
+.hero-cta .btn {display: inline-flex; align-items: center; gap: 8px}
+/* Indicación encima del mapa */
+.map-hint {display: flex; align-items: center; gap: 10px; margin: 12px 0 6px; padding: 10px 14px;
+  border-radius: 12px; border: 1px solid color-mix(in srgb, var(--azul) 35%, var(--border));
+  background: color-mix(in srgb, var(--azul) 8%, var(--row)); font-size: .92rem; font-weight: 600}
+.map-hint svg {flex: none; width: 22px; height: 22px; fill: none; stroke: var(--primary); stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round}
+html[data-theme="dark"] .map-hint svg {stroke: var(--secondary)}
+@media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .map-hint svg {stroke: var(--secondary)} }
+/* Contenedor del mapa: el globo y la etiqueta se colocan sobre él */
+.map-box {position: relative; min-width: 0}
+/* Punto de prueba que late (hasta el primer clic) */
+.map .try-dot {fill: #e11d48; stroke: #fff; stroke-width: 2.5; pointer-events: none}
+.map .try-ring {fill: none; stroke: #e11d48; stroke-width: 3; pointer-events: none}
+@media (prefers-reduced-motion: no-preference) {
+.map .try-ring {animation: mx-ping 1.6s ease-out infinite}
+}
+/* Globo sobre el punto de prueba */
+.map-try {position: absolute; z-index: 2; transform: translate(-50%, calc(-100% - 16px));
+  width: max-content; max-width: min(80%, 320px); padding: 7px 14px; border: 0; border-radius: 999px;
+  background: var(--grad); color: #fff; font: inherit; font-size: .82rem; font-weight: 600; line-height: 1.3; text-align: center;
+  box-shadow: var(--shadow-brand); cursor: pointer}
+.map-try::after {content: ""; position: absolute; left: 50%; bottom: -6px; margin-left: -6px;
+  border: 6px solid transparent; border-bottom: 0; border-top-color: #5a76e0}
+.map-try:focus-visible {outline: none; box-shadow: var(--ring), var(--shadow-brand)}
+@media (prefers-reduced-motion: no-preference) {
+@keyframes mx-bob { 50% { transform: translate(-50%, calc(-100% - 22px)) } }
+.map-try {animation: mx-bob 2.4s ease-in-out infinite}
+.map-try:hover {animation-play-state: paused}
+}
+/* Etiqueta que sigue al ratón */
+.map-tip {position: absolute; z-index: 3; pointer-events: none; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; box-shadow: var(--shadow-2); padding: 6px 10px; font-size: .8rem; line-height: 1.4; white-space: nowrap}
+.map-tip b {display: block; font-variant-numeric: tabular-nums}
+.map-tip span {display: block; color: var(--muted)}
+.map-tip small {display: block; margin-top: 2px; color: var(--primary); font-weight: 600}
+html[data-theme="dark"] .map-tip small {color: var(--secondary)}
+@media (prefers-color-scheme: dark) { html:not([data-theme="light"]) .map-tip small {color: var(--secondary)} }
+.map-try[hidden], .map-tip[hidden] {display: none}
+/* El recuadro del punto solo aparece al elegir uno */
+.pick:empty {display: none}
+
+/* ---- Mapa: más contraste en tema claro y punto elegido visible en los dos temas ---- */
+.map {background: #c3d2ef}
+.map .land {fill: #fdfcf8; stroke: #7d89ad; stroke-width: .7}
+.map .grat {stroke: #b2c1e2}
+.map .dom {fill-opacity: .05}
+.map .pin-dot {fill: #e11d48; stroke: #fff; stroke-width: 2.5}
+.map .pin-ring {fill: none; stroke: #e11d48; stroke-width: 3; opacity: 1}
+html[data-theme="dark"] .map {background: #0e1838}
+html[data-theme="dark"] .map .land {fill: #2b1b4d; stroke: #6f61a0}
+html[data-theme="dark"] .map .grat {stroke: #1f2a52}
+html[data-theme="dark"] .map .dom {fill-opacity: .07}
+@media (prefers-color-scheme: dark) {
+html:not([data-theme="light"]) .map {background: #0e1838}
+html:not([data-theme="light"]) .map .land {fill: #2b1b4d; stroke: #6f61a0}
+html:not([data-theme="light"]) .map .grat {stroke: #1f2a52}
+html:not([data-theme="light"]) .map .dom {fill-opacity: .07}
+}
