@@ -766,8 +766,23 @@
     <script src="assets/lang.js"></script>
     <script src="assets/marca.js"></script>
     <script>
-      // Payment Links de Stripe: el pago se abre en el idioma de la página (?locale=)
+      // Payment Links de Stripe: el pago se abre en el idioma de la página (?locale=).
+      // En localhost se usan los enlaces que vuelven a localhost; en GitHub Pages,
+      // los que vuelven a b1tmet.github.io/api/clave.html.
       (function () {
+        var LOCAL = {
+          "test_14A3cw85YdfL9yUfQp1VK01": "test_fZu3cw3PI0sZ8uQ47H1VK03", // Starter
+          "test_cNi28sdqi5Nj6mIdIh1VK02": "test_6oUdRafyqejP3awbA91VK04"  // Pro
+        };
+        if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+          document.querySelectorAll("a[data-stripe]").forEach(function (a) {
+            try {
+              var u = new URL(a.href);
+              var id = u.pathname.replace(/^\//, "");
+              if (LOCAL[id]) { u.pathname = "/" + LOCAL[id]; a.href = u.toString(); }
+            } catch (e) {}
+          });
+        }
         function upd() {
           var l = document.documentElement.getAttribute("data-lang") || "en";
           document.querySelectorAll("a[data-stripe]").forEach(function (a) {
