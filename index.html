@@ -9,12 +9,12 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="B1TMET" />
     <meta property="og:title" content="B1TMET WRF Forecast API" />
-    <meta property="og:description" content="High-resolution WRF forecasts for the Caribbean and Central America, up to 3 km, as JSON. Try it on the map, no key needed." />
+    <meta property="og:description" content="High-resolution WRF forecasts for the Caribbean and Central America, up to 0.6 km, as JSON. Try it on the map, no key needed." />
     <meta property="og:url" content="https://b1tmet.github.io/api/" />
     <meta property="og:image" content="https://b1tmet.github.io/api/assets/og-api.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="B1TMET WRF Forecast API — Caribbean &amp; Central America, up to 3 km" />
+    <meta property="og:image:alt" content="B1TMET WRF Forecast API — Caribbean &amp; Central America, up to 0.6 km" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#17062b" />
     <link rel="icon" href="favicon.ico" sizes="any" />
@@ -55,7 +55,7 @@
         <a href="index.html" aria-current="page"><span lang="es">Inicio</span><span lang="en">Overview</span><span lang="pt">Início</span><span lang="fr">Aperçu</span><span lang="it">Panoramica</span><span lang="nl">Overzicht</span></a>
         <a href="docs.html"><span lang="es">Documentación</span><span lang="en">Documentation</span><span lang="pt">Documentação</span><span lang="fr">Documentation</span><span lang="it">Documentazione</span><span lang="nl">Documentatie</span></a>
         <a href="precios.html"><span lang="es">Precios</span><span lang="en">Pricing</span><span lang="pt">Preços</span><span lang="fr">Tarifs</span><span lang="it">Prezzi</span><span lang="nl">Prijzen</span></a>
-        <a href="verificacion.html"><span lang="es">Verificación</span><span lang="en">Verification</span><span lang="pt">Verificação</span><span lang="fr">Vérification</span><span lang="it">Verifica</span><span lang="nl">Verificatie</span></a>
+        <!-- <a href="verificacion.html"><span lang="es">Verificación</span><span lang="en">Verification</span><span lang="pt">Verificação</span><span lang="fr">Vérification</span><span lang="it">Verifica</span><span lang="nl">Verificatie</span></a> -->
       </nav>
       <button class="theme" type="button" aria-label="Tema">
         <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
@@ -135,9 +135,9 @@
               <path class="g9" d="M22.7 2V38M41.3 2V38M4 14H60M4 26H60"/>
               <path class="g3" d="M10.2 2V38M16.4 2V38M28.9 2V38M35.1 2V38M47.6 2V38M53.8 2V38M4 6H60M4 10H60M4 18H60M4 22H60M4 30H60M4 34H60"/>
             </svg>
-            <b data-seq="27,9,3" data-unit=" km">3 km</b>
+            <b data-seq="27,9,3,0.6" data-unit=" km">0.6 km</b>
             <div lang="es">resolución máxima</div><div lang="en">finest resolution</div><div lang="pt">resolução máxima</div><div lang="fr">résolution maximale</div><div lang="it">risoluzione massima</div><div lang="nl">hoogste resolutie</div>
-            <small class="sub">27 → 9 → 3 km</small>
+            <small class="sub">27 → 9 → 3 → 0.6 km</small>
           </a>
           <a class="stat" href="#cobertura" data-act="doms">
             <svg class="viz" viewBox="0 0 64 40" aria-hidden="true">
@@ -145,7 +145,7 @@
             </svg>
             <b data-to="7">7</b>
             <div lang="es">dominios del modelo</div><div lang="en">model domains</div><div lang="pt">domínios do modelo</div><div lang="fr">domaines du modèle</div><div lang="it">domini del modello</div><div lang="nl">modeldomeinen</div>
-            <small class="sub">d01 · d02 · d03</small>
+            <small class="sub">d01 · d02 · d03 · d04</small>
           </a>
           <a class="stat" href="docs.html#es-point" data-doc="point">
             <svg class="viz" viewBox="0 0 64 40" aria-hidden="true">
@@ -483,12 +483,12 @@
           <ul class="legend" id="legend"></ul>
         </div>
         <div class="pick" id="pick" aria-live="polite"></div>
-        <p class="muted" lang="es">Los recuadros son los límites en latitud y longitud de cada malla. El plan Free usa las mallas d01; los planes de pago, todas.</p>
-        <p class="muted" lang="en">Boxes show the latitude and longitude bounds of each grid. The Free plan uses the d01 grids; paid plans use all of them.</p>
-        <p class="muted" lang="pt">Os retângulos mostram os limites de latitude e longitude de cada grade. O plano Free usa as grades d01; os planos pagos, todas.</p>
-        <p class="muted" lang="fr">Les cadres indiquent les limites en latitude et longitude de chaque grille. L'offre Free utilise les grilles d01 ; les offres payantes, toutes.</p>
-        <p class="muted" lang="it">I riquadri indicano i limiti in latitudine e longitudine di ciascuna griglia. Il piano Free usa le griglie d01; i piani a pagamento, tutte.</p>
-        <p class="muted" lang="nl">De kaders tonen de breedte- en lengtegrenzen van elk rooster. Het Free-abonnement gebruikt de d01-roosters; betaalde abonnementen alle roosters.</p>
+        <p class="muted" lang="es">Los recuadros son los límites en latitud y longitud de cada malla. El plan Free usa las mallas d01; los planes de pago, todas. La leyenda indica las resoluciones de cada región.</p>
+        <p class="muted" lang="en">Boxes show the latitude and longitude bounds of each grid. The Free plan uses the d01 grids; paid plans use all of them. The legend lists each region’s resolutions.</p>
+        <p class="muted" lang="pt">Os retângulos mostram os limites de latitude e longitude de cada grade. O plano Free usa as grades d01; os planos pagos, todas. A legenda indica as resoluções de cada região.</p>
+        <p class="muted" lang="fr">Les cadres indiquent les limites en latitude et longitude de chaque grille. L'offre Free utilise les grilles d01 ; les offres payantes, toutes. La légende indique les résolutions de chaque région.</p>
+        <p class="muted" lang="it">I riquadri indicano i limiti in latitudine e longitudine di ciascuna griglia. Il piano Free usa le griglie d01; i piani a pagamento, tutte. La legenda indica le risoluzioni di ciascuna regione.</p>
+        <p class="muted" lang="nl">De kaders tonen de breedte- en lengtegrenzen van elk rooster. Het Free-abonnement gebruikt de d01-roosters; betaalde abonnementen alle roosters. De legenda toont de resoluties van elke regio.</p>
 
         <h2 lang="es">Primera petición</h2>
         <h2 lang="en">First request</h2>
@@ -538,44 +538,44 @@ print(r.json()["data"][0]["temperature_2m"])</code></pre>
         <div class="tbl" lang="es"><table>
           <tr><th>Plan</th><th>Precio</th><th>Peticiones/día</th><th>Por minuto</th><th>Horizonte</th><th>Mallas</th></tr>
           <tr><td><b>Free</b></td><td><span data-plan="free" data-campo="precio_mes">0</span> USD/mes</td><td><span data-plan="free" data-campo="por_dia">500</span></td><td><span data-plan="free" data-campo="por_minuto">10</span></td><td><span data-plan="free" data-campo="horas_max">24</span> h</td><td>d01 (9–27 km)</td></tr>
-          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/mes</td><td><span data-plan="starter" data-campo="por_dia">5 000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>todas (hasta 3 km)</td></tr>
-          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/mes</td><td><span data-plan="pro" data-campo="por_dia">20 000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>todas (hasta 3 km)</td></tr>
-          <tr><td><b>Enterprise</b></td><td>desde <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/mes</td><td>a medida</td><td>a medida</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>todas (hasta 3 km)</td></tr>
+          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/mes</td><td><span data-plan="starter" data-campo="por_dia">5 000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>todas</td></tr>
+          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/mes</td><td><span data-plan="pro" data-campo="por_dia">20 000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>todas</td></tr>
+          <tr><td><b>Enterprise</b></td><td>desde <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/mes</td><td>a medida</td><td>a medida</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>todas</td></tr>
         </table></div>
         <div class="tbl" lang="en"><table>
           <tr><th>Plan</th><th>Price</th><th>Requests/day</th><th>Per minute</th><th>Horizon</th><th>Grids</th></tr>
           <tr><td><b>Free</b></td><td><span data-plan="free" data-campo="precio_mes">0</span> USD/month</td><td><span data-plan="free" data-campo="por_dia">500</span></td><td><span data-plan="free" data-campo="por_minuto">10</span></td><td><span data-plan="free" data-campo="horas_max">24</span> h</td><td>d01 (9–27 km)</td></tr>
-          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/month</td><td><span data-plan="starter" data-campo="por_dia">5,000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>all (down to 3 km)</td></tr>
-          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/month</td><td><span data-plan="pro" data-campo="por_dia">20,000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>all (down to 3 km)</td></tr>
-          <tr><td><b>Enterprise</b></td><td>from <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/month</td><td>custom</td><td>custom</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>all (down to 3 km)</td></tr>
+          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/month</td><td><span data-plan="starter" data-campo="por_dia">5,000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>all</td></tr>
+          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/month</td><td><span data-plan="pro" data-campo="por_dia">20,000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>all</td></tr>
+          <tr><td><b>Enterprise</b></td><td>from <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/month</td><td>custom</td><td>custom</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>all</td></tr>
         </table></div>
         <div class="tbl" lang="pt"><table>
           <tr><th>Plano</th><th>Preço</th><th>Requisições/dia</th><th>Por minuto</th><th>Horizonte</th><th>Grades</th></tr>
           <tr><td><b>Free</b></td><td><span data-plan="free" data-campo="precio_mes">0</span> USD/mês</td><td><span data-plan="free" data-campo="por_dia">500</span></td><td><span data-plan="free" data-campo="por_minuto">10</span></td><td><span data-plan="free" data-campo="horas_max">24</span> h</td><td>d01 (9–27 km)</td></tr>
-          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/mês</td><td><span data-plan="starter" data-campo="por_dia">5.000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>todas (até 3 km)</td></tr>
-          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/mês</td><td><span data-plan="pro" data-campo="por_dia">20.000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>todas (até 3 km)</td></tr>
-          <tr><td><b>Enterprise</b></td><td>a partir de <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/mês</td><td>sob medida</td><td>sob medida</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>todas (até 3 km)</td></tr>
+          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/mês</td><td><span data-plan="starter" data-campo="por_dia">5.000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>todas</td></tr>
+          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/mês</td><td><span data-plan="pro" data-campo="por_dia">20.000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>todas</td></tr>
+          <tr><td><b>Enterprise</b></td><td>a partir de <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/mês</td><td>sob medida</td><td>sob medida</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>todas</td></tr>
         </table></div>
         <div class="tbl" lang="fr"><table>
           <tr><th>Offre</th><th>Prix</th><th>Requêtes/jour</th><th>Par minute</th><th>Horizon</th><th>Grilles</th></tr>
           <tr><td><b>Free</b></td><td><span data-plan="free" data-campo="precio_mes">0</span> USD/mois</td><td><span data-plan="free" data-campo="por_dia">500</span></td><td><span data-plan="free" data-campo="por_minuto">10</span></td><td><span data-plan="free" data-campo="horas_max">24</span> h</td><td>d01 (9–27 km)</td></tr>
-          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/mois</td><td><span data-plan="starter" data-campo="por_dia">5 000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>toutes (jusqu'à 3 km)</td></tr>
-          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/mois</td><td><span data-plan="pro" data-campo="por_dia">20 000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>toutes (jusqu'à 3 km)</td></tr>
-          <tr><td><b>Enterprise</b></td><td>à partir de <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/mois</td><td>sur mesure</td><td>sur mesure</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>toutes (jusqu'à 3 km)</td></tr>
+          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/mois</td><td><span data-plan="starter" data-campo="por_dia">5 000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>toutes</td></tr>
+          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/mois</td><td><span data-plan="pro" data-campo="por_dia">20 000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>toutes</td></tr>
+          <tr><td><b>Enterprise</b></td><td>à partir de <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/mois</td><td>sur mesure</td><td>sur mesure</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>toutes</td></tr>
         </table></div>
         <div class="tbl" lang="it"><table>
           <tr><th>Piano</th><th>Prezzo</th><th>Richieste/giorno</th><th>Al minuto</th><th>Orizzonte</th><th>Griglie</th></tr>
           <tr><td><b>Free</b></td><td><span data-plan="free" data-campo="precio_mes">0</span> USD/mese</td><td><span data-plan="free" data-campo="por_dia">500</span></td><td><span data-plan="free" data-campo="por_minuto">10</span></td><td><span data-plan="free" data-campo="horas_max">24</span> h</td><td>d01 (9–27 km)</td></tr>
-          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/mese</td><td><span data-plan="starter" data-campo="por_dia">5.000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>tutte (fino a 3 km)</td></tr>
-          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/mese</td><td><span data-plan="pro" data-campo="por_dia">20.000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>tutte (fino a 3 km)</td></tr>
-          <tr><td><b>Enterprise</b></td><td>da <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/mese</td><td>su misura</td><td>su misura</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>tutte (fino a 3 km)</td></tr>
+          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/mese</td><td><span data-plan="starter" data-campo="por_dia">5.000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>tutte</td></tr>
+          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/mese</td><td><span data-plan="pro" data-campo="por_dia">20.000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>tutte</td></tr>
+          <tr><td><b>Enterprise</b></td><td>da <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/mese</td><td>su misura</td><td>su misura</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>tutte</td></tr>
         </table></div>
         <div class="tbl" lang="nl"><table>
           <tr><th>Abonnement</th><th>Prijs</th><th>Verzoeken/dag</th><th>Per minuut</th><th>Horizon</th><th>Roosters</th></tr>
           <tr><td><b>Free</b></td><td><span data-plan="free" data-campo="precio_mes">0</span> USD/maand</td><td><span data-plan="free" data-campo="por_dia">500</span></td><td><span data-plan="free" data-campo="por_minuto">10</span></td><td><span data-plan="free" data-campo="horas_max">24</span> h</td><td>d01 (9–27 km)</td></tr>
-          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/maand</td><td><span data-plan="starter" data-campo="por_dia">5.000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>alle (tot 3 km)</td></tr>
-          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/maand</td><td><span data-plan="pro" data-campo="por_dia">20.000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>alle (tot 3 km)</td></tr>
-          <tr><td><b>Enterprise</b></td><td>vanaf <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/maand</td><td>op maat</td><td>op maat</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>alle (tot 3 km)</td></tr>
+          <tr><td><b>Starter</b></td><td><span data-plan="starter" data-campo="precio_mes">19</span> USD/maand</td><td><span data-plan="starter" data-campo="por_dia">5.000</span></td><td><span data-plan="starter" data-campo="por_minuto">30</span></td><td><span data-plan="starter" data-campo="horas_max">72</span> h</td><td>alle</td></tr>
+          <tr><td><b>Pro</b></td><td><span data-plan="pro" data-campo="precio_mes">79</span> USD/maand</td><td><span data-plan="pro" data-campo="por_dia">20.000</span></td><td><span data-plan="pro" data-campo="por_minuto">60</span></td><td><span data-plan="pro" data-campo="horas_max">72</span> h</td><td>alle</td></tr>
+          <tr><td><b>Enterprise</b></td><td>vanaf <span data-plan="enterprise" data-campo="precio_mes">199</span> USD/maand</td><td>op maat</td><td>op maat</td><td><span data-plan="enterprise" data-campo="horas_max">72</span> h</td><td>alle</td></tr>
         </table></div>
         <p lang="es"><a href="precios.html">Ver precios y condiciones →</a></p>
         <p lang="en"><a href="precios.html">See pricing and terms →</a></p>
@@ -681,9 +681,9 @@ print(r.json()["data"][0]["temperature_2m"])</code></pre>
           { k: "mexico",         c: "#e76f51", g: [[2.67, -133.77, 43.15, -71.57, 25, "d01"], [8.90, -124.25, 36.99, -80.02, 5, "d02"]] },
           { k: "caribe",         c: "#2a9d8f", g: [[-2.45, -102.84, 34.59, -46.77, 9, "d01"]] },
           { k: "centro_america", c: "#8e7dff", g: [[-7.20, -113.45, 31.52, -57.76, 27, "d01"], [1.93, -100.80, 24.77, -70.41, 9, "d02"]] },
-          { k: "dominica",       c: "#e9b949", g: [[-0.41, -86.10, 27.81, -26.61, 27, "d01"], [6.71, -68.01, 22.71, -40.96, 9, "d02"]] },
+          { k: "dominica",       c: "#e9b949", g: [[-0.41, -86.10, 27.81, -26.61, 27, "d01"], [6.71, -68.01, 22.71, -40.96, 9, "d02"],[13.64, -64.06,16.58, -58.61, 3, "d03"], [14.97, -62.00, 15.87, -60.67, 0.6, "d04"]] },
           { k: "dominicana",     c: "#d264b6", g: [[6.62, -96.00, 30.74, -48.20, 27, "d01"], [11.86, -85.81, 26.07, -57.36, 9, "d02"]] },
-          { k: "cuba",           c: "#4f86f7", g: [[13.65, -99.28, 32.04, -62.83, 27, "d01"], [17.64, -88.27, 26.60, -70.93, 9, "d02"]] },
+          { k: "cuba",           c: "#4f86f7", g: [[13.65, -99.28, 32.04, -62.83, 27, "d01"], [17.64, -88.27, 26.60, -70.93, 9, "d02"],[19.34, -85.72, 24.26, -73.77, 3, "d03"]] },
           { k: "panama",         c: "#3fbf5f", g: [[-5.22, -97.23, 22.91, -62.79, 27, "d01"], [3.05, -87.47, 15.09, -72.55, 9, "d02"], [6.53, -83.48, 10.56, -76.62, 3, "d03"]] }
         ];
         var NS = "http://www.w3.org/2000/svg";
@@ -717,7 +717,7 @@ print(r.json()["data"][0]["temperature_2m"])</code></pre>
         var API = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(location.origin) ? location.origin : "https://thredds.b1tmet.com";
         var pick = null, pickEl = document.getElementById("pick"), gPin = document.getElementById("pin"), svgMap = document.getElementById("map");
 
-        // Misma regla que la API (domain=auto): primero el grid más anidado (d03 > d02 > d01);
+        // Misma regla que la API (domain=auto): primero el grid más anidado (d04 > d03 > d02 > d01);
         // a igual grid, el dominio con el centro más cercano al punto. Free: solo d01.
         function hav(a1, o1, a2, o2) {               // km, como haversineKm de la API
           var r = Math.PI / 180, dA = (a2 - a1) * r, dO = (o2 - o1) * r;
@@ -1078,10 +1078,10 @@ print(r.json()["data"][0]["temperature_2m"])</code></pre>
           io.observe(stats);
         } else stats.classList.add("go");
 
-        // Las dos primeras llevan al mapa: 3 km fija Panamá (malla d03); 7 dominios los muestra todos
+        // Las dos primeras llevan al mapa: 0.6 km fija Dominica (malla d04); 7 dominios los muestra todos
         stats.querySelectorAll("[data-act]").forEach(function (a) {
           a.addEventListener("click", function () {
-            view = "best"; pinned = a.dataset.act === "res" ? "panama" : null; render();
+            view = "best"; pinned = a.dataset.act === "res" ? "dominica" : null; render();
           });
         });
         // La documentación existe en español e inglés
@@ -1106,7 +1106,9 @@ print(r.json()["data"][0]["temperature_2m"])</code></pre>
         function check(retries) {
           var ctl = window.AbortController ? new AbortController() : null;
           var to = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
-          fetch("https://thredds.b1tmet.com/v1/status", { cache: "no-store", signal: ctl ? ctl.signal : undefined })
+          // fetch("https://thredds.b1tmet.com/v1/status", { cache: "no-store", signal: ctl ? ctl.signal : undefined })
+          fetch(API + "/v1/status", { cache: "no-store", signal: ctl ? ctl.signal : undefined })
+
             .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
             .then(function (j) { clearTimeout(to); setState(j.status === "ok" ? "ok" : "degraded"); })
             .catch(function () { clearTimeout(to); if (retries > 0) check(retries - 1); else setState("unknown"); });
@@ -1134,7 +1136,62 @@ print(r.json()["data"][0]["temperature_2m"])</code></pre>
         var box = document.getElementById("relieve");
         if (!box) return;
         // [malla, km, puntos sobre tierra en la ventana, (sin uso)]
-        var R = {"panama":{"w":1200,"h":712,"g":[["d01",27,229,1110],["d02",9,1624,2170],["d03",3,13188,2781]]},"cuba":{"w":1200,"h":441,"g":[["d01",27,202,431],["d02",9,1555,539]]},"mexico":{"w":1200,"h":777,"g":[["d01",25,5281,2529],["d02",5,125678,4233]]},"centro_america":{"w":1200,"h":868,"g":[["d01",27,1096,2452],["d02",9,8739,2722]]},"dominicana":{"w":1200,"h":557,"g":[["d01",27,155,1773],["d02",9,1153,2106]]},"dominica":{"w":822,"h":900,"g":[["d01",27,39,110],["d02",9,198,392]]}};
+
+        var R = {
+          "panama":{
+            "w":1435,
+            "h":900,
+            "g":[
+              ["d01",27,256,1930],
+              ["d02",9,1854,2762],
+              ["d03",3,13188,3107]
+            ]
+          },
+          "cuba":{
+            "w":1899,
+            "h":900,
+            "g":[
+              ["d01",27,162,256],
+              ["d02",9,1387,887],
+              ["d03",3,12652,1380]
+            ]
+          },
+          "mexico":{
+            "w":1295,
+            "h":900,
+            "g":[
+              ["d01",25,8839,3046],
+              ["d02",5,202045,4233]
+            ]
+          },
+          "centro_america":{
+            "w":1200,
+            "h":933,
+            "g":[
+              ["d01",27,3101,3405],
+              ["d02",9,26686,4479]
+            ]
+          },
+          "dominicana":{
+            "w":1669,
+            "h":900,
+            "g":[
+              ["d01",27,521,1773],
+              ["d02",9,4355,2141]
+            ]
+          },
+          "dominica":{
+            "w":1200,
+            "h":972,
+            "g":[
+              ["d01",27,3,250],
+              ["d02",9,26,450],
+              ["d03",3,236,990],
+              ["d04",0.6,2323,1166]
+            ]
+            }
+          };
+
         var NAME = {
           es: { panama: "Panamá", cuba: "Cuba", mexico: "México", centro_america: "Centroamérica", dominicana: "Rep. Dominicana", dominica: "Dominica" },
           en: { panama: "Panama", cuba: "Cuba", mexico: "Mexico", centro_america: "Central America", dominicana: "Dominican Rep.", dominica: "Dominica" },
@@ -1191,7 +1248,7 @@ print(r.json()["data"][0]["temperature_2m"])</code></pre>
           var x = gs.filter(function (y) { return y[0] === cur; })[0];
           var base = gs[0][2];                                  // puntos sobre tierra de la malla Free (d01)
           info.textContent = !x ? "" : t.st.replace("{n}", nf(x[2])) +
-            (x[0] !== "d01" && base ? t.x.replace("{x}", nf(Math.round(x[2] / base))) : "");
+            (x[0] !== "d01" && base >= 20 ? t.x.replace("{x}", nf(Math.round(x[2] / base))) : "");
           noteEl.textContent = t.note;
           Object.keys(imgs).forEach(function (k) { var im = imgs[k]; var g = k.slice(-3);
             im.alt = t.alt.replace("{r}", NAME[l][k.slice(0, -3)]).replace("{k}", (R[k.slice(0, -3)].g.filter(function (y) { return y[0] === g; })[0] || [0, ""])[1]); });
