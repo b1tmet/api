@@ -1,0 +1,15 @@
+Generador de og-api.jpg (imagen al compartir el enlace de la API, 1200x630)
+
+Requisitos:   pip install pillow numpy
+Generar:      python generar_og.py
+Otros textos: python generar_og.py --subtitulo "Caribbean & Central America · up to 0.6 km" \
+                  --pildoras "7 domains" "27 · 9 · 3 · 0.6 km" "4 runs/day · 72 h" \
+                  --url "b1tmet.github.io/api" --salida og-api.jpg
+
+Archivos:
+  generar_og.py     dibuja subtítulo, píldoras y dirección web sobre el fondo
+  og-base.png       fondo con el logotipo y el título; NO contiene el subtítulo, las píldoras ni la dirección
+  fuentes/          Inter Regular y SemiBold (licencia SIL OFL, en LICENCIA-Inter.txt)
+
+Los números de las constantes (tamaños, posiciones, colores) están medidos sobre la imagen original.
+Cambiar el título "WRF Forecast API" no se puede con este script: está dentro de og-base.png.
